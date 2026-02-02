@@ -5,7 +5,7 @@ import { ArrowDown, Download, Github, Linkedin, Mail, Send } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n/context";
 
-export function HeroSection() {
+export function HeroSection({ resumeDownloadHref }: { resumeDownloadHref: string | null }) {
   const { t } = useI18n();
 
   return (
@@ -34,12 +34,14 @@ export function HeroSection() {
           <Button asChild size="lg">
             <Link href="#projects">{t.hero.viewProjects}</Link>
           </Button>
-          <Button variant="outline" size="lg" asChild>
-            <a href="/resume.pdf" download>
-              <Download className="mr-2 h-4 w-4" />
-              {t.hero.downloadResume}
-            </a>
-          </Button>
+          {resumeDownloadHref ? (
+            <Button variant="outline" size="lg" asChild>
+              <a href={resumeDownloadHref} target="_blank" rel="noopener noreferrer">
+                <Download className="mr-2 h-4 w-4" />
+                {t.hero.downloadResume}
+              </a>
+            </Button>
+          ) : null}
           <Button variant="ghost" size="lg" asChild>
             <Link href="#contact">{t.hero.contactMe}</Link>
           </Button>

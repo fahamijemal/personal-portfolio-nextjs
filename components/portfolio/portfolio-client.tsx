@@ -5,6 +5,7 @@ import { HeroSection } from "./hero-section";
 import { AboutSection } from "./about-section";
 import { SkillsSection } from "./skills-section";
 import { ProjectsSection } from "./projects-section";
+import { CertificatesSection, type Certificate } from "./certificates-section";
 import { BlogSection } from "./blog-section";
 import { ContactSection } from "./contact-section";
 import { Footer } from "./footer";
@@ -35,18 +36,26 @@ type BlogPost = {
 type PortfolioClientProps = {
   projects: Project[];
   posts: BlogPost[];
+  certificates?: Certificate[];
+  resumeDownloadHref?: string | null;
 };
 
-export function PortfolioClient({ projects, posts }: PortfolioClientProps) {
+export function PortfolioClient({
+  projects,
+  posts,
+  certificates = [],
+  resumeDownloadHref,
+}: PortfolioClientProps) {
   return (
     <I18nProvider>
       <div className="min-h-screen bg-background">
         <Header />
         <main>
-          <HeroSection />
+          <HeroSection resumeDownloadHref={resumeDownloadHref ?? null} />
           <AboutSection />
           <SkillsSection />
           <ProjectsSection projects={projects} />
+          <CertificatesSection certificates={certificates} />
           <BlogSection posts={posts} />
           <ContactSection />
         </main>

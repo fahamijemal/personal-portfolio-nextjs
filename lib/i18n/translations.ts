@@ -5,6 +5,7 @@ export const translations = {
       about: "About",
       skills: "Skills",
       projects: "Projects",
+      certificates: "Certificates",
       blog: "Blog",
       contact: "Contact",
       admin: "Admin",
@@ -47,6 +48,13 @@ export const translations = {
       viewProject: "View Project",
       viewCode: "View Code",
       technologies: "Technologies",
+    },
+    certificates: {
+      title: "Certificates",
+      subtitle: "Credentials and badges",
+      viewAll: "View All Certificates",
+      viewCredential: "View Credential",
+      issued: "Issued",
     },
     blog: {
       title: "Blog",
@@ -91,6 +99,7 @@ export const translations = {
       about: "Waa'ee",
       skills: "Dandeettii",
       projects: "Pirojektii",
+      certificates: "Ragaa",
       blog: "Barreeffama",
       contact: "Quunnamtii",
       admin: "Bulchaa",
@@ -133,6 +142,13 @@ export const translations = {
       viewProject: "Pirojektii Ilaali",
       viewCode: "Koodii Ilaali",
       technologies: "Teekinooloojii",
+    },
+    certificates: {
+      title: "Ragaa",
+      subtitle: "Ragaa fi baajiiwwan",
+      viewAll: "Ragaa Hunda Ilaali",
+      viewCredential: "Ragaa Ilaali",
+      issued: "Kenname",
     },
     blog: {
       title: "Barreeffama",

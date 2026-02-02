@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useTheme } from "next-themes";
-import { Menu, X, Moon, Sun, Globe } from "lucide-react";
+import { Menu, X, Moon, Sun, Globe, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,12 +19,14 @@ const navItems = [
   { key: "about", href: "#about" },
   { key: "skills", href: "#skills" },
   { key: "projects", href: "#projects" },
+  { key: "certificates", href: "#certificates" },
   { key: "blog", href: "#blog" },
   { key: "contact", href: "#contact" },
 ] as const;
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [profileImageError, setProfileImageError] = useState(false);
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useI18n();
 
@@ -34,14 +35,24 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/fahamijemal.jpg"
-              alt="Profile photo"
-              width={36}
-              height={36}
-              className="rounded-full object-cover"
-              priority
-            />
+            {!profileImageError ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src="/api/profile-image"
+                alt="Profile photo"
+                width={48}
+                height={48}
+                className="rounded-full object-cover w-12 h-12"
+                onError={() => setProfileImageError(true)}
+              />
+            ) : (
+              <div
+                className="w-12 h-12 rounded-full bg-muted flex items-center justify-center shrink-0"
+                aria-hidden
+              >
+                <User className="h-6 w-6 text-muted-foreground" />
+              </div>
+            )}
           </Link>
 
           {/* Desktop Navigation */}

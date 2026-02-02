@@ -4,7 +4,12 @@ import { PortfolioClient } from "@/components/portfolio/portfolio-client";
 export default async function Home() {
   const supabase = await createClient();
 
-  const [{ data: projects }, { data: posts }] = await Promise.all([
+  const [
+    { data: projects },
+    { data: posts },
+    { data: resumeRow },
+    { data: certificates },
+  ] = await Promise.all([
     supabase
       .from("projects")
       .select("*")
@@ -17,7 +22,25 @@ export default async function Home() {
       .eq("published", true)
       .order("published_at", { ascending: false })
       .limit(3),
+    supabase.from("site_settings").select("value").eq("key", "resume_url").maybeSingle(),
+    supabase
+      .from("certificates")
+      .select("id, title_en, title_om, issuer, credential_url, image_url, issued_at")
+      .order("display_order", { ascending: true })
+      .limit(6),
   ]);
 
-  return <PortfolioClient projects={projects || []} posts={posts || []} />;
+  const resumeUrl = resumeRow?.value ?? null;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const isOurStorage = resumeUrl && supabaseUrl && resumeUrl.startsWith(supabaseUrl);
+  const resumeDownloadHref = isOurStorage ? "/api/resume" : resumeUrl;
+
+  return (
+    <PortfolioClient
+      projects={projects || []}
+      posts={posts || []}
+      certificates={certificates || []}
+      resumeDownloadHref={resumeDownloadHref}
+    />
+  );
 }

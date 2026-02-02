@@ -52,31 +52,33 @@ function ProjectsContent({ projects }: { projects: Project[] }) {
                   key={project.id}
                   className="bg-card border-border flex flex-col"
                 >
-                  <CardHeader>
-                    <h2 className="font-semibold text-lg text-foreground">
-                      {language === "om" && project.title_om
-                        ? project.title_om
-                        : project.title_en}
-                    </h2>
-                  </CardHeader>
-                  <CardContent className="flex-1">
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {language === "om" && project.description_om
-                        ? project.description_om
-                        : project.description_en}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies?.map((tech) => (
-                        <Badge
-                          key={tech}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
+                  <Link href={`/projects/${project.id}`} className="block">
+                    <CardHeader>
+                      <h2 className="font-semibold text-lg text-foreground">
+                        {language === "om" && project.title_om
+                          ? project.title_om
+                          : project.title_en}
+                      </h2>
+                    </CardHeader>
+                    <CardContent className="flex-1">
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {language === "om" && project.description_om
+                          ? project.description_om
+                          : project.description_en}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {project.technologies?.map((tech) => (
+                          <Badge
+                            key={tech}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Link>
                   <CardFooter className="gap-2">
                     {project.github_url && (
                       <Button variant="outline" size="sm" asChild>

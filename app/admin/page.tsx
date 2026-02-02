@@ -1,17 +1,19 @@
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FolderKanban, FileText, MessageSquare, Eye } from "lucide-react";
+import { FolderKanban, FileText, MessageSquare, Eye, Award } from "lucide-react";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
 
   const [
     { count: projectsCount },
+    { count: certificatesCount },
     { count: postsCount },
     { count: messagesCount },
     { count: unreadCount },
   ] = await Promise.all([
     supabase.from("projects").select("*", { count: "exact", head: true }),
+    supabase.from("certificates").select("*", { count: "exact", head: true }),
     supabase.from("blog_posts").select("*", { count: "exact", head: true }),
     supabase.from("contact_messages").select("*", { count: "exact", head: true }),
     supabase
@@ -26,6 +28,12 @@ export default async function AdminDashboard() {
       value: projectsCount || 0,
       icon: FolderKanban,
       color: "text-blue-500",
+    },
+    {
+      title: "Certificates",
+      value: certificatesCount || 0,
+      icon: Award,
+      color: "text-purple-500",
     },
     {
       title: "Blog Posts",
@@ -51,7 +59,7 @@ export default async function AdminDashboard() {
     <div>
       <h1 className="text-3xl font-bold text-foreground mb-8">Dashboard</h1>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         {stats.map((stat) => (
           <Card key={stat.title} className="bg-card border-border">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -78,6 +86,12 @@ export default async function AdminDashboard() {
               className="block p-3 rounded-lg bg-secondary hover:bg-secondary/80 text-secondary-foreground transition-colors"
             >
               Add New Project
+            </a>
+            <a
+              href="/admin/certificates"
+              className="block p-3 rounded-lg bg-secondary hover:bg-secondary/80 text-secondary-foreground transition-colors"
+            >
+              Add Certificate
             </a>
             <a
               href="/admin/blog"
