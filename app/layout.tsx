@@ -8,7 +8,12 @@ import "./globals.css";
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://fahamijemal.vercel.app");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Fahami Jemal Harun | Software Engineer",
   description:
     "Personal portfolio of Fahami Jemal Harun - Software Engineering Student and Full-Stack Developer with a focus on Backend and Cloud technologies.",
