@@ -38,6 +38,16 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 ### 3) Set up the database
 
+Run the Supabase migrations (Supabase Dashboard → SQL Editor, or CLI):
+
+```bash
+# If using Supabase CLI:
+supabase db push
+```
+
+Or run each file in `supabase/migrations/` manually in the SQL Editor (in order: 001, then 002).
+
+**Make yourself admin:** After migrations, set `is_admin = true` for your user in the `profiles` table (Supabase Dashboard → Table Editor → profiles).
 
 ### 4) Run the dev server
 

@@ -2,6 +2,7 @@ import React from "react"
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { getIsAdmin } from "@/lib/auth";
 
 export default async function AdminLayout({
   children,
@@ -18,7 +19,7 @@ export default async function AdminLayout({
     redirect("/auth/login");
   }
 
-  const isAdmin = user.user_metadata?.is_admin === true;
+  const isAdmin = await getIsAdmin(supabase, user);
 
   if (!isAdmin) {
     redirect("/");

@@ -15,11 +15,13 @@ export function ContactSection() {
   const { t } = useI18n();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setStatus("idle");
+    setErrorMessage(null);
 
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -40,10 +42,13 @@ export function ContactSection() {
         setStatus("success");
         (e.target as HTMLFormElement).reset();
       } else {
+        const data = await response.json().catch(() => ({}));
+        setErrorMessage(data.error ?? t.contact.error);
         setStatus("error");
       }
     } catch {
       setStatus("error");
+      setErrorMessage(t.contact.error);
     } finally {
       setIsSubmitting(false);
     }
@@ -142,8 +147,8 @@ export function ContactSection() {
                     {t.contact.success}
                   </p>
                 )}
-                {status === "error" && (
-                  <p className="text-sm text-destructive">{t.contact.error}</p>
+                {status === "error" && errorMessage && (
+                  <p className="text-sm text-destructive">{errorMessage}</p>
                 )}
 
                 <Button type="submit" className="w-full" disabled={isSubmitting}>

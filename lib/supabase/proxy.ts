@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { getIsAdmin } from '@/lib/auth'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -40,9 +41,9 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Check if user is admin for admin routes
+  // Check if user is admin for admin routes (profiles table, with user_metadata fallback)
   if (request.nextUrl.pathname.startsWith('/admin') && user) {
-    const isAdmin = user.user_metadata?.is_admin
+    const isAdmin = await getIsAdmin(supabase, user)
     if (!isAdmin) {
       const url = request.nextUrl.clone()
       url.pathname = '/'
