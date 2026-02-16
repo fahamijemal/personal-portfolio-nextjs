@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
+import { ShareButtons } from "@/components/portfolio/share-buttons";
 
 type BlogPost = {
   id: string;
@@ -64,6 +65,7 @@ function BlogPostContent({ post }: { post: BlogPost }) {
               </p>
             ))}
           </div>
+          <ShareButtons title={title} />
         </article>
       </main>
       <Footer />

@@ -40,7 +40,7 @@ export function Footer() {
               <span className="sr-only">Telegram</span>
             </a>
             <a
-              href="mailto:fahami@example.com"
+              href="mailto:fahamijemal1@gmail.com"
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               <Mail className="h-5 w-5" />

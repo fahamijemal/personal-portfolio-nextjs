@@ -1,12 +1,12 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
-import { translations, type Language, type TranslationKeys } from "./translations";
+import { translations, type Language } from "./translations";
 
 type I18nContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: TranslationKeys;
+  t: (typeof translations)[Language];
 };
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);

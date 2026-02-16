@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
+import { ShareButtons } from "@/components/portfolio/share-buttons";
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
 
 type Project = {
@@ -64,7 +65,7 @@ function ProjectDetailContent({ project }: { project: Project }) {
             </div>
           ) : null}
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-6">
             {project.github_url ? (
               <Button variant="outline" asChild>
                 <a href={project.github_url} target="_blank" rel="noopener noreferrer">
@@ -82,6 +83,7 @@ function ProjectDetailContent({ project }: { project: Project }) {
               </Button>
             ) : null}
           </div>
+          <ShareButtons title={title} />
         </div>
       </main>
       <Footer />
