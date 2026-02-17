@@ -1,5 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { PortfolioClient } from "@/components/portfolio/portfolio-client";
+import {
+  getHeroContent,
+  getAboutContent,
+  getSocialLinks,
+} from "@/lib/site-content";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -10,6 +15,7 @@ export default async function Home() {
     { data: resumeRow },
     { data: certificates },
     { data: skills },
+    { data: settingsRows },
   ] = await Promise.all([
     supabase
       .from("projects")
@@ -34,12 +40,22 @@ export default async function Home() {
       .select("id, category, name, level, display_order")
       .order("category", { ascending: true })
       .order("display_order", { ascending: true }),
+    supabase.from("site_settings").select("key, value"),
   ]);
 
   const resumeUrl = resumeRow?.value ?? null;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
   const isOurStorage = resumeUrl && supabaseUrl && resumeUrl.startsWith(supabaseUrl);
   const resumeDownloadHref = isOurStorage ? "/api/resume" : resumeUrl;
+
+  const settingsMap: Record<string, string> = {};
+  settingsRows?.forEach((row) => {
+    settingsMap[row.key] = row.value ?? "";
+  });
+
+  const heroContent = getHeroContent(settingsMap);
+  const aboutContent = getAboutContent(settingsMap);
+  const socialLinks = getSocialLinks(settingsMap);
 
   return (
     <PortfolioClient
@@ -48,6 +64,9 @@ export default async function Home() {
       certificates={certificates || []}
       skills={skills || []}
       resumeDownloadHref={resumeDownloadHref}
+      heroContent={heroContent}
+      aboutContent={aboutContent}
+      socialLinks={socialLinks}
     />
   );
 }

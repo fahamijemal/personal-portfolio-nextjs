@@ -230,7 +230,7 @@ export function SettingsAdminClient({
           <CardHeader>
             <CardTitle className="text-foreground">Social Links</CardTitle>
             <CardDescription>
-              Update your social media and contact links
+              Update your social media and contact links (used in hero section)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -255,6 +255,16 @@ export function SettingsAdminClient({
               />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="telegram_url">Telegram URL</Label>
+              <Input
+                id="telegram_url"
+                type="url"
+                value={settings.telegram_url || ""}
+                onChange={(e) => updateSetting("telegram_url", e.target.value)}
+                placeholder="https://t.me/username"
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="email">Contact Email</Label>
               <Input
                 id="email"
@@ -263,6 +273,243 @@ export function SettingsAdminClient({
                 onChange={(e) => updateSetting("email", e.target.value)}
                 placeholder="your@email.com"
               />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border">
+          <CardHeader>
+            <CardTitle className="text-foreground">Hero & About</CardTitle>
+            <CardDescription>
+              Edit hero and about section content. Leave empty to use default translations (English / Afaan Oromo).
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <h4 className="font-medium text-foreground">Hero section</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Greeting (EN)</Label>
+                  <Input
+                    value={settings.hero_greeting_en || ""}
+                    onChange={(e) => updateSetting("hero_greeting_en", e.target.value)}
+                    placeholder="Hi, I'm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Greeting (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.hero_greeting_om || ""}
+                    onChange={(e) => updateSetting("hero_greeting_om", e.target.value)}
+                    placeholder="Akkam, Ani"
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Name (EN)</Label>
+                  <Input
+                    value={settings.hero_name_en || ""}
+                    onChange={(e) => updateSetting("hero_name_en", e.target.value)}
+                    placeholder="Your Name"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Name (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.hero_name_om || ""}
+                    onChange={(e) => updateSetting("hero_name_om", e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Role (EN)</Label>
+                  <Input
+                    value={settings.hero_role_en || ""}
+                    onChange={(e) => updateSetting("hero_role_en", e.target.value)}
+                    placeholder="Software Engineer | Full-Stack Developer"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Role (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.hero_role_om || ""}
+                    onChange={(e) => updateSetting("hero_role_om", e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Subtitle (EN)</Label>
+                  <Input
+                    value={settings.hero_subtitle_en || ""}
+                    onChange={(e) => updateSetting("hero_subtitle_en", e.target.value)}
+                    placeholder="Backend & Cloud Focus"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subtitle (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.hero_subtitle_om || ""}
+                    onChange={(e) => updateSetting("hero_subtitle_om", e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Description (EN)</Label>
+                  <Input
+                    value={settings.hero_description_en || ""}
+                    onChange={(e) => updateSetting("hero_description_en", e.target.value)}
+                    placeholder="Short bio..."
+                    className="md:col-span-2"
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Description (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.hero_description_om || ""}
+                    onChange={(e) => updateSetting("hero_description_om", e.target.value)}
+                    placeholder="Short bio..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t pt-6 space-y-4">
+              <h4 className="font-medium text-foreground">About section</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Title (EN)</Label>
+                  <Input
+                    value={settings.about_title_en || ""}
+                    onChange={(e) => updateSetting("about_title_en", e.target.value)}
+                    placeholder="About Me"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Title (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_title_om || ""}
+                    onChange={(e) => updateSetting("about_title_om", e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Description (EN)</Label>
+                  <Input
+                    value={settings.about_description_en || ""}
+                    onChange={(e) => updateSetting("about_description_en", e.target.value)}
+                    placeholder="About paragraph..."
+                    className="md:col-span-2"
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label>Description (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_description_om || ""}
+                    onChange={(e) => updateSetting("about_description_om", e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Education label (EN)</Label>
+                  <Input
+                    value={settings.about_education_en || ""}
+                    onChange={(e) => updateSetting("about_education_en", e.target.value)}
+                    placeholder="Education"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Education label (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_education_om || ""}
+                    onChange={(e) => updateSetting("about_education_om", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Education text (EN)</Label>
+                  <Input
+                    value={settings.about_education_text_en || ""}
+                    onChange={(e) => updateSetting("about_education_text_en", e.target.value)}
+                    placeholder="Software Engineering Student"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Education text (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_education_text_om || ""}
+                    onChange={(e) => updateSetting("about_education_text_om", e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Experience label (EN)</Label>
+                  <Input
+                    value={settings.about_experience_en || ""}
+                    onChange={(e) => updateSetting("about_experience_en", e.target.value)}
+                    placeholder="Experience"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Experience label (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_experience_om || ""}
+                    onChange={(e) => updateSetting("about_experience_om", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Experience text (EN)</Label>
+                  <Input
+                    value={settings.about_experience_text_en || ""}
+                    onChange={(e) => updateSetting("about_experience_text_en", e.target.value)}
+                    placeholder="Full-Stack Development..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Experience text (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_experience_text_om || ""}
+                    onChange={(e) => updateSetting("about_experience_text_om", e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Interests label (EN)</Label>
+                  <Input
+                    value={settings.about_interests_en || ""}
+                    onChange={(e) => updateSetting("about_interests_en", e.target.value)}
+                    placeholder="Interests"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Interests label (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_interests_om || ""}
+                    onChange={(e) => updateSetting("about_interests_om", e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Interests text (EN)</Label>
+                  <Input
+                    value={settings.about_interests_text_en || ""}
+                    onChange={(e) => updateSetting("about_interests_text_en", e.target.value)}
+                    placeholder="Cloud Computing, System Design..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Interests text (Afaan Oromo)</Label>
+                  <Input
+                    value={settings.about_interests_text_om || ""}
+                    onChange={(e) => updateSetting("about_interests_text_om", e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

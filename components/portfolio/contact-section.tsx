@@ -20,7 +20,13 @@ import {
 import { useI18n } from "@/lib/i18n/context";
 import { contactSchema, type ContactFormData } from "@/lib/validations";
 
-export function ContactSection() {
+const DEFAULT_EMAIL = "fahamijemal1@gmail.com";
+
+type ContactSectionProps = {
+  email?: string | null;
+};
+
+export function ContactSection({ email }: ContactSectionProps) {
   const { t } = useI18n();
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>(null);
@@ -83,10 +89,10 @@ export function ContactSection() {
                   <div>
                     <h3 className="font-medium text-foreground">Email</h3>
                     <a
-                      href="mailto:fahamijemal1@gmail.com"
+                      href={`mailto:${email || DEFAULT_EMAIL}`}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
                     >
-                      fahamijemal1@gmail.com
+                      {email || DEFAULT_EMAIL}
                     </a>
                   </div>
                 </div>
