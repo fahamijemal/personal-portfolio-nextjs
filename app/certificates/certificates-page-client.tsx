@@ -8,14 +8,21 @@ import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
 import type { Certificate } from "@/lib/types";
+import type { SocialLinks } from "@/lib/site-content";
 
-function CertificatesContent({ certificates }: { certificates: Certificate[] }) {
+function CertificatesContent({
+  certificates,
+  socialLinks,
+}: {
+  certificates: Certificate[];
+  socialLinks?: SocialLinks | null;
+}) {
   const { language, t } = useI18n();
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-24 pb-16 px-4">
+      <main id="main-content" className="pt-24 pb-16 px-4">
         <div className="max-w-6xl mx-auto">
           <Button variant="ghost" asChild className="mb-8">
             <Link href="/">
@@ -74,15 +81,21 @@ function CertificatesContent({ certificates }: { certificates: Certificate[] }) 
           )}
         </div>
       </main>
-      <Footer />
+      <Footer socialLinks={socialLinks} />
     </div>
   );
 }
 
-export function CertificatesPageClient({ certificates }: { certificates: Certificate[] }) {
+export function CertificatesPageClient({
+  certificates,
+  socialLinks,
+}: {
+  certificates: Certificate[];
+  socialLinks?: SocialLinks | null;
+}) {
   return (
     <I18nProvider>
-      <CertificatesContent certificates={certificates} />
+      <CertificatesContent certificates={certificates} socialLinks={socialLinks} />
     </I18nProvider>
   );
 }

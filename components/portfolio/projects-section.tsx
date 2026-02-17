@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ExternalLink, Github } from "lucide-react";
+import Image from "next/image";
+import { ExternalLink, Github, FolderKanban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,9 +26,24 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
           {projects.map((project) => (
             <Card
               key={project.id}
-              className="bg-card border-border flex flex-col"
+              className="bg-card border-border flex flex-col overflow-hidden"
             >
               <Link href={`/projects/${project.id}`} className="block">
+                {project.image_url ? (
+                  <div className="relative h-40 w-full overflow-hidden">
+                    <Image
+                      src={project.image_url}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-40 w-full bg-muted flex items-center justify-center">
+                    <FolderKanban className="h-16 w-16 text-muted-foreground/50" />
+                  </div>
+                )}
                 <CardHeader>
                   <h3 className="font-semibold text-lg text-foreground">
                     {language === "om" && project.title_om

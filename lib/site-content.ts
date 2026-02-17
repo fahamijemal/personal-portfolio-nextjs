@@ -3,6 +3,8 @@
  * Uses translation keys as fallback when DB values are empty.
  */
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 export type SocialLinks = {
   github_url: string | null;
   linkedin_url: string | null;
@@ -49,6 +51,31 @@ export function getSocialLinks(settings: Record<string, string>): SocialLinks {
     telegram_url: settings.telegram_url?.trim() || null,
     email: settings.email?.trim() || null,
   };
+}
+
+const DEFAULT_GITHUB = "https://github.com/fahamijemal";
+const DEFAULT_LINKEDIN = "https://linkedin.com/in/fahamijemal";
+const DEFAULT_TELEGRAM = "https://t.me/fahamijemal";
+const DEFAULT_EMAIL = "fahamijemal1@gmail.com";
+
+export function getSocialLinkUrls(links: SocialLinks | null | undefined) {
+  return {
+    github: links?.github_url || DEFAULT_GITHUB,
+    linkedin: links?.linkedin_url || DEFAULT_LINKEDIN,
+    telegram: links?.telegram_url || DEFAULT_TELEGRAM,
+    email: links?.email || DEFAULT_EMAIL,
+  };
+}
+
+export async function fetchSocialLinks(
+  supabase: SupabaseClient
+): Promise<SocialLinks> {
+  const { data } = await supabase.from("site_settings").select("key, value");
+  const settings: Record<string, string> = {};
+  data?.forEach((row) => {
+    settings[row.key] = row.value ?? "";
+  });
+  return getSocialLinks(settings);
 }
 
 export function getHeroContent(settings: Record<string, string>): HeroContent {

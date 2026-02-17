@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchSocialLinks } from "@/lib/site-content";
 import { ProjectsPageClient } from "./projects-page-client";
 
 export const metadata = {
@@ -9,10 +10,12 @@ export const metadata = {
 export default async function ProjectsPage() {
   const supabase = await createClient();
 
-  const { data: projects } = await supabase
-    .from("projects")
-    .select("*")
-    .order("display_order", { ascending: true });
+  const [socialLinks, { data: projects }] = await Promise.all([
+    fetchSocialLinks(supabase),
+    supabase.from("projects").select("*").order("display_order", { ascending: true }),
+  ]);
 
-  return <ProjectsPageClient projects={projects || []} />;
+  return (
+    <ProjectsPageClient projects={projects || []} socialLinks={socialLinks} />
+  );
 }

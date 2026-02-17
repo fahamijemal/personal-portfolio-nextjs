@@ -2,10 +2,17 @@
 
 import { Github, Linkedin, Mail, Heart, Send } from "lucide-react";
 import { useI18n } from "@/lib/i18n/context";
+import { getSocialLinkUrls } from "@/lib/site-content";
+import type { SocialLinks } from "@/lib/site-content";
 
-export function Footer() {
+type FooterProps = {
+  socialLinks?: SocialLinks | null;
+};
+
+export function Footer({ socialLinks }: FooterProps) {
   const { t } = useI18n();
   const currentYear = new Date().getFullYear();
+  const urls = getSocialLinkUrls(socialLinks);
 
   return (
     <footer className="py-8 px-4 border-t border-border">
@@ -13,35 +20,35 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com/fahamijemal"
+              href={urls.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-accent-brand transition-colors"
             >
               <Github className="h-5 w-5" />
               <span className="sr-only">GitHub</span>
             </a>
             <a
-              href="https://linkedin.com/in/fahamijemal"
+              href={urls.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-accent-brand transition-colors"
             >
               <Linkedin className="h-5 w-5" />
               <span className="sr-only">LinkedIn</span>
             </a>
             <a
-              href="https://t.me/fahamijemal"
+              href={urls.telegram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-accent-brand transition-colors"
             >
               <Send className="h-5 w-5" />
               <span className="sr-only">Telegram</span>
             </a>
             <a
-              href="mailto:fahamijemal1@gmail.com"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              href={`mailto:${urls.email}`}
+              className="text-muted-foreground hover:text-accent-brand transition-colors"
             >
               <Mail className="h-5 w-5" />
               <span className="sr-only">Email</span>

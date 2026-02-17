@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchSocialLinks } from "@/lib/site-content";
 import { BlogPageClient } from "./blog-page-client";
 
 export const metadata = {
@@ -24,7 +25,16 @@ export default async function BlogPage({ searchParams }: Props) {
     query = query.contains("tags", [tag]);
   }
 
-  const { data: posts } = await query;
+  const [socialLinks, { data: posts }] = await Promise.all([
+    fetchSocialLinks(supabase),
+    query,
+  ]);
 
-  return <BlogPageClient posts={posts || []} initialTag={tag ?? undefined} />;
+  return (
+    <BlogPageClient
+      posts={posts || []}
+      initialTag={tag ?? undefined}
+      socialLinks={socialLinks}
+    />
+  );
 }

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,8 +29,7 @@ type ContactSectionProps = {
 
 export function ContactSection({ email }: ContactSectionProps) {
   const { t } = useI18n();
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
-  const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -44,9 +44,6 @@ export function ContactSection({ email }: ContactSectionProps) {
   const isSubmitting = form.formState.isSubmitting;
 
   const onSubmit = async (data: ContactFormData) => {
-    setSubmitStatus("idle");
-    setSubmitErrorMessage(null);
-
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -55,16 +52,16 @@ export function ContactSection({ email }: ContactSectionProps) {
       });
 
       if (response.ok) {
-        setSubmitStatus("success");
         form.reset();
+        setShowSuccess(true);
+        toast.success(t.contact.success);
+        setTimeout(() => setShowSuccess(false), 5000);
       } else {
         const body = await response.json().catch(() => ({}));
-        setSubmitErrorMessage(body.error ?? t.contact.error);
-        setSubmitStatus("error");
+        toast.error(body.error ?? t.contact.error);
       }
     } catch {
-      setSubmitStatus("error");
-      setSubmitErrorMessage(t.contact.error);
+      toast.error(t.contact.error);
     }
   };
 
@@ -117,6 +114,15 @@ export function ContactSection({ email }: ContactSectionProps) {
 
           <Card className="bg-card border-border">
             <CardContent className="pt-6">
+              {showSuccess && (
+                <div
+                  className="mb-4 flex items-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-700 dark:text-green-400"
+                  role="alert"
+                >
+                  <CheckCircle className="h-5 w-5 shrink-0" />
+                  {t.contact.success}
+                </div>
+              )}
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   <FormField
@@ -185,15 +191,6 @@ export function ContactSection({ email }: ContactSectionProps) {
                       </FormItem>
                     )}
                   />
-
-                  {submitStatus === "success" && (
-                    <p className="text-sm text-green-600 dark:text-green-400">
-                      {t.contact.success}
-                    </p>
-                  )}
-                  {submitStatus === "error" && submitErrorMessage && (
-                    <p className="text-sm text-destructive">{submitErrorMessage}</p>
-                  )}
 
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? (

@@ -11,6 +11,7 @@ import { ShareButtons } from "@/components/portfolio/share-buttons";
 import { MarkdownContent } from "@/components/blog/markdown-content";
 import { getReadingTimeMinutes, extractHeadings } from "@/lib/blog-utils";
 import type { BlogPost } from "@/lib/types";
+import type { SocialLinks } from "@/lib/site-content";
 
 const AUTHOR_NAME = "Fahami Jemal Harun";
 
@@ -24,9 +25,11 @@ type RelatedPost = {
 function BlogPostContent({
   post,
   relatedPosts = [],
+  socialLinks,
 }: {
   post: BlogPost;
   relatedPosts?: RelatedPost[];
+  socialLinks?: SocialLinks | null;
 }) {
   const { language, t } = useI18n();
 
@@ -50,7 +53,7 @@ function BlogPostContent({
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-24 pb-16 px-4">
+      <main id="main-content" className="pt-24 pb-16 px-4">
         <div className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-12">
           {tocItems.length > 0 && (
             <aside className="lg:w-56 shrink-0 order-2 lg:order-1">
@@ -155,7 +158,7 @@ function BlogPostContent({
           </article>
         </div>
       </main>
-      <Footer />
+      <Footer socialLinks={socialLinks} />
     </div>
   );
 }
@@ -163,13 +166,15 @@ function BlogPostContent({
 export function BlogPostClient({
   post,
   relatedPosts = [],
+  socialLinks,
 }: {
   post: BlogPost;
   relatedPosts?: RelatedPost[];
+  socialLinks?: SocialLinks | null;
 }) {
   return (
     <I18nProvider>
-      <BlogPostContent post={post} relatedPosts={relatedPosts} />
+      <BlogPostContent post={post} relatedPosts={relatedPosts} socialLinks={socialLinks} />
     </I18nProvider>
   );
 }

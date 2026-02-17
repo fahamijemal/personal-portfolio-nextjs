@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { Menu, X, Moon, Sun, Globe, User } from "lucide-react";
@@ -27,11 +27,40 @@ const navItems = [
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [profileImageError, setProfileImageError] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useI18n();
 
+  useEffect(() => {
+    const sections = navItems.map((item) => ({
+      id: item.href.slice(1),
+      element: document.getElementById(item.href.slice(1)),
+    }));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            if (id) setActiveSection(id);
+          }
+        }
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+    );
+
+    sections.forEach(({ element }) => {
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
@@ -57,15 +86,24 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {t.nav[item.key as keyof typeof t.nav]}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const sectionId = item.href.slice(1);
+              const isActive = activeSection === sectionId;
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className={cn(
+                    "px-3 py-2 text-sm font-medium transition-colors",
+                    isActive
+                      ? "text-accent-brand"
+                      : "text-muted-foreground hover:text-accent-brand"
+                  )}
+                >
+                  {t.nav[item.key as keyof typeof t.nav]}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2">
@@ -119,6 +157,8 @@ export function Header() {
               size="icon"
               className="md:hidden h-9 w-9"
               onClick={() => setIsOpen(!isOpen)}
+              aria-expanded={isOpen}
+              aria-controls="mobile-nav"
             >
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -128,18 +168,32 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden border-t border-border bg-background">
+        <div
+          id="mobile-nav"
+          className="md:hidden border-t border-border bg-background"
+          role="navigation"
+          aria-label="Mobile navigation"
+        >
           <nav className="flex flex-col px-4 py-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="px-3 py-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                {t.nav[item.key as keyof typeof t.nav]}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const sectionId = item.href.slice(1);
+              const isActive = activeSection === sectionId;
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className={cn(
+                    "px-3 py-3 text-sm font-medium transition-colors",
+                    isActive
+                      ? "text-accent-brand"
+                      : "text-muted-foreground hover:text-accent-brand"
+                  )}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {t.nav[item.key as keyof typeof t.nav]}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { AdminLayoutClient } from "@/components/admin/admin-layout-client";
 import { getIsAdmin } from "@/lib/auth";
 
 export default async function AdminLayout({
@@ -26,9 +26,8 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <AdminSidebar user={user} />
-      <main className="flex-1 p-8 ml-64">{children}</main>
-    </div>
+    <AdminLayoutClient user={user}>
+      {children}
+    </AdminLayoutClient>
   );
 }

@@ -9,14 +9,21 @@ import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
 import type { Project } from "@/lib/types";
+import type { SocialLinks } from "@/lib/site-content";
 
-function ProjectsContent({ projects }: { projects: Project[] }) {
+function ProjectsContent({
+  projects,
+  socialLinks,
+}: {
+  projects: Project[];
+  socialLinks?: SocialLinks | null;
+}) {
   const { language, t } = useI18n();
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-24 pb-16 px-4">
+      <main id="main-content" className="pt-24 pb-16 px-4">
         <div className="max-w-6xl mx-auto">
           <Button variant="ghost" asChild className="mb-8">
             <Link href="/">
@@ -100,15 +107,21 @@ function ProjectsContent({ projects }: { projects: Project[] }) {
           )}
         </div>
       </main>
-      <Footer />
+      <Footer socialLinks={socialLinks} />
     </div>
   );
 }
 
-export function ProjectsPageClient({ projects }: { projects: Project[] }) {
+export function ProjectsPageClient({
+  projects,
+  socialLinks,
+}: {
+  projects: Project[];
+  socialLinks?: SocialLinks | null;
+}) {
   return (
     <I18nProvider>
-      <ProjectsContent projects={projects} />
+      <ProjectsContent projects={projects} socialLinks={socialLinks} />
     </I18nProvider>
   );
 }

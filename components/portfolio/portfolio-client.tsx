@@ -42,7 +42,7 @@ export function PortfolioClient({
     <I18nProvider>
       <div className="min-h-screen bg-background">
         <Header />
-        <main>
+        <main id="main-content">
           <HeroSection
             resumeDownloadHref={resumeDownloadHref ?? null}
             heroContent={heroContent}
@@ -55,7 +55,7 @@ export function PortfolioClient({
           <BlogSection posts={posts} />
           <ContactSection email={socialLinks?.email ?? null} />
         </main>
-        <Footer />
+        <Footer socialLinks={socialLinks} />
       </div>
     </I18nProvider>
   );

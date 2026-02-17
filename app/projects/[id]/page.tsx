@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchSocialLinks } from "@/lib/site-content";
 import { notFound } from "next/navigation";
 import { ProjectDetailClient } from "./project-detail-client";
 import type { Metadata } from "next";
@@ -72,6 +73,10 @@ export default async function ProjectDetailPage({
 
   if (!project) notFound();
 
-  return <ProjectDetailClient project={project} />;
+  const socialLinks = await fetchSocialLinks(supabase);
+
+  return (
+    <ProjectDetailClient project={project} socialLinks={socialLinks} />
+  );
 }
 

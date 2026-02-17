@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
+import type { SocialLinks } from "@/lib/site-content";
 
 type BlogPost = {
   id: string;
@@ -26,7 +27,15 @@ type BlogPost = {
 
 const POSTS_PER_PAGE = 9;
 
-function BlogContent({ posts, initialTag }: { posts: BlogPost[]; initialTag?: string }) {
+function BlogContent({
+  posts,
+  initialTag,
+  socialLinks,
+}: {
+  posts: BlogPost[];
+  initialTag?: string;
+  socialLinks?: SocialLinks | null;
+}) {
   const { language, t } = useI18n();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -64,7 +73,7 @@ function BlogContent({ posts, initialTag }: { posts: BlogPost[]; initialTag?: st
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-24 pb-16 px-4">
+      <main id="main-content" className="pt-24 pb-16 px-4">
         <div className="max-w-4xl mx-auto">
           <Button variant="ghost" asChild className="mb-8">
             <Link href="/">
@@ -231,7 +240,7 @@ function BlogContent({ posts, initialTag }: { posts: BlogPost[]; initialTag?: st
           )}
         </div>
       </main>
-      <Footer />
+      <Footer socialLinks={socialLinks} />
     </div>
   );
 }
@@ -239,13 +248,15 @@ function BlogContent({ posts, initialTag }: { posts: BlogPost[]; initialTag?: st
 export function BlogPageClient({
   posts,
   initialTag,
+  socialLinks,
 }: {
   posts: BlogPost[];
   initialTag?: string;
+  socialLinks?: SocialLinks | null;
 }) {
   return (
     <I18nProvider>
-      <BlogContent posts={posts} initialTag={initialTag} />
+      <BlogContent posts={posts} initialTag={initialTag} socialLinks={socialLinks} />
     </I18nProvider>
   );
 }

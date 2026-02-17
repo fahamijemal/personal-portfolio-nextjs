@@ -9,8 +9,15 @@ import { Footer } from "@/components/portfolio/footer";
 import { ShareButtons } from "@/components/portfolio/share-buttons";
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import type { Project } from "@/lib/types";
+import type { SocialLinks } from "@/lib/site-content";
 
-function ProjectDetailContent({ project }: { project: Project }) {
+function ProjectDetailContent({
+  project,
+  socialLinks,
+}: {
+  project: Project;
+  socialLinks?: SocialLinks | null;
+}) {
   const { language } = useI18n();
   const title = language === "om" && project.title_om ? project.title_om : project.title_en;
   const description =
@@ -19,7 +26,7 @@ function ProjectDetailContent({ project }: { project: Project }) {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-24 pb-16 px-4">
+      <main id="main-content" className="pt-24 pb-16 px-4">
         <div className="max-w-4xl mx-auto">
           <Button variant="ghost" asChild className="mb-8">
             <Link href="/projects">
@@ -75,15 +82,21 @@ function ProjectDetailContent({ project }: { project: Project }) {
           <ShareButtons title={title} />
         </div>
       </main>
-      <Footer />
+      <Footer socialLinks={socialLinks} />
     </div>
   );
 }
 
-export function ProjectDetailClient({ project }: { project: Project }) {
+export function ProjectDetailClient({
+  project,
+  socialLinks,
+}: {
+  project: Project;
+  socialLinks?: SocialLinks | null;
+}) {
   return (
     <I18nProvider>
-      <ProjectDetailContent project={project} />
+      <ProjectDetailContent project={project} socialLinks={socialLinks} />
     </I18nProvider>
   );
 }

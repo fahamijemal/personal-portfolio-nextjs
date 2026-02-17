@@ -48,7 +48,7 @@ export function HeroSection({
       className="min-h-screen flex items-center justify-center pt-16 px-4"
     >
       <div className="max-w-4xl mx-auto text-center">
-        <p className="text-primary font-medium mb-2 animate-fade-in">
+        <p className="text-accent-brand font-medium mb-2 animate-fade-in">
           {greeting}
         </p>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4 text-balance">
@@ -57,7 +57,7 @@ export function HeroSection({
         <h2 className="text-xl sm:text-2xl text-muted-foreground mb-2">
           {role}
         </h2>
-        <p className="text-lg text-primary/80 font-medium mb-6">
+        <p className="text-lg text-accent-brand/90 font-medium mb-6">
           {subtitle}
         </p>
         <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-pretty">
@@ -86,7 +86,7 @@ export function HeroSection({
             href={githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-accent-brand hover:text-white transition-colors"
           >
             <Github className="h-5 w-5" />
             <span className="sr-only">GitHub</span>
@@ -95,7 +95,7 @@ export function HeroSection({
             href={linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-accent-brand hover:text-white transition-colors"
           >
             <Linkedin className="h-5 w-5" />
             <span className="sr-only">LinkedIn</span>
@@ -104,14 +104,14 @@ export function HeroSection({
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-accent-brand hover:text-white transition-colors"
           >
             <Send className="h-5 w-5" />
             <span className="sr-only">Telegram</span>
           </a>
           <a
             href={`mailto:${email}`}
-            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+            className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-accent-brand hover:text-white transition-colors"
           >
             <Mail className="h-5 w-5" />
             <span className="sr-only">Email</span>
@@ -120,7 +120,7 @@ export function HeroSection({
 
         <Link
           href="#about"
-          className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors animate-bounce"
+          className="inline-flex items-center text-muted-foreground hover:text-accent-brand transition-colors animate-bounce"
         >
           <ArrowDown className="h-6 w-6" />
         </Link>

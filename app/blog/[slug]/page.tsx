@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { fetchSocialLinks } from "@/lib/site-content";
 import { notFound } from "next/navigation";
 import { BlogPostClient } from "./blog-post-client";
 import { getSiteUrl } from "@/lib/site-url";
@@ -103,5 +104,9 @@ export default async function BlogPostPage({ params }: Props) {
     related = [...related, ...filtered].slice(0, 3);
   }
 
-  return <BlogPostClient post={post} relatedPosts={related} />;
+  const socialLinks = await fetchSocialLinks(supabase);
+
+  return (
+    <BlogPostClient post={post} relatedPosts={related} socialLinks={socialLinks} />
+  );
 }

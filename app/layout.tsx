@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -46,7 +47,6 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-    generator: 'v0.app'
 };
 
 export const viewport: Viewport = {
@@ -74,6 +74,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Toaster />
         <Analytics />
       </body>
     </html>
