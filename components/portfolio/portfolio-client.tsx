@@ -33,10 +33,19 @@ type BlogPost = {
   published_at: string | null;
 };
 
+type Skill = {
+  id: string;
+  category: string;
+  name: string;
+  level: number;
+  display_order: number;
+};
+
 type PortfolioClientProps = {
   projects: Project[];
   posts: BlogPost[];
   certificates?: Certificate[];
+  skills?: Skill[];
   resumeDownloadHref?: string | null;
 };
 
@@ -44,6 +53,7 @@ export function PortfolioClient({
   projects,
   posts,
   certificates = [],
+  skills = [],
   resumeDownloadHref,
 }: PortfolioClientProps) {
   return (
@@ -53,7 +63,7 @@ export function PortfolioClient({
         <main>
           <HeroSection resumeDownloadHref={resumeDownloadHref ?? null} />
           <AboutSection />
-          <SkillsSection />
+          <SkillsSection skills={skills} />
           <ProjectsSection projects={projects} />
           <CertificatesSection certificates={certificates} />
           <BlogSection posts={posts} />

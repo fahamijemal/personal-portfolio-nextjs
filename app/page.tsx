@@ -9,6 +9,7 @@ export default async function Home() {
     { data: posts },
     { data: resumeRow },
     { data: certificates },
+    { data: skills },
   ] = await Promise.all([
     supabase
       .from("projects")
@@ -28,6 +29,11 @@ export default async function Home() {
       .select("id, title_en, title_om, issuer, credential_url, image_url, issued_at")
       .order("display_order", { ascending: true })
       .limit(6),
+    supabase
+      .from("skills")
+      .select("id, category, name, level, display_order")
+      .order("category", { ascending: true })
+      .order("display_order", { ascending: true }),
   ]);
 
   const resumeUrl = resumeRow?.value ?? null;
@@ -40,6 +46,7 @@ export default async function Home() {
       projects={projects || []}
       posts={posts || []}
       certificates={certificates || []}
+      skills={skills || []}
       resumeDownloadHref={resumeDownloadHref}
     />
   );

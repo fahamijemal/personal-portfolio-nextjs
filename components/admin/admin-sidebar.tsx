@@ -11,6 +11,7 @@ import {
   Settings,
   LogOut,
   Home,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -20,6 +21,7 @@ import type { User } from "@supabase/supabase-js";
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
+  { href: "/admin/skills", label: "Skills", icon: Sparkles },
   { href: "/admin/certificates", label: "Certificates", icon: Award },
   { href: "/admin/blog", label: "Blog Posts", icon: FileText },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare },
