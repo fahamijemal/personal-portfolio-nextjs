@@ -3,16 +3,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
+import type { Skill } from "@/lib/types";
 
 const CATEGORY_ORDER = ["backend", "frontend", "cloud", "database", "tools"] as const;
-
-type Skill = {
-  id: string;
-  category: string;
-  name: string;
-  level: number;
-  display_order: number;
-};
 
 export function SkillsSection({ skills }: { skills: Skill[] }) {
   const { t } = useI18n();

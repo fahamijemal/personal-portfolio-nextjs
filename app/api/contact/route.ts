@@ -1,21 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { rateLimitContact } from "@/lib/rate-limit";
-
-const contactSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Name is required")
-    .max(100, "Name must be 100 characters or less")
-    .trim(),
-  email: z.string().email("Invalid email address").max(254),
-  subject: z.string().max(200, "Subject must be 200 characters or less").optional().or(z.literal("")),
-  message: z
-    .string()
-    .min(1, "Message is required")
-    .max(5000, "Message must be 5000 characters or less"),
-});
+import { contactSchema } from "@/lib/validations";
 
 export async function POST(request: Request) {
   const rateLimit = rateLimitContact(request);

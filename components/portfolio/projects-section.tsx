@@ -6,18 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/lib/i18n/context";
-
-type Project = {
-  id: string;
-  title_en: string;
-  title_om: string | null;
-  description_en: string;
-  description_om: string | null;
-  technologies: string[];
-  github_url: string | null;
-  live_url: string | null;
-  image_url: string | null;
-};
+import type { Project } from "@/lib/types";
 
 export function ProjectsSection({ projects }: { projects: Project[] }) {
   const { language, t } = useI18n();

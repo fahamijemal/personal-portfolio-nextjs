@@ -5,16 +5,7 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n/context";
-
-type BlogPost = {
-  id: string;
-  slug: string;
-  title_en: string;
-  title_om: string | null;
-  excerpt_en: string | null;
-  excerpt_om: string | null;
-  published_at: string | null;
-};
+import type { BlogPost } from "@/lib/types";
 
 export function BlogSection({ posts }: { posts: BlogPost[] }) {
   const { language, t } = useI18n();

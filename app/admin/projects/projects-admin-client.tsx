@@ -20,19 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
-
-type Project = {
-  id: string;
-  title_en: string;
-  title_om: string | null;
-  description_en: string;
-  description_om: string | null;
-  technologies: string[];
-  github_url: string | null;
-  live_url: string | null;
-  featured: boolean;
-  display_order: number;
-};
+import type { Project } from "@/lib/types";
 
 export function ProjectsAdminClient({
   initialProjects,

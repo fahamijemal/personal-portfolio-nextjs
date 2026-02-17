@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,47 +11,53 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { signUpSchema, type SignUpFormData } from '@/lib/validations'
 
 export default function Page() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [repeatPassword, setRepeatPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const router = useRouter()
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const supabase = createClient()
-    setIsLoading(true)
-    setError(null)
+  const form = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      repeatPassword: '',
+    },
+  })
 
-    if (password !== repeatPassword) {
-      setError('Passwords do not match')
-      setIsLoading(false)
-      return
-    }
+  const isLoading = form.formState.isSubmitting
+
+  const onSubmit = async (data: SignUpFormData) => {
+    setSubmitError(null)
 
     try {
+      const supabase = createClient()
       const { error } = await supabase.auth.signUp({
-        email,
-        password,
+        email: data.email,
+        password: data.password,
         options: {
           emailRedirectTo:
             process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ||
-            `${window.location.origin}/protected`,
+            `${window.location.origin}/auth/login`,
         },
       })
       if (error) throw error
       router.push('/auth/sign-up-success')
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'An error occurred')
-    } finally {
-      setIsLoading(false)
+      setSubmitError(error instanceof Error ? error.message : 'An error occurred')
     }
   }
 
@@ -64,58 +71,67 @@ export default function Page() {
               <CardDescription>Create a new account</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSignUp}>
-                <div className="flex flex-col gap-6">
-                  <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
-                    </div>
-                    <Input
-                      id="password"
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="flex items-center">
-                      <Label htmlFor="repeat-password">Repeat Password</Label>
-                    </div>
-                    <Input
-                      id="repeat-password"
-                      type="password"
-                      required
-                      value={repeatPassword}
-                      onChange={(e) => setRepeatPassword(e.target.value)}
-                    />
-                  </div>
-                  {error && <p className="text-sm text-red-500">{error}</p>}
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="email">Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="m@example.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="password">Password</FormLabel>
+                        <FormControl>
+                          <Input id="password" type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="repeatPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="repeat-password">Repeat Password</FormLabel>
+                        <FormControl>
+                          <Input id="repeat-password" type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {submitError && <p className="text-sm text-red-500">{submitError}</p>}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? 'Creating an account...' : 'Sign up'}
                   </Button>
-                </div>
-                <div className="mt-4 text-center text-sm">
-                  Already have an account?{' '}
-                  <Link
-                    href="/auth/login"
-                    className="underline underline-offset-4"
-                  >
-                    Login
-                  </Link>
-                </div>
-              </form>
+                </form>
+              </Form>
+              <div className="mt-4 text-center text-sm">
+                Already have an account?{' '}
+                <Link
+                  href="/auth/login"
+                  className="underline underline-offset-4"
+                >
+                  Login
+                </Link>
+              </div>
             </CardContent>
           </Card>
         </div>

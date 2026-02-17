@@ -20,20 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
-
-type BlogPost = {
-  id: string;
-  slug: string;
-  title_en: string;
-  title_om: string | null;
-  excerpt_en: string | null;
-  excerpt_om: string | null;
-  content_en: string;
-  content_om: string | null;
-  published: boolean;
-  published_at: string | null;
-  created_at: string;
-};
+import type { BlogPost } from "@/lib/types";
 
 function generateSlug(title: string): string {
   return title
@@ -301,7 +288,7 @@ export function BlogAdminClient({
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground line-clamp-2">
-                {post.excerpt_en || post.content_en.slice(0, 200)}...
+                {post.excerpt_en || (post.content_en ?? "").slice(0, 200)}...
               </p>
             </CardContent>
           </Card>

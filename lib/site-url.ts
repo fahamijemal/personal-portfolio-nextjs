@@ -16,5 +16,6 @@ export function getSiteUrl(): string {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  return PRODUCTION_URL;
+  // Local development fallback
+  return "http://localhost:3000";
 }

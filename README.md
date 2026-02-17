@@ -45,7 +45,7 @@ Run the Supabase migrations (Supabase Dashboard → SQL Editor, or CLI):
 supabase db push
 ```
 
-Or run each file in `supabase/migrations/` manually in the SQL Editor (in order: 001, then 002).
+Or run each file in `supabase/migrations/` manually in the SQL Editor (in order: 001, 002, then 003).
 
 **Make yourself admin:** After migrations, set `is_admin = true` for your user in the `profiles` table (Supabase Dashboard → Table Editor → profiles).
 

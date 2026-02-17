@@ -7,16 +7,7 @@ import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
 import { ShareButtons } from "@/components/portfolio/share-buttons";
-
-type BlogPost = {
-  id: string;
-  slug: string;
-  title_en: string;
-  title_om: string | null;
-  content_en: string;
-  content_om: string | null;
-  published_at: string | null;
-};
+import type { BlogPost } from "@/lib/types";
 
 function BlogPostContent({ post }: { post: BlogPost }) {
   const { language, t } = useI18n();
@@ -33,7 +24,7 @@ function BlogPostContent({ post }: { post: BlogPost }) {
   const title =
     language === "om" && post.title_om ? post.title_om : post.title_en;
   const content =
-    language === "om" && post.content_om ? post.content_om : post.content_en;
+    (language === "om" && post.content_om ? post.content_om : post.content_en) ?? "";
 
   return (
     <div className="min-h-screen bg-background">

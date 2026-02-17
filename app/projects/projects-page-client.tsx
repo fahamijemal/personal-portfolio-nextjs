@@ -8,18 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
-
-type Project = {
-  id: string;
-  title_en: string;
-  title_om: string | null;
-  description_en: string;
-  description_om: string | null;
-  technologies: string[];
-  github_url: string | null;
-  live_url: string | null;
-  image_url: string | null;
-};
+import type { Project } from "@/lib/types";
 
 function ProjectsContent({ projects }: { projects: Project[] }) {
   const { language, t } = useI18n();

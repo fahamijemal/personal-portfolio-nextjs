@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
-import type { Certificate } from "@/components/portfolio/certificates-section";
+import type { Certificate } from "@/lib/types";
 
 function CertificatesContent({ certificates }: { certificates: Certificate[] }) {
   const { language, t } = useI18n();

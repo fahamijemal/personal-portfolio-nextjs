@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
 import { createClient } from "@/lib/supabase/client";
+import type { Skill } from "@/lib/types";
 
 const CATEGORIES = [
   { value: "backend", label: "Backend" },
@@ -24,14 +25,6 @@ const CATEGORIES = [
   { value: "database", label: "Database" },
   { value: "tools", label: "Tools" },
 ] as const;
-
-type Skill = {
-  id: string;
-  category: string;
-  name: string;
-  level: number;
-  display_order: number;
-};
 
 export function SkillsAdminClient({
   initialSkills,

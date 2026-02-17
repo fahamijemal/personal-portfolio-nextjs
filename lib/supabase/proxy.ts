@@ -1,15 +1,30 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { getIsAdmin } from '@/lib/auth'
+import { getSupabaseConfig } from '@/lib/env'
+
+const SECURITY_HEADERS: Record<string, string> = {
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+}
+
+function applySecurityHeaders(response: NextResponse): NextResponse {
+  Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+  return response;
+}
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
 
+  const { url, anonKey } = getSupabaseConfig()
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {
@@ -38,7 +53,7 @@ export async function updateSession(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/admin') && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
-    return NextResponse.redirect(url)
+    return applySecurityHeaders(NextResponse.redirect(url))
   }
 
   // Check if user is admin for admin routes (profiles table, with user_metadata fallback)
@@ -47,9 +62,9 @@ export async function updateSession(request: NextRequest) {
     if (!isAdmin) {
       const url = request.nextUrl.clone()
       url.pathname = '/'
-      return NextResponse.redirect(url)
+      return applySecurityHeaders(NextResponse.redirect(url))
     }
   }
 
-  return supabaseResponse
+  return applySecurityHeaders(supabaseResponse)
 }

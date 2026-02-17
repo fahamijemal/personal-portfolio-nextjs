@@ -1,35 +1,45 @@
 "use client";
 
-import React from "react"
-
 import { useState } from "react";
 import { Mail, MapPin, Send } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { useI18n } from "@/lib/i18n/context";
+import { contactSchema, type ContactFormData } from "@/lib/validations";
 
 export function ContactSection() {
   const { t } = useI18n();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitErrorMessage, setSubmitErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setStatus("idle");
-    setErrorMessage(null);
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+  });
 
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      subject: formData.get("subject") as string,
-      message: formData.get("message") as string,
-    };
+  const isSubmitting = form.formState.isSubmitting;
+
+  const onSubmit = async (data: ContactFormData) => {
+    setSubmitStatus("idle");
+    setSubmitErrorMessage(null);
 
     try {
       const response = await fetch("/api/contact", {
@@ -39,18 +49,16 @@ export function ContactSection() {
       });
 
       if (response.ok) {
-        setStatus("success");
-        (e.target as HTMLFormElement).reset();
+        setSubmitStatus("success");
+        form.reset();
       } else {
-        const data = await response.json().catch(() => ({}));
-        setErrorMessage(data.error ?? t.contact.error);
-        setStatus("error");
+        const body = await response.json().catch(() => ({}));
+        setSubmitErrorMessage(body.error ?? t.contact.error);
+        setSubmitStatus("error");
       }
     } catch {
-      setStatus("error");
-      setErrorMessage(t.contact.error);
-    } finally {
-      setIsSubmitting(false);
+      setSubmitStatus("error");
+      setSubmitErrorMessage(t.contact.error);
     }
   };
 
@@ -103,65 +111,96 @@ export function ContactSection() {
 
           <Card className="bg-card border-border">
             <CardContent className="pt-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">{t.contact.name}</Label>
-                  <Input
-                    id="name"
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FormField
+                    control={form.control}
                     name="name"
-                    placeholder={t.contact.namePlaceholder}
-                    required
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.contact.name}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t.contact.namePlaceholder}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">{t.contact.email}</Label>
-                  <Input
-                    id="email"
+                  <FormField
+                    control={form.control}
                     name="email"
-                    type="email"
-                    placeholder={t.contact.emailPlaceholder}
-                    required
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.contact.email}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder={t.contact.emailPlaceholder}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="subject">{t.contact.subject}</Label>
-                  <Input
-                    id="subject"
+                  <FormField
+                    control={form.control}
                     name="subject"
-                    placeholder={t.contact.subjectPlaceholder}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.contact.subject}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t.contact.subjectPlaceholder}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">{t.contact.message}</Label>
-                  <Textarea
-                    id="message"
+                  <FormField
+                    control={form.control}
                     name="message"
-                    placeholder={t.contact.messagePlaceholder}
-                    rows={4}
-                    required
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.contact.message}</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder={t.contact.messagePlaceholder}
+                            rows={4}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
 
-                {status === "success" && (
-                  <p className="text-sm text-green-600 dark:text-green-400">
-                    {t.contact.success}
-                  </p>
-                )}
-                {status === "error" && errorMessage && (
-                  <p className="text-sm text-destructive">{errorMessage}</p>
-                )}
-
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    t.contact.sending
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4 mr-2" />
-                      {t.contact.send}
-                    </>
+                  {submitStatus === "success" && (
+                    <p className="text-sm text-green-600 dark:text-green-400">
+                      {t.contact.success}
+                    </p>
                   )}
-                </Button>
-              </form>
+                  {submitStatus === "error" && submitErrorMessage && (
+                    <p className="text-sm text-destructive">{submitErrorMessage}</p>
+                  )}
+
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      t.contact.sending
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        {t.contact.send}
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </Form>
             </CardContent>
           </Card>
         </div>

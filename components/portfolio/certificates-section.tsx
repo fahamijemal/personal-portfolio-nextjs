@@ -5,16 +5,7 @@ import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n/context";
-
-export type Certificate = {
-  id: string;
-  title_en: string;
-  title_om: string | null;
-  issuer: string | null;
-  credential_url: string;
-  image_url: string | null;
-  issued_at: string | null;
-};
+import type { Certificate } from "@/lib/types";
 
 export function CertificatesSection({ certificates }: { certificates: Certificate[] }) {
   const { language, t } = useI18n();
