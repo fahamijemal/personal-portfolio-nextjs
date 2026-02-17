@@ -1,19 +1,12 @@
 /**
  * Environment variable validation.
- * Throws clear errors at runtime if required vars are missing.
+ * Uses direct property access so Next.js can inline NEXT_PUBLIC_* vars at build time
+ * (required for client-side bundles). Dynamic process.env[key] breaks inlining.
  */
-
-function requireEnv(key: string): string {
-  const value = process.env[key];
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${key}`);
-  }
-  return value;
-}
-
 export function getSupabaseConfig() {
-  return {
-    url: requireEnv("NEXT_PUBLIC_SUPABASE_URL"),
-    anonKey: requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
-  };
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url) throw new Error("Missing required environment variable: NEXT_PUBLIC_SUPABASE_URL");
+  if (!anonKey) throw new Error("Missing required environment variable: NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  return { url, anonKey };
 }
