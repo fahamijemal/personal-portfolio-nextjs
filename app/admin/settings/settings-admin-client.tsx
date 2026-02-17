@@ -2,11 +2,18 @@
 
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, RotateCcw, Save, Upload, User } from "lucide-react";
+import { ChevronDown, Loader2, RotateCcw, Save, Upload, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { createClient } from "@/lib/supabase/client";
 
 const RESUME_BUCKET = "resumes";
@@ -281,236 +288,266 @@ export function SettingsAdminClient({
           <CardHeader>
             <CardTitle className="text-foreground">Hero & About</CardTitle>
             <CardDescription>
-              Edit hero and about section content. Leave empty to use default translations (English / Afaan Oromo).
+              Edit hero and about content. Leave empty to use defaults. Switch language to edit each version.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h4 className="font-medium text-foreground">Hero section</h4>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Greeting (EN)</Label>
-                  <Input
-                    value={settings.hero_greeting_en || ""}
-                    onChange={(e) => updateSetting("hero_greeting_en", e.target.value)}
-                    placeholder="Hi, I'm"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Greeting (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.hero_greeting_om || ""}
-                    onChange={(e) => updateSetting("hero_greeting_om", e.target.value)}
-                    placeholder="Akkam, Ani"
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Name (EN)</Label>
-                  <Input
-                    value={settings.hero_name_en || ""}
-                    onChange={(e) => updateSetting("hero_name_en", e.target.value)}
-                    placeholder="Your Name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Name (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.hero_name_om || ""}
-                    onChange={(e) => updateSetting("hero_name_om", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Role (EN)</Label>
-                  <Input
-                    value={settings.hero_role_en || ""}
-                    onChange={(e) => updateSetting("hero_role_en", e.target.value)}
-                    placeholder="Software Engineer | Full-Stack Developer"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Role (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.hero_role_om || ""}
-                    onChange={(e) => updateSetting("hero_role_om", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Subtitle (EN)</Label>
-                  <Input
-                    value={settings.hero_subtitle_en || ""}
-                    onChange={(e) => updateSetting("hero_subtitle_en", e.target.value)}
-                    placeholder="Backend & Cloud Focus"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.hero_subtitle_om || ""}
-                    onChange={(e) => updateSetting("hero_subtitle_om", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Description (EN)</Label>
-                  <Input
-                    value={settings.hero_description_en || ""}
-                    onChange={(e) => updateSetting("hero_description_en", e.target.value)}
-                    placeholder="Short bio..."
-                    className="md:col-span-2"
-                  />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label>Description (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.hero_description_om || ""}
-                    onChange={(e) => updateSetting("hero_description_om", e.target.value)}
-                    placeholder="Short bio..."
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t pt-6 space-y-4">
-              <h4 className="font-medium text-foreground">About section</h4>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Title (EN)</Label>
-                  <Input
-                    value={settings.about_title_en || ""}
-                    onChange={(e) => updateSetting("about_title_en", e.target.value)}
-                    placeholder="About Me"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Title (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_title_om || ""}
-                    onChange={(e) => updateSetting("about_title_om", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Description (EN)</Label>
-                  <Input
-                    value={settings.about_description_en || ""}
-                    onChange={(e) => updateSetting("about_description_en", e.target.value)}
-                    placeholder="About paragraph..."
-                    className="md:col-span-2"
-                  />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label>Description (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_description_om || ""}
-                    onChange={(e) => updateSetting("about_description_om", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Education label (EN)</Label>
-                  <Input
-                    value={settings.about_education_en || ""}
-                    onChange={(e) => updateSetting("about_education_en", e.target.value)}
-                    placeholder="Education"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Education label (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_education_om || ""}
-                    onChange={(e) => updateSetting("about_education_om", e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Education text (EN)</Label>
-                  <Input
-                    value={settings.about_education_text_en || ""}
-                    onChange={(e) => updateSetting("about_education_text_en", e.target.value)}
-                    placeholder="Software Engineering Student"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Education text (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_education_text_om || ""}
-                    onChange={(e) => updateSetting("about_education_text_om", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Experience label (EN)</Label>
-                  <Input
-                    value={settings.about_experience_en || ""}
-                    onChange={(e) => updateSetting("about_experience_en", e.target.value)}
-                    placeholder="Experience"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Experience label (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_experience_om || ""}
-                    onChange={(e) => updateSetting("about_experience_om", e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Experience text (EN)</Label>
-                  <Input
-                    value={settings.about_experience_text_en || ""}
-                    onChange={(e) => updateSetting("about_experience_text_en", e.target.value)}
-                    placeholder="Full-Stack Development..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Experience text (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_experience_text_om || ""}
-                    onChange={(e) => updateSetting("about_experience_text_om", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Interests label (EN)</Label>
-                  <Input
-                    value={settings.about_interests_en || ""}
-                    onChange={(e) => updateSetting("about_interests_en", e.target.value)}
-                    placeholder="Interests"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Interests label (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_interests_om || ""}
-                    onChange={(e) => updateSetting("about_interests_om", e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Interests text (EN)</Label>
-                  <Input
-                    value={settings.about_interests_text_en || ""}
-                    onChange={(e) => updateSetting("about_interests_text_en", e.target.value)}
-                    placeholder="Cloud Computing, System Design..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Interests text (Afaan Oromo)</Label>
-                  <Input
-                    value={settings.about_interests_text_om || ""}
-                    onChange={(e) => updateSetting("about_interests_text_om", e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
+          <CardContent>
+            <Tabs defaultValue="en" className="w-full">
+              <TabsList>
+                <TabsTrigger value="en">English</TabsTrigger>
+                <TabsTrigger value="om">Afaan Oromo</TabsTrigger>
+              </TabsList>
+              <TabsContent value="en" className="mt-4 space-y-4">
+                <Collapsible defaultOpen>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" className="w-full justify-between px-0">
+                      <span className="font-medium">Hero section</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 pt-4">
+                    <div className="space-y-2">
+                      <Label>Greeting</Label>
+                      <Input
+                        value={settings.hero_greeting_en || ""}
+                        onChange={(e) => updateSetting("hero_greeting_en", e.target.value)}
+                        placeholder="Hi, I'm"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Name</Label>
+                      <Input
+                        value={settings.hero_name_en || ""}
+                        onChange={(e) => updateSetting("hero_name_en", e.target.value)}
+                        placeholder="Your Name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Role</Label>
+                      <Input
+                        value={settings.hero_role_en || ""}
+                        onChange={(e) => updateSetting("hero_role_en", e.target.value)}
+                        placeholder="Software Engineer | Full-Stack Developer"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Subtitle</Label>
+                      <Input
+                        value={settings.hero_subtitle_en || ""}
+                        onChange={(e) => updateSetting("hero_subtitle_en", e.target.value)}
+                        placeholder="Backend & Cloud Focus"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={settings.hero_description_en || ""}
+                        onChange={(e) => updateSetting("hero_description_en", e.target.value)}
+                        placeholder="Short bio..."
+                        rows={4}
+                      />
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+                <Collapsible>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" className="w-full justify-between px-0">
+                      <span className="font-medium">About section</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 pt-4">
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Input
+                        value={settings.about_title_en || ""}
+                        onChange={(e) => updateSetting("about_title_en", e.target.value)}
+                        placeholder="About Me"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={settings.about_description_en || ""}
+                        onChange={(e) => updateSetting("about_description_en", e.target.value)}
+                        placeholder="About paragraph..."
+                        rows={4}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Education (label)</Label>
+                      <Input
+                        value={settings.about_education_en || ""}
+                        onChange={(e) => updateSetting("about_education_en", e.target.value)}
+                        placeholder="Education"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Education (text)</Label>
+                      <Textarea
+                        value={settings.about_education_text_en || ""}
+                        onChange={(e) => updateSetting("about_education_text_en", e.target.value)}
+                        placeholder="Software Engineering Student"
+                        rows={2}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Experience (label)</Label>
+                      <Input
+                        value={settings.about_experience_en || ""}
+                        onChange={(e) => updateSetting("about_experience_en", e.target.value)}
+                        placeholder="Experience"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Experience (text)</Label>
+                      <Textarea
+                        value={settings.about_experience_text_en || ""}
+                        onChange={(e) => updateSetting("about_experience_text_en", e.target.value)}
+                        placeholder="Full-Stack Development..."
+                        rows={5}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Interests (label)</Label>
+                      <Input
+                        value={settings.about_interests_en || ""}
+                        onChange={(e) => updateSetting("about_interests_en", e.target.value)}
+                        placeholder="Interests"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Interests (text)</Label>
+                      <Textarea
+                        value={settings.about_interests_text_en || ""}
+                        onChange={(e) => updateSetting("about_interests_text_en", e.target.value)}
+                        placeholder="Cloud Computing, System Design..."
+                        rows={3}
+                      />
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              </TabsContent>
+              <TabsContent value="om" className="mt-4 space-y-4">
+                <Collapsible defaultOpen>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" className="w-full justify-between px-0">
+                      <span className="font-medium">Hero section</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 pt-4">
+                    <div className="space-y-2">
+                      <Label>Greeting</Label>
+                      <Input
+                        value={settings.hero_greeting_om || ""}
+                        onChange={(e) => updateSetting("hero_greeting_om", e.target.value)}
+                        placeholder="Akkam, Ani"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Name</Label>
+                      <Input
+                        value={settings.hero_name_om || ""}
+                        onChange={(e) => updateSetting("hero_name_om", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Role</Label>
+                      <Input
+                        value={settings.hero_role_om || ""}
+                        onChange={(e) => updateSetting("hero_role_om", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Subtitle</Label>
+                      <Input
+                        value={settings.hero_subtitle_om || ""}
+                        onChange={(e) => updateSetting("hero_subtitle_om", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={settings.hero_description_om || ""}
+                        onChange={(e) => updateSetting("hero_description_om", e.target.value)}
+                        rows={4}
+                      />
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+                <Collapsible>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" className="w-full justify-between px-0">
+                      <span className="font-medium">About section</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 pt-4">
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Input
+                        value={settings.about_title_om || ""}
+                        onChange={(e) => updateSetting("about_title_om", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={settings.about_description_om || ""}
+                        onChange={(e) => updateSetting("about_description_om", e.target.value)}
+                        rows={4}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Education (label)</Label>
+                      <Input
+                        value={settings.about_education_om || ""}
+                        onChange={(e) => updateSetting("about_education_om", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Education (text)</Label>
+                      <Textarea
+                        value={settings.about_education_text_om || ""}
+                        onChange={(e) => updateSetting("about_education_text_om", e.target.value)}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Experience (label)</Label>
+                      <Input
+                        value={settings.about_experience_om || ""}
+                        onChange={(e) => updateSetting("about_experience_om", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Experience (text)</Label>
+                      <Textarea
+                        value={settings.about_experience_text_om || ""}
+                        onChange={(e) => updateSetting("about_experience_text_om", e.target.value)}
+                        rows={5}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Interests (label)</Label>
+                      <Input
+                        value={settings.about_interests_om || ""}
+                        onChange={(e) => updateSetting("about_interests_om", e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Interests (text)</Label>
+                      <Textarea
+                        value={settings.about_interests_text_om || ""}
+                        onChange={(e) => updateSetting("about_interests_text_om", e.target.value)}
+                        rows={3}
+                      />
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
 
