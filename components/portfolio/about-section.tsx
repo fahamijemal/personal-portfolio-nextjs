@@ -58,7 +58,7 @@ export function AboutSection({ aboutContent }: AboutSectionProps) {
         <h2 className="text-3xl sm:text-4xl font-bold text-center text-foreground mb-4">
           {title}
         </h2>
-        <p className="text-muted-foreground text-center max-w-3xl mx-auto mb-12 text-pretty">
+        <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12 text-lg leading-7 whitespace-pre-line text-pretty">
           {description}
         </p>
 
@@ -73,7 +73,7 @@ export function AboutSection({ aboutContent }: AboutSectionProps) {
                   <h3 className="font-semibold text-foreground mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground whitespace-pre-line text-left w-full">
                     {item.description}
                   </p>
                 </div>

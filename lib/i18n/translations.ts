@@ -22,7 +22,7 @@ export const translations = {
     },
     about: {
       title: "About Me",
-      description: "I'm a dedicated Software Engineering student with a strong focus on backend development and cloud technologies. My journey in tech has led me to work with various technologies and frameworks, always striving to write clean, efficient, and maintainable code.",
+      description: "I am a Software Engineering student with strong interests in backend engineering, cloud infrastructure, and distributed systems. I enjoy designing scalable architectures and building production-ready applications that solve real business problems. I am continuously improving my skills in modern development practices, system design, DevOps, and AI integration, with the goal of contributing to global technology teams.",
       education: "Education",
       experience: "Experience",
       interests: "Interests",
