@@ -62,6 +62,10 @@ export const translations = {
       readMore: "Read More",
       viewAll: "View All Posts",
       publishedOn: "Published on",
+      minRead: "min read",
+      writtenBy: "Written by",
+      tableOfContents: "Table of contents",
+      relatedPosts: "Related posts",
     },
     contact: {
       title: "Get In Touch",
@@ -156,6 +160,10 @@ export const translations = {
       readMore: "Dabalataan Dubbisi",
       viewAll: "Barreeffama Hunda Ilaali",
       publishedOn: "Gaafa maxxanfame",
+      minRead: "daqiiqaa dubbisu",
+      writtenBy: "Barreessaa",
+      tableOfContents: "Gaaffilee galgala",
+      relatedPosts: "Barreeffama waliigalaa",
     },
     contact: {
       title: "Waliin Wal Quunnamaa",

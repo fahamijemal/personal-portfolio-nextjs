@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -41,9 +42,33 @@ export function BlogSection({ posts }: { posts: BlogPost[] }) {
             {posts.map((post) => (
               <Card
                 key={post.id}
-                className="bg-card border-border flex flex-col"
+                className="bg-card border-border flex flex-col overflow-hidden"
               >
+                {post.image_url && (
+                  <div className="relative h-40 w-full overflow-hidden">
+                    <Image
+                      src={post.image_url}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                )}
                 <CardHeader>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {post.tags.slice(0, 3).map((tag) => (
+                        <Link
+                          key={tag}
+                          href={`/blog?tag=${encodeURIComponent(tag)}`}
+                          className="text-xs px-2 py-0.5 rounded-full bg-secondary/80 text-secondary-foreground hover:bg-secondary transition-colors"
+                        >
+                          {tag}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                   <h3 className="font-semibold text-lg text-foreground line-clamp-2">
                     {language === "om" && post.title_om
                       ? post.title_om

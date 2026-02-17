@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react"
+import React from "react";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Upload, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,8 +19,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/client";
+import { MarkdownContent } from "@/components/blog/markdown-content";
 import type { BlogPost } from "@/lib/types";
+
+function MarkdownPreview({ content }: { content: string }) {
+  return (
+    <div className="min-h-[200px] rounded-lg border border-border bg-muted/30 p-4">
+      <MarkdownContent content={content || "*No content yet*"} className="prose-sm" />
+    </div>
+  );
+}
+
+const BLOG_IMAGES_BUCKET = "blog-images";
 
 function generateSlug(title: string): string {
   return title
@@ -38,7 +50,20 @@ export function BlogAdminClient({
   const [isOpen, setIsOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [contentEn, setContentEn] = useState("");
+  const [contentOm, setContentOm] = useState("");
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [tagsInput, setTagsInput] = useState("");
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const imageFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  React.useEffect(() => {
+    setContentEn(editingPost?.content_en ?? "");
+    setContentOm(editingPost?.content_om ?? "");
+    setImageUrl(editingPost?.image_url ?? null);
+    setTagsInput((editingPost?.tags ?? []).join(", "));
+  }, [editingPost]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,6 +71,11 @@ export function BlogAdminClient({
 
     const formData = new FormData(e.currentTarget);
     const isPublished = formData.get("published") === "on";
+    const tags = (formData.get("tags") as string)
+      ?.split(",")
+      .map((t) => t.trim())
+      .filter(Boolean) ?? [];
+
     const data = {
       slug:
         (formData.get("slug") as string) ||
@@ -58,6 +88,8 @@ export function BlogAdminClient({
       content_om: (formData.get("content_om") as string) || null,
       published: isPublished,
       published_at: isPublished ? new Date().toISOString() : null,
+      image_url: imageUrl,
+      tags,
     };
 
     const supabase = createClient();
@@ -116,12 +148,48 @@ export function BlogAdminClient({
 
   const openEdit = (post: BlogPost) => {
     setEditingPost(post);
+    setContentEn(post.content_en ?? "");
+    setContentOm(post.content_om ?? "");
+    setImageUrl(post.image_url ?? null);
+    setTagsInput((post.tags ?? []).join(", "));
     setIsOpen(true);
   };
 
   const openNew = () => {
     setEditingPost(null);
+    setContentEn("");
+    setContentOm("");
+    setImageUrl(null);
+    setTagsInput("");
     setIsOpen(true);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !file.type.startsWith("image/")) return;
+
+    setIsImageUploading(true);
+    const supabase = createClient();
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${editingPost?.id ?? `new-${Date.now()}`}-${Date.now()}.${ext}`;
+
+    try {
+      const { error } = await supabase.storage
+        .from(BLOG_IMAGES_BUCKET)
+        .upload(path, file, { upsert: true });
+      if (error) throw error;
+
+      const { data } = supabase.storage
+        .from(BLOG_IMAGES_BUCKET)
+        .getPublicUrl(path);
+      setImageUrl(data.publicUrl);
+    } catch {
+      // Bucket may not exist; allow manual URL
+      setImageUrl(null);
+    } finally {
+      setIsImageUploading(false);
+      e.target.value = "";
+    }
   };
 
   const formatDate = (dateString: string | null) => {
@@ -181,6 +249,62 @@ export function BlogAdminClient({
                 />
               </div>
 
+              <div className="space-y-2">
+                <Label>Cover Image</Label>
+                <input
+                  ref={imageFileRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  aria-hidden
+                  onChange={handleImageUpload}
+                />
+                <div className="flex items-center gap-4">
+                  {imageUrl && (
+                    <div className="relative h-24 w-32 rounded border border-border overflow-hidden shrink-0">
+                      <img
+                        src={imageUrl}
+                        alt="Cover preview"
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => imageFileRef.current?.click()}
+                      disabled={isImageUploading}
+                    >
+                      {isImageUploading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Upload className="h-4 w-4" />
+                      )}
+                      {isImageUploading ? "Uploading..." : "Upload image"}
+                    </Button>
+                    <Input
+                      placeholder="Or paste image URL"
+                      value={imageUrl ?? ""}
+                      onChange={(e) => setImageUrl(e.target.value || null)}
+                      className="text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="tags">Tags (comma-separated)</Label>
+                <Input
+                  id="tags"
+                  name="tags"
+                  value={tagsInput}
+                  onChange={(e) => setTagsInput(e.target.value)}
+                  placeholder="React, Cloud, TypeScript"
+                />
+              </div>
+
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="excerpt_en">Excerpt (English)</Label>
@@ -203,24 +327,50 @@ export function BlogAdminClient({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="content_en">Content (English)</Label>
-                <Textarea
-                  id="content_en"
-                  name="content_en"
-                  defaultValue={editingPost?.content_en}
-                  required
-                  rows={8}
-                />
+                <Label htmlFor="content_en">Content (English) – Markdown</Label>
+                <Tabs defaultValue="edit" className="w-full">
+                  <TabsList>
+                    <TabsTrigger value="edit">Edit</TabsTrigger>
+                    <TabsTrigger value="preview-en">Preview</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="edit">
+                    <Textarea
+                      id="content_en"
+                      name="content_en"
+                      value={contentEn}
+                      onChange={(e) => setContentEn(e.target.value)}
+                      required
+                      rows={8}
+                      className="font-mono text-sm"
+                    />
+                  </TabsContent>
+                  <TabsContent value="preview-en">
+                    <MarkdownPreview content={contentEn} />
+                  </TabsContent>
+                </Tabs>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="content_om">Content (Afaan Oromo)</Label>
-                <Textarea
-                  id="content_om"
-                  name="content_om"
-                  defaultValue={editingPost?.content_om || ""}
-                  rows={8}
-                />
+                <Label htmlFor="content_om">Content (Afaan Oromo) – Markdown</Label>
+                <Tabs defaultValue="edit" className="w-full">
+                  <TabsList>
+                    <TabsTrigger value="edit-om">Edit</TabsTrigger>
+                    <TabsTrigger value="preview-om">Preview</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="edit-om">
+                    <Textarea
+                      id="content_om"
+                      name="content_om"
+                      value={contentOm}
+                      onChange={(e) => setContentOm(e.target.value)}
+                      rows={8}
+                      className="font-mono text-sm"
+                    />
+                  </TabsContent>
+                  <TabsContent value="preview-om">
+                    <MarkdownPreview content={contentOm} />
+                  </TabsContent>
+                </Tabs>
               </div>
 
               <div className="flex items-center gap-2">

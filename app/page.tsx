@@ -25,7 +25,7 @@ export default async function Home() {
       .limit(6),
     supabase
       .from("blog_posts")
-      .select("id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at")
+      .select("id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at, image_url, tags")
       .eq("published", true)
       .order("published_at", { ascending: false })
       .limit(3),

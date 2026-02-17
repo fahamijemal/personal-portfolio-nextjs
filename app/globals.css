@@ -115,6 +115,48 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Syntax highlighting for code blocks (rehype-highlight) */
+pre code.hljs {
+  padding: 0;
+  background: transparent;
+}
+pre code.hljs .hljs-comment,
+pre code.hljs .hljs-quote { color: #6e7781; }
+pre code.hljs .hljs-keyword,
+pre code.hljs .hljs-selector-tag { color: #cf222e; }
+pre code.hljs .hljs-string { color: #0550ae; }
+pre code.hljs .hljs-number { color: #0550ae; }
+pre code.hljs .hljs-built_in { color: #953800; }
+pre code.hljs .hljs-params { color: #24292f; }
+pre code.hljs .hljs-function { color: #8250df; }
+pre code.hljs .hljs-title { color: #8250df; }
+.dark pre code.hljs .hljs-comment,
+.dark pre code.hljs .hljs-quote { color: #8b949e; }
+.dark pre code.hljs .hljs-keyword,
+.dark pre code.hljs .hljs-selector-tag { color: #ff7b72; }
+.dark pre code.hljs .hljs-string { color: #a5d6ff; }
+.dark pre code.hljs .hljs-number { color: #79c0ff; }
+.dark pre code.hljs .hljs-built_in { color: #ffa657; }
+.dark pre code.hljs .hljs-params { color: #c9d1d9; }
+.dark pre code.hljs .hljs-function { color: #d2a8ff; }
+.dark pre code.hljs .hljs-title { color: #d2a8ff; }
+
+/* Blog markdown typography (prose-like) */
+.blog-prose {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+.blog-prose p { margin-bottom: 1rem; }
+.blog-prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; }
+.blog-prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.blog-prose ul { margin: 1rem 0; padding-left: 1.5rem; list-style-type: disc; }
+.blog-prose ol { margin: 1rem 0; padding-left: 1.5rem; list-style-type: decimal; }
+.blog-prose blockquote { border-left: 4px solid var(--border); padding-left: 1rem; margin: 1.5rem 0; color: var(--muted-foreground); }
+.blog-prose hr { margin: 2rem 0; border-color: var(--border); }
+.blog-prose table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.blog-prose th, .blog-prose td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+.blog-prose th { font-weight: 600; background: var(--muted); }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

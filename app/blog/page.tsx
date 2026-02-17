@@ -6,14 +6,25 @@ export const metadata = {
   description: "Thoughts, tutorials, and insights on software development and cloud computing.",
 };
 
-export default async function BlogPage() {
+type Props = {
+  searchParams: Promise<{ tag?: string }>;
+};
+
+export default async function BlogPage({ searchParams }: Props) {
+  const { tag } = await searchParams;
   const supabase = await createClient();
 
-  const { data: posts } = await supabase
+  let query = supabase
     .from("blog_posts")
-    .select("id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at")
+    .select("id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at, image_url, tags")
     .eq("published", true)
     .order("published_at", { ascending: false });
 
-  return <BlogPageClient posts={posts || []} />;
+  if (tag) {
+    query = query.contains("tags", [tag]);
+  }
+
+  const { data: posts } = await query;
+
+  return <BlogPageClient posts={posts || []} initialTag={tag ?? undefined} />;
 }
