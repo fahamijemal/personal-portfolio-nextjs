@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
-
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Pencil, Trash2, Eye, EyeOff, Upload, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -87,7 +85,9 @@ export function BlogAdminClient({
       content_en: formData.get("content_en") as string,
       content_om: (formData.get("content_om") as string) || null,
       published: isPublished,
-      published_at: isPublished ? new Date().toISOString() : null,
+      published_at: isPublished
+        ? (editingPost?.published ? editingPost.published_at : new Date().toISOString())
+        : null,
       image_url: imageUrl,
       tags,
     };

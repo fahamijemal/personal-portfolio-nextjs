@@ -2,6 +2,15 @@
  * Utilities for blog posts: reading time, TOC extraction.
  */
 
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 export function getReadingTimeMinutes(content: string): number {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
   const wpm = 200;
@@ -21,13 +30,7 @@ export function extractHeadings(content: string): TocItem[] {
   while ((match = regex.exec(content)) !== null) {
     const level = match[1].length;
     const text = match[2].trim();
-    const slug = text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
-    items.push({ level, text, slug });
+    items.push({ level, text, slug: slugify(text) });
   }
   return items;
 }

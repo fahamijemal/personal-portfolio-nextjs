@@ -3,20 +3,12 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import { slugify } from "@/lib/blog-utils";
 
 type MarkdownContentProps = {
   content: string;
   className?: string;
 };
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-}
 
 export function MarkdownContent({ content, className = "" }: MarkdownContentProps) {
   const components = {
