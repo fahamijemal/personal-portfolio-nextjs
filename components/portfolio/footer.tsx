@@ -1,6 +1,7 @@
 "use client";
 
 import { Github, Linkedin, Mail, Heart, Send } from "lucide-react";
+import { ProfileLanguageLink } from "./profile-language-link";
 import { useI18n } from "@/lib/i18n/context";
 import { getSocialLinkUrls } from "@/lib/site-content";
 import type { SocialLinks } from "@/lib/site-content";
@@ -17,6 +18,29 @@ export function Footer({ socialLinks }: FooterProps) {
   return (
     <footer className="py-8 px-4 border-t border-border">
       <div className="max-w-6xl mx-auto">
+        <nav
+          aria-label="Profile languages and company"
+          className="mb-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm"
+        >
+          <ProfileLanguageLink
+            language="en"
+            className="text-muted-foreground hover:text-primary"
+          >
+            English
+          </ProfileLanguageLink>
+          <ProfileLanguageLink
+            language="om"
+            className="text-muted-foreground hover:text-primary"
+          >
+            Afaan Oromo
+          </ProfileLanguageLink>
+          <a
+            href="https://www.ifaatechnologies.tech/"
+            className="text-primary hover:underline underline-offset-4"
+          >
+            IFAA TECHNOLOGIES
+          </a>
+        </nav>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <a

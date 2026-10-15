@@ -26,11 +26,11 @@ export async function GET() {
         (post) => `
     <item>
       <title>${escapeXml(post.title_en)}</title>
-      <link>${siteUrl}/blog/${post.slug}</link>
+      <link>${siteUrl}/blog/${encodeURIComponent(post.slug)}</link>
       <description>${escapeXml(post.excerpt_en || "")}</description>
-      <pubDate>${post.published_at ? new Date(post.published_at).toUTCString() : new Date().toUTCString()}</pubDate>
-      <guid isPermaLink="true">${siteUrl}/blog/${post.slug}</guid>
-    </item>`
+      ${post.published_at ? `<pubDate>${new Date(post.published_at).toUTCString()}</pubDate>` : ""}
+      <guid isPermaLink="true">${siteUrl}/blog/${encodeURIComponent(post.slug)}</guid>
+    </item>`,
       )
       .join("")}
   </channel>

@@ -1,42 +1,63 @@
-import { MetadataRoute } from "next";
-import { createClient } from "@/lib/supabase/server";
+import type { MetadataRoute } from "next";
+import { createClient } from "@supabase/supabase-js";
 import { getSiteUrl } from "@/lib/site-url";
+
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
-  const supabase = await createClient();
-
-  const [
-    { data: posts },
-    { data: projects },
-  ] = await Promise.all([
+  const homeLanguages = {
+    en: `${siteUrl}/`,
+    om: `${siteUrl}/om`,
+    "x-default": `${siteUrl}/`,
+  };
+  const pages: MetadataRoute.Sitemap = [
+    { url: `${siteUrl}/`, alternates: { languages: homeLanguages } },
+    { url: `${siteUrl}/om`, alternates: { languages: homeLanguages } },
+    { url: `${siteUrl}/projects` },
+    { url: `${siteUrl}/blog` },
+    { url: `${siteUrl}/certificates` },
+  ];
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return pages;
+  // Index anonymous public content, never an administrator's session or key.
+  const supabase = createClient(url, key, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+    global: {
+      fetch: (input, init) =>
+        fetch(input, {
+          ...init,
+          signal: AbortSignal.timeout(10_000),
+          next: { revalidate: 3600 },
+        }),
+    },
+  });
+  const [{ data: posts }, { data: projects }] = await Promise.all([
     supabase
       .from("blog_posts")
       .select("slug, published_at")
       .eq("published", true),
+    // Existing projects are publicly readable and have no draft flag.
     supabase.from("projects").select("id"),
   ]);
-
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: siteUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${siteUrl}/projects`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${siteUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${siteUrl}/certificates`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-  ];
-
-  const blogPages: MetadataRoute.Sitemap = (posts ?? []).map((post) => ({
-    url: `${siteUrl}/blog/${post.slug}`,
-    lastModified: post.published_at ? new Date(post.published_at) : new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
-
-  const projectPages: MetadataRoute.Sitemap = (projects ?? []).map((project) => ({
-    url: `${siteUrl}/projects/${project.id}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
-
-  return [...staticPages, ...blogPages, ...projectPages];
+  for (const post of posts ?? []) {
+    if (typeof post.slug !== "string" || !post.slug) continue;
+    const date = post.published_at ? new Date(post.published_at) : null;
+    pages.push({
+      url: `${siteUrl}/blog/${encodeURIComponent(post.slug)}`,
+      ...(date && Number.isFinite(date.getTime()) && { lastModified: date }),
+    });
+  }
+  for (const project of projects ?? []) {
+    if (typeof project.id === "string" && project.id)
+      pages.push({
+        url: `${siteUrl}/projects/${encodeURIComponent(project.id)}`,
+      });
+  }
+  return pages;
 }

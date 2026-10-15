@@ -1,22 +1,41 @@
-import React from "react"
+import React from "react";
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { getSiteUrl } from "@/lib/site-url";
+import {
+  personalBrand,
+  personalIdentityGraph,
+  serializeStructuredData,
+} from "@/lib/personal-seo";
 import "./globals.css";
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geist = localFont({
+  src: "./fonts/geist-latin.woff2",
+  weight: "100 900",
+  display: "swap",
+  variable: "--font-geist-sans",
+});
+const geistMono = localFont({
+  src: "./fonts/geist-mono-latin.woff2",
+  weight: "100 900",
+  display: "swap",
+  variable: "--font-geist-mono",
+  preload: false,
+});
 
 const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Fahami Jemal Harun | Software Engineer",
-  description:
-    "Personal portfolio of Fahami Jemal Harun - Software Engineering Student and Full-Stack Developer with a focus on Backend and Cloud technologies.",
+  title: {
+    default: "Fahami Jemal Harun | Software Developer & IFAA Founder",
+    template: "%s | Fahami Jemal Harun",
+  },
+  description: personalBrand.description,
   keywords: [
     "Software Engineer",
     "Full-Stack Developer",
@@ -27,26 +46,32 @@ export const metadata: Metadata = {
     "Node.js",
     "TypeScript",
   ],
-  authors: [{ name: "Fahami Jemal Harun" }],
+  authors: [{ name: personalBrand.name, url: siteUrl }],
   creator: "Fahami Jemal Harun",
   openGraph: {
     type: "website",
-    locale: "en_US",
-    title: "Fahami Jemal Harun | Software Engineer",
-    description:
-      "Personal portfolio of Fahami Jemal Harun - Software Engineering Student and Full-Stack Developer.",
-    siteName: "Fahami Jemal Harun Portfolio",
+    locale: "en_ET",
+    title: "Fahami Jemal Harun | Software Developer & IFAA Founder",
+    description: personalBrand.description,
+    siteName: personalBrand.name,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Fahami Jemal Harun — Software Developer & IFAA TECHNOLOGIES Founder",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fahami Jemal Harun | Software Engineer",
-    description:
-      "Personal portfolio of Fahami Jemal Harun - Software Engineering Student and Full-Stack Developer.",
+    title: "Fahami Jemal Harun | Software Developer & IFAA Founder",
+    description: personalBrand.description,
+    images: ["/opengraph-image"],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  ...(process.env.VERCEL_ENV === "preview" && {
+    robots: { index: false, follow: false },
+  }),
 };
 
 export const viewport: Viewport = {
@@ -58,14 +83,24 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const language =
+    (await headers()).get("x-portfolio-language") === "om" ? "om" : "en";
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased">
+    <html lang={language} suppressHydrationWarning>
+      <body
+        className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}
+      >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeStructuredData(personalIdentityGraph()),
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

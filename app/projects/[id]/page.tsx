@@ -3,6 +3,7 @@ import { fetchSocialLinks } from "@/lib/site-content";
 import { notFound } from "next/navigation";
 import { ProjectDetailClient } from "./project-detail-client";
 import type { Metadata } from "next";
+import { noIndexMetadata, publicPageMetadata } from "@/lib/personal-seo";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -19,42 +20,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .maybeSingle();
 
   if (!project) {
-    return { title: "Project Not Found" };
+    return { ...noIndexMetadata, title: "Project Not Found" };
   }
 
-  const title = `${project.title_en} | Fahami Jemal Harun`;
   const description =
     project.description_en?.slice(0, 160) ||
     `Explore ${project.title_en} - a project by Fahami Jemal Harun.`;
-  const url = `/projects/${id}`;
-
-  return {
-    title,
+  return publicPageMetadata({
+    title: project.title_en,
     description,
-    keywords: [
-      ...(project.technologies ?? []),
-      "Software Engineer",
-      "Portfolio",
-      "Project",
-    ],
-    authors: [{ name: "Fahami Jemal Harun" }],
-    openGraph: {
-      type: "website",
-      title,
-      description,
-      url,
-      siteName: "Fahami Jemal Harun Portfolio",
-      locale: "en_US",
-      images: project.image_url
-        ? [{ url: project.image_url, alt: project.title_en }]
-        : undefined,
-    },
-    twitter: {
-      card: project.image_url ? "summary_large_image" : "summary",
-      title,
-      description,
-    },
-  };
+    path: `/projects/${encodeURIComponent(id)}`,
+    image: project.image_url || undefined,
+  });
 }
 
 export default async function ProjectDetailPage({
@@ -75,8 +52,5 @@ export default async function ProjectDetailPage({
 
   const socialLinks = await fetchSocialLinks(supabase);
 
-  return (
-    <ProjectDetailClient project={project} socialLinks={socialLinks} />
-  );
+  return <ProjectDetailClient project={project} socialLinks={socialLinks} />;
 }
-

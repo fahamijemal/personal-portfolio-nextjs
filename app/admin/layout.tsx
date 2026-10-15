@@ -3,6 +3,9 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { AdminLayoutClient } from "@/components/admin/admin-layout-client";
 import { getIsAdmin } from "@/lib/auth";
+import { noIndexMetadata } from "@/lib/personal-seo";
+
+export const metadata = noIndexMetadata;
 
 export default async function AdminLayout({
   children,
@@ -25,9 +28,5 @@ export default async function AdminLayout({
     redirect("/");
   }
 
-  return (
-    <AdminLayoutClient user={user}>
-      {children}
-    </AdminLayoutClient>
-  );
+  return <AdminLayoutClient user={user}>{children}</AdminLayoutClient>;
 }

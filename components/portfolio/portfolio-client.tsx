@@ -9,6 +9,7 @@ import { CertificatesSection } from "./certificates-section";
 import { BlogSection } from "./blog-section";
 import { ContactSection } from "./contact-section";
 import { Footer } from "./footer";
+import { FounderSection } from "./founder-section";
 import { I18nProvider } from "@/lib/i18n/context";
 import type { Project, BlogPost, Skill, Certificate } from "@/lib/types";
 import type {
@@ -48,6 +49,7 @@ export function PortfolioClient({
             heroContent={heroContent}
             socialLinks={socialLinks}
           />
+          <FounderSection />
           <AboutSection aboutContent={aboutContent} />
           <SkillsSection skills={skills} />
           <ProjectsSection projects={projects} />

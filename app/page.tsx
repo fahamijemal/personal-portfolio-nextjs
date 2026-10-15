@@ -5,6 +5,19 @@ import {
   getAboutContent,
   getSocialLinks,
 } from "@/lib/site-content";
+import {
+  publicPageMetadata,
+  profilePageGraph,
+  serializeStructuredData,
+} from "@/lib/personal-seo";
+
+export const metadata = publicPageMetadata({
+  title: "Fahami Jemal Harun | Developer & IFAA Founder",
+  description:
+    "Meet Fahami Jemal Harun, software developer and founder of IFAA TECHNOLOGIES. Explore software projects, technical writing, and digital ideas for Ethiopia and Oromia.",
+  path: "/",
+  home: true,
+});
 
 export default async function Home() {
   const supabase = await createClient();
@@ -25,14 +38,22 @@ export default async function Home() {
       .limit(6),
     supabase
       .from("blog_posts")
-      .select("id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at, image_url, tags")
+      .select(
+        "id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at, image_url, tags",
+      )
       .eq("published", true)
       .order("published_at", { ascending: false })
       .limit(3),
-    supabase.from("site_settings").select("value").eq("key", "resume_url").maybeSingle(),
+    supabase
+      .from("site_settings")
+      .select("value")
+      .eq("key", "resume_url")
+      .maybeSingle(),
     supabase
       .from("certificates")
-      .select("id, title_en, title_om, issuer, credential_url, image_url, issued_at")
+      .select(
+        "id, title_en, title_om, issuer, credential_url, image_url, issued_at",
+      )
       .order("display_order", { ascending: true })
       .limit(6),
     supabase
@@ -45,7 +66,8 @@ export default async function Home() {
 
   const resumeUrl = resumeRow?.value ?? null;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  const isOurStorage = resumeUrl && supabaseUrl && resumeUrl.startsWith(supabaseUrl);
+  const isOurStorage =
+    resumeUrl && supabaseUrl && resumeUrl.startsWith(supabaseUrl);
   const resumeDownloadHref = isOurStorage ? "/api/resume" : resumeUrl;
 
   const settingsMap: Record<string, string> = {};
@@ -58,15 +80,23 @@ export default async function Home() {
   const socialLinks = getSocialLinks(settingsMap);
 
   return (
-    <PortfolioClient
-      projects={projects || []}
-      posts={posts || []}
-      certificates={certificates || []}
-      skills={skills || []}
-      resumeDownloadHref={resumeDownloadHref}
-      heroContent={heroContent}
-      aboutContent={aboutContent}
-      socialLinks={socialLinks}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeStructuredData(profilePageGraph("/", "en")),
+        }}
+      />
+      <PortfolioClient
+        projects={projects || []}
+        posts={posts || []}
+        certificates={certificates || []}
+        skills={skills || []}
+        resumeDownloadHref={resumeDownloadHref}
+        heroContent={heroContent}
+        aboutContent={aboutContent}
+        socialLinks={socialLinks}
+      />
+    </>
   );
 }

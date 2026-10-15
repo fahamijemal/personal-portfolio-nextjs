@@ -1,11 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
 import { BlogPageClient } from "./blog-page-client";
+import { publicPageMetadata } from "@/lib/personal-seo";
 
-export const metadata = {
-  title: "Blog | Fahami Jemal Harun",
-  description: "Thoughts, tutorials, and insights on software development and cloud computing.",
-};
+export const metadata = publicPageMetadata({
+  title: "Software Development Blog",
+  description:
+    "Thoughts, tutorials, and insights on software development and cloud computing.",
+  path: "/blog",
+});
 
 type Props = {
   searchParams: Promise<{ tag?: string }>;
@@ -17,7 +20,9 @@ export default async function BlogPage({ searchParams }: Props) {
 
   let query = supabase
     .from("blog_posts")
-    .select("id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at, image_url, tags")
+    .select(
+      "id, slug, title_en, title_om, excerpt_en, excerpt_om, published_at, image_url, tags",
+    )
     .eq("published", true)
     .order("published_at", { ascending: false });
 

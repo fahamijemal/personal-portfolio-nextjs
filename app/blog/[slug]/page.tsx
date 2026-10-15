@@ -4,6 +4,12 @@ import { notFound } from "next/navigation";
 import { BlogPostClient } from "./blog-post-client";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
+import {
+  noIndexMetadata,
+  publicPageMetadata,
+  personalBrand,
+  serializeStructuredData,
+} from "@/lib/personal-seo";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -21,45 +27,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .single();
 
   if (!post) {
-    return { title: "Post Not Found" };
+    return { ...noIndexMetadata, title: "Post Not Found" };
   }
 
-  const siteUrl = getSiteUrl();
-  const title = `${post.title_en} | Fahami Jemal Harun`;
   const description =
     post.excerpt_en || "Read this blog post by Fahami Jemal Harun.";
-  const url = `${siteUrl}/blog/${slug}`;
-  const imageUrl = post.image_url?.startsWith("http") ? post.image_url : undefined;
-
-  return {
-    title,
+  const imageUrl = post.image_url?.startsWith("http")
+    ? post.image_url
+    : undefined;
+  return publicPageMetadata({
+    title: post.title_en,
     description,
-    keywords: [
-      "Software Engineer",
-      "Full-Stack Developer",
-      "Backend",
-      "Cloud Computing",
-      "Blog",
-    ],
-    authors: [{ name: "Fahami Jemal Harun" }],
-    openGraph: {
-      type: "article",
-      title,
-      description,
-      url,
-      siteName: "Fahami Jemal Harun Portfolio",
-      locale: "en_US",
-      publishedTime: post.published_at ?? undefined,
-      authors: ["Fahami Jemal Harun"],
-      ...(imageUrl && { images: [{ url: imageUrl }] }),
-    },
-    twitter: {
-      card: imageUrl ? "summary_large_image" : "summary",
-      title,
-      description,
-      ...(imageUrl && { images: [imageUrl] }),
-    },
-  };
+    path: `/blog/${encodeURIComponent(slug)}`,
+    image: imageUrl,
+    article: { publishedAt: post.published_at },
+  });
 }
 
 export default async function BlogPostPage({ params }: Props) {
@@ -78,7 +60,12 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   // Related posts: by shared tags or recent
-  let related: { id: string; slug: string; title_en: string; title_om: string | null }[] = [];
+  let related: {
+    id: string;
+    slug: string;
+    title_en: string;
+    title_om: string | null;
+  }[] = [];
   const postTags = (post.tags ?? []) as string[];
   if (postTags.length > 0) {
     const { data: byTag } = await supabase
@@ -107,6 +94,32 @@ export default async function BlogPostPage({ params }: Props) {
   const socialLinks = await fetchSocialLinks(supabase);
 
   return (
-    <BlogPostClient post={post} relatedPosts={related} socialLinks={socialLinks} />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeStructuredData({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title_en,
+            description: post.excerpt_en || undefined,
+            url: `${getSiteUrl()}/blog/${encodeURIComponent(slug)}`,
+            mainEntityOfPage: `${getSiteUrl()}/blog/${encodeURIComponent(slug)}`,
+            author: { "@id": personalBrand.personId },
+            publisher: { "@id": personalBrand.personId },
+            ...(post.published_at && { datePublished: post.published_at }),
+            ...(post.image_url?.startsWith("https://") && {
+              image: post.image_url,
+            }),
+            inLanguage: "en",
+          }),
+        }}
+      />
+      <BlogPostClient
+        post={post}
+        relatedPosts={related}
+        socialLinks={socialLinks}
+      />
+    </>
   );
 }

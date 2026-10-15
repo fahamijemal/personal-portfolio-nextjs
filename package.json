@@ -6,6 +6,9 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:seo": "node --test tests/seo.test.mjs",
+    "test:seo:browser": "node --test tests/seo.browser.mjs",
     "start": "next start"
   },
   "dependencies": {

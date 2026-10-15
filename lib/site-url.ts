@@ -1,21 +1,10 @@
 /**
  * Canonical site URL for sitemap, robots, and metadata.
- * On Vercel production: use NEXT_PUBLIC_SITE_URL or default production URL.
- * On preview/local: use VERCEL_URL or localhost fallback.
+ * Public metadata always uses the primary personal domain. Preview deployment
+ * hostnames and localhost must never become search or sharing URLs by default.
  */
-const PRODUCTION_URL = "https://fahamijemal.vercel.app";
+export const PERSONAL_ORIGIN = "https://fahami.ifaatechnologies.tech";
 
 export function getSiteUrl(): string {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL;
-  }
-  // Production deployment: always use canonical URL
-  if (process.env.VERCEL_ENV === "production") {
-    return PRODUCTION_URL;
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  // Local development fallback
-  return "http://localhost:3000";
+  return PERSONAL_ORIGIN;
 }

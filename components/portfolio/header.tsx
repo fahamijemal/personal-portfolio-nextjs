@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Menu, X, Moon, Sun, Globe, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useI18n } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
+import { ProfileLanguageLink } from "./profile-language-link";
 
 const navItems = [
   { key: "home", href: "#home" },
@@ -25,6 +27,8 @@ const navItems = [
 ] as const;
 
 export function Header() {
+  const pathname = usePathname();
+  const sectionHref = (hash: string) => (pathname === "/" ? hash : `/${hash}`);
   const [isOpen, setIsOpen] = useState(false);
   const [profileImageError, setProfileImageError] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("home");
@@ -46,7 +50,7 @@ export function Header() {
           }
         }
       },
-      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+      { rootMargin: "-20% 0px -60% 0px", threshold: 0 },
     );
 
     sections.forEach(({ element }) => {
@@ -85,25 +89,34 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav
+            aria-label="Main navigation"
+            className="hidden lg:flex items-center gap-1"
+          >
             {navItems.map((item) => {
               const sectionId = item.href.slice(1);
               const isActive = activeSection === sectionId;
               return (
                 <Link
                   key={item.key}
-                  href={item.href}
+                  href={sectionHref(item.href)}
                   className={cn(
                     "px-3 py-2 text-sm font-medium transition-colors",
                     isActive
                       ? "text-accent-brand"
-                      : "text-muted-foreground hover:text-accent-brand"
+                      : "text-muted-foreground hover:text-accent-brand",
                   )}
                 >
                   {t.nav[item.key as keyof typeof t.nav]}
                 </Link>
               );
             })}
+            <ProfileLanguageLink
+              language="om"
+              className="px-3 py-2 text-sm font-medium text-primary hover:underline underline-offset-4"
+            >
+              Afaan Oromo
+            </ProfileLanguageLink>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -155,12 +168,17 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden h-9 w-9"
+              className="lg:hidden h-9 w-9"
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
               aria-controls="mobile-nav"
+              aria-label={isOpen ? "Close navigation" : "Open navigation"}
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>
@@ -170,7 +188,7 @@ export function Header() {
       {isOpen && (
         <div
           id="mobile-nav"
-          className="md:hidden border-t border-border bg-background"
+          className="lg:hidden border-t border-border bg-background"
           role="navigation"
           aria-label="Mobile navigation"
         >
@@ -181,12 +199,12 @@ export function Header() {
               return (
                 <Link
                   key={item.key}
-                  href={item.href}
+                  href={sectionHref(item.href)}
                   className={cn(
                     "px-3 py-3 text-sm font-medium transition-colors",
                     isActive
                       ? "text-accent-brand"
-                      : "text-muted-foreground hover:text-accent-brand"
+                      : "text-muted-foreground hover:text-accent-brand",
                   )}
                   onClick={() => setIsOpen(false)}
                 >
@@ -194,6 +212,12 @@ export function Header() {
                 </Link>
               );
             })}
+            <ProfileLanguageLink
+              language="om"
+              className="px-3 py-3 text-sm font-medium text-primary"
+            >
+              Afaan Oromo
+            </ProfileLanguageLink>
           </nav>
         </div>
       )}
