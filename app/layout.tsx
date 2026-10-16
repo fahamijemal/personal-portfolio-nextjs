@@ -1,6 +1,5 @@
 import React from "react";
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -37,6 +36,14 @@ export const metadata: Metadata = {
   },
   description: personalBrand.description,
   keywords: [
+    personalBrand.name,
+    personalBrand.companyName,
+    ...personalBrand.companyAliases,
+    "IFAA",
+    "IFAA ENTRANCE",
+    "qormaata interaansii",
+    "Ethiopia",
+    "Oromia",
     "Software Engineer",
     "Full-Stack Developer",
     "Backend Developer",
@@ -88,10 +95,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const language =
-    (await headers()).get("x-portfolio-language") === "om" ? "om" : "en";
   return (
-    <html lang={language} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}
       >

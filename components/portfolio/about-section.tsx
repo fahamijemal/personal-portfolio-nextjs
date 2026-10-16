@@ -13,7 +13,9 @@ export function AboutSection({ aboutContent }: AboutSectionProps) {
   const { t, language } = useI18n();
 
   const title =
-    (language === "om" && aboutContent?.title_om) || aboutContent?.title_en || t.about.title;
+    (language === "om" && aboutContent?.title_om) ||
+    aboutContent?.title_en ||
+    t.about.title;
   const description =
     (language === "om" && aboutContent?.description_om) ||
     aboutContent?.description_en ||
@@ -62,6 +64,21 @@ export function AboutSection({ aboutContent }: AboutSectionProps) {
           {description}
         </p>
 
+        <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12 leading-7">
+          Fahami Jemal Harun is the founder of IFAA TECHNOLOGIES, also known as
+          Ifaa Technology or Ifaa Tech, building software and digital products
+          for Ethiopia and Oromia. The brand is also written as{" "}
+          <span lang="om">Ifaa Teknoonoojii</span> or{" "}
+          <span lang="om">Teknoolojii Ifaa</span>. Explore{" "}
+          <a
+            href="https://www.ifaatechnologies.tech/products/ifaa-entrance"
+            className="text-primary hover:underline"
+          >
+            IFAA ENTRANCE
+          </a>
+          , the company’s Ethiopian entrance exam preparation product (
+          <span lang="om">qormaata interaansii</span>).
+        </p>
         <div className="grid md:grid-cols-3 gap-6">
           {highlights.map((item) => (
             <Card key={item.title} className="bg-card border-border">

@@ -5,6 +5,13 @@ export const personalBrand = {
   name: "Fahami Jemal Harun",
   personId: `${PERSONAL_ORIGIN}/#person`,
   companyName: "IFAA TECHNOLOGIES",
+  companyAliases: [
+    "Ifaa Technology",
+    "Ifaa Tech",
+    "Ifaa Tech Ethiopia",
+    "Ifaa Teknoonoojii",
+    "Teknoolojii Ifaa",
+  ],
   companyUrl: "https://www.ifaatechnologies.tech/",
   companyId: "https://www.ifaatechnologies.tech/#organization",
   github: "https://github.com/fahamijemal",
@@ -18,7 +25,6 @@ export function publicPageMetadata({
   title,
   description,
   path,
-  oromo = false,
   home = false,
   image,
   article,
@@ -26,7 +32,6 @@ export function publicPageMetadata({
   title: string;
   description: string;
   path: string;
-  oromo?: boolean;
   home?: boolean;
   image?: string;
   article?: { publishedAt?: string | null };
@@ -40,13 +45,6 @@ export function publicPageMetadata({
     description,
     alternates: {
       canonical: url,
-      ...(home && {
-        languages: {
-          en: `${origin}/`,
-          om: `${origin}/om`,
-          "x-default": `${origin}/`,
-        },
-      }),
     },
     openGraph: {
       type: article ? "article" : "website",
@@ -54,8 +52,7 @@ export function publicPageMetadata({
       title: fullTitle,
       description,
       siteName: personalBrand.name,
-      locale: oromo ? "om_ET" : "en_ET",
-      ...(home && { alternateLocale: oromo ? "en_ET" : "om_ET" }),
+      locale: "en_ET",
       images: [
         {
           url: shareImage,
@@ -105,6 +102,7 @@ export function personalIdentityGraph() {
         "@type": "Organization",
         "@id": personalBrand.companyId,
         name: personalBrand.companyName,
+        alternateName: personalBrand.companyAliases,
         url: personalBrand.companyUrl,
         founder: { "@id": personalBrand.personId },
       },
@@ -113,7 +111,7 @@ export function personalIdentityGraph() {
         "@id": `${PERSONAL_ORIGIN}/#website`,
         url: `${PERSONAL_ORIGIN}/`,
         name: personalBrand.name,
-        inLanguage: ["en", "om"],
+        inLanguage: "en",
         publisher: { "@id": personalBrand.personId },
       },
     ],
@@ -124,7 +122,7 @@ export function serializeStructuredData(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-export function profilePageGraph(path: "/" | "/om", language: "en" | "om") {
+export function profilePageGraph(path: "/") {
   const url = new URL(path, `${PERSONAL_ORIGIN}/`).href;
   return {
     "@context": "https://schema.org",
@@ -132,7 +130,7 @@ export function profilePageGraph(path: "/" | "/om", language: "en" | "om") {
     "@id": `${url}#profile`,
     url,
     name: personalBrand.name,
-    inLanguage: language,
+    inLanguage: "en",
     mainEntity: { "@id": personalBrand.personId },
   };
 }

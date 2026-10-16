@@ -136,7 +136,7 @@ export async function startHarness() {
   }
   for (let attempt = 0; attempt < 80; attempt++) {
     try {
-      const response = await fetch(`${base}/om`);
+      const response = await fetch(`${base}/`);
       if (response.ok) return { stop, requests };
     } catch {}
     if (app.exitCode !== null) {
@@ -163,7 +163,7 @@ export function tags(html, tag) {
   return [...html.matchAll(new RegExp(`<${tag}\\b[^>]*>`, "g"))].map((match) =>
     Object.fromEntries(
       [...match[0].matchAll(/([\w:-]+)="([^"]*)"/g)].map((item) => [
-          item[1].toLowerCase(),
+        item[1].toLowerCase(),
         item[2].replaceAll("&amp;", "&"),
       ]),
     ),

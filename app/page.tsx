@@ -84,7 +84,7 @@ export default async function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: serializeStructuredData(profilePageGraph("/", "en")),
+          __html: serializeStructuredData(profilePageGraph("/")),
         }}
       />
       <PortfolioClient

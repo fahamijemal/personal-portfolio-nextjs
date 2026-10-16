@@ -22,11 +22,8 @@ after(async () => {
   await harness?.stop();
 });
 
-test("home and Oromo overview identify the same real founder with reciprocal language links", async () => {
-  for (const [path, language] of [
-    ["/", "en"],
-    ["/om", "om"],
-  ]) {
+test("English homepage identifies the founder and brand without translated-page metadata", async () => {
+  for (const [path, language] of [["/", "en"]]) {
     const { response, html } = await readPage(path);
     assert.equal(response.status, 200);
     assert.match(html, new RegExp(`<html[^>]*lang="${language}"`));
@@ -40,11 +37,7 @@ test("home and Oromo overview identify the same real founder with reciprocal lan
         .filter((link) => link.rel === "alternate" && link.hreflang)
         .map((link) => [link.hreflang, new URL(link.href).href])
         .sort(),
-      [
-        ["en", `${origin}/`],
-        ["om", `${origin}/om`],
-        ["x-default", `${origin}/`],
-      ],
+      [],
     );
     const schema = graphs(html);
     const graph = schema.find((value) => value["@graph"])["@graph"];
@@ -57,6 +50,36 @@ test("home and Oromo overview identify the same real founder with reciprocal lan
     );
     assert.equal(person.worksFor, undefined);
     assert.equal(
+      graph.find((value) => value["@type"] === "WebSite").inLanguage,
+      "en",
+    );
+    const organization = graph.find(
+      (value) => value["@type"] === "Organization",
+    );
+    const keywords = tags(html, "meta").find(
+      (meta) => meta.name === "keywords",
+    )?.content;
+    for (const alias of [
+      "Ifaa Technology",
+      "Ifaa Tech",
+      "Ifaa Tech Ethiopia",
+      "Ifaa Teknoonoojii",
+      "Teknoolojii Ifaa",
+    ]) {
+      assert.ok(organization.alternateName.includes(alias));
+      assert.ok(keywords.includes(alias));
+    }
+    for (const phrase of [
+      "Fahami Jemal Harun",
+      "IFAA ENTRANCE",
+      "qormaata interaansii",
+      "Ethiopia",
+      "Oromia",
+    ])
+      assert.ok(keywords.includes(phrase));
+    assert.ok(!tags(html, "a").some((link) => link.href === "/om"));
+
+    assert.equal(
       schema.find((value) => value["@type"] === "ProfilePage").mainEntity[
         "@id"
       ],
@@ -64,6 +87,16 @@ test("home and Oromo overview identify the same real founder with reciprocal lan
     );
     assert.match(html, /https:\/\/www\.ifaatechnologies\.tech\//);
   }
+});
+
+test("retired /om permanently redirects without a translated page", async () => {
+  const response = await fetch(`${base}/om?utm_source=old-link`, {
+    redirect: "manual",
+  });
+  assert.equal(response.status, 308);
+  assert.equal(new URL(response.headers.get("location"), base).pathname, "/");
+  const home = await fetch(new URL(response.headers.get("location"), base));
+  assert.equal(home.status, 200);
 });
 
 test("English collection pages use their own canonical and sharing URLs without fake translations", async () => {
@@ -109,10 +142,16 @@ test("published details have specific metadata while unpublished articles stay u
     ),
   );
   assert.ok(!draft.html.includes("Private draft fixture"));
-  const limitedBot = await fetch(`${base}/blog/seo-fixture-draft`, { headers: { "User-Agent": "Twitterbot" } });
+  const limitedBot = await fetch(`${base}/blog/seo-fixture-draft`, {
+    headers: { "User-Agent": "Twitterbot" },
+  });
   const limitedHtml = await limitedBot.text();
   assert.ok([200, 404].includes(limitedBot.status));
-  assert.ok(tags(limitedHtml, "meta").some(meta => meta.name === "robots" && meta.content.includes("noindex")));
+  assert.ok(
+    tags(limitedHtml, "meta").some(
+      (meta) => meta.name === "robots" && meta.content.includes("noindex"),
+    ),
+  );
   assert.ok(!limitedHtml.includes("Private draft fixture"));
 });
 
@@ -146,7 +185,8 @@ test("robots and rendered sitemap use the primary host and omit fabricated dates
   assert.ok(!robots.includes("Disallow: /auth"));
   assert.match(robots, new RegExp(`Sitemap: ${origin}/sitemap.xml`));
   const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
-  assert.ok(sitemap.includes(`${origin}/om`));
+  assert.ok(!sitemap.includes(`${origin}/om`));
+  assert.ok(!sitemap.includes("hreflang"));
   assert.ok(!sitemap.includes("fahamijemal.vercel.app"));
 });
 

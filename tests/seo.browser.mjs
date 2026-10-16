@@ -24,44 +24,16 @@ after(async () => {
   await harness?.stop();
 });
 
-test("explicit profile language navigation and saved translation keep document and content aligned", async () => {
+test("retired translation redirects and saved Oromo preferences cannot change the English site", async () => {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
   });
   const page = await context.newPage();
   try {
-    await page.goto(`${base}/om`, { waitUntil: "networkidle" });
-    await page
-      .getByRole("link", { name: "English profile", exact: true })
-      .click();
-    await page.waitForURL(`${base}/`);
-    await page
-      .getByRole("heading", {
-        name: "Founder of IFAA TECHNOLOGIES.",
-        exact: true,
-      })
-      .waitFor();
-    assert.equal(await page.locator("html").getAttribute("lang"), "en");
-    await page
-      .locator('nav[aria-label="Main navigation"]')
-      .getByRole("link", { name: "Afaan Oromo", exact: true })
-      .click();
-    await page.waitForURL(`${base}/om`);
-    assert.equal(await page.locator("html").getAttribute("lang"), "om");
-    await page.evaluate(() => localStorage.setItem("language", "om"));
     await page.goto(`${base}/`, { waitUntil: "networkidle" });
-    await page
-      .getByRole("heading", {
-        name: "Hundeessaa IFAA TECHNOLOGIES.",
-        exact: true,
-      })
-      .waitFor();
-    assert.equal(await page.locator("html").getAttribute("lang"), "om");
-    await page
-      .locator('nav[aria-label="Profile languages and company"]')
-      .getByRole("link", { name: "English", exact: true })
-      .click();
-    await page.waitForURL(`${base}/`);
+    await page.evaluate(() => localStorage.setItem("language", "om"));
+    await page.goto(`${base}/om`, { waitUntil: "networkidle" });
+    assert.equal(page.url(), `${base}/`);
     await page
       .getByRole("heading", {
         name: "Founder of IFAA TECHNOLOGIES.",
@@ -69,18 +41,39 @@ test("explicit profile language navigation and saved translation keep document a
       })
       .waitFor();
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
+    assert.equal(await page.locator('a[href="/om"]').count(), 0);
+    assert.equal(
+      await page.getByRole("button", { name: "Toggle language" }).count(),
+      0,
+    );
+    assert.ok(
+      (await page.locator("#about").innerText()).includes(
+        "qormaata interaansii",
+      ),
+    );
+    assert.ok(
+      (await page.locator("#about").innerText()).includes("Ifaa Teknoonoojii"),
+    );
+    await page.reload({ waitUntil: "networkidle" });
+    assert.equal(await page.locator("html").getAttribute("lang"), "en");
+    await page
+      .getByRole("heading", {
+        name: "Founder of IFAA TECHNOLOGIES.",
+        exact: true,
+      })
+      .waitFor();
   } finally {
     await context.close();
   }
 });
 
-test("Oromo profile is readable on desktop and mobile with bundled fonts", async () => {
+test("English portfolio fits desktop and mobile with bundled fonts", async () => {
   for (const width of [1440, 390]) {
     const page = await browser.newPage({ viewport: { width, height: 1000 } });
     try {
-      await page.goto(`${base}/om`, { waitUntil: "networkidle" });
+      await page.goto(`${base}/`, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
-      assert.equal(await page.locator("html").getAttribute("lang"), "om");
+      assert.equal(await page.locator("html").getAttribute("lang"), "en");
       assert.equal(await page.locator("h1").count(), 1);
       assert.ok(
         await page.evaluate(

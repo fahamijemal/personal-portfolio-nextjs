@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Menu, X, Moon, Sun, Globe, User } from "lucide-react";
+import { Menu, X, Moon, Sun, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useI18n } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
-import { ProfileLanguageLink } from "./profile-language-link";
 
 const navItems = [
   { key: "home", href: "#home" },
@@ -33,7 +32,7 @@ export function Header() {
   const [profileImageError, setProfileImageError] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("home");
   const { theme, setTheme } = useTheme();
-  const { language, setLanguage, t } = useI18n();
+  const { t } = useI18n();
 
   useEffect(() => {
     const sections = navItems.map((item) => ({
@@ -111,37 +110,9 @@ export function Header() {
                 </Link>
               );
             })}
-            <ProfileLanguageLink
-              language="om"
-              className="px-3 py-2 text-sm font-medium text-primary hover:underline underline-offset-4"
-            >
-              Afaan Oromo
-            </ProfileLanguageLink>
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* Language Toggle */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  <Globe className="h-4 w-4" />
-                  <span className="sr-only">Toggle language</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLanguage("en")}>
-                  <span className={cn(language === "en" && "font-bold")}>
-                    {t.language.en}
-                  </span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage("om")}>
-                  <span className={cn(language === "om" && "font-bold")}>
-                    {t.language.om}
-                  </span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             {/* Theme Toggle */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -212,12 +183,6 @@ export function Header() {
                 </Link>
               );
             })}
-            <ProfileLanguageLink
-              language="om"
-              className="px-3 py-3 text-sm font-medium text-primary"
-            >
-              Afaan Oromo
-            </ProfileLanguageLink>
           </nav>
         </div>
       )}

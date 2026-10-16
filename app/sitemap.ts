@@ -6,14 +6,8 @@ export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
-  const homeLanguages = {
-    en: `${siteUrl}/`,
-    om: `${siteUrl}/om`,
-    "x-default": `${siteUrl}/`,
-  };
   const pages: MetadataRoute.Sitemap = [
-    { url: `${siteUrl}/`, alternates: { languages: homeLanguages } },
-    { url: `${siteUrl}/om`, alternates: { languages: homeLanguages } },
+    { url: `${siteUrl}/` },
     { url: `${siteUrl}/projects` },
     { url: `${siteUrl}/blog` },
     { url: `${siteUrl}/certificates` },
