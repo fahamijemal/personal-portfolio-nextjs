@@ -13,16 +13,18 @@ export const translations = {
     hero: {
       greeting: "Hi, I'm",
       name: "Fahami Jemal Harun",
-      role: "Software Engineering Student | Full-Stack Developer",
+      role: "Full-Stack Developer",
       subtitle: "Backend & Cloud Focus",
-      description: "Passionate about building scalable applications and cloud-native solutions. Currently pursuing my degree while working on real-world projects.",
+      description:
+        "I’m a Software Engineering student focused on backend development, cloud systems, and practical digital products. Through IFAA TECHNOLOGIES, I turn ideas into reliable software for people and businesses in Ethiopia and beyond.",
       viewProjects: "View Projects",
       downloadResume: "Download Resume",
       contactMe: "Contact Me",
     },
     about: {
       title: "About Me",
-      description: "I am a Software Engineering student with strong interests in backend engineering, cloud infrastructure, and distributed systems. I enjoy designing scalable architectures and building production-ready applications that solve real business problems. I am continuously improving my skills in modern development practices, system design, DevOps, and AI integration, with the goal of contributing to global technology teams.",
+      description:
+        "I am a Software Engineering student with strong interests in backend engineering, cloud infrastructure, and distributed systems. I enjoy designing scalable architectures and building production-ready applications that solve real business problems. I am continuously improving my skills in modern development practices, system design, DevOps, and AI integration, with the goal of contributing to global technology teams.",
       education: "Education",
       experience: "Experience",
       interests: "Interests",
@@ -113,14 +115,16 @@ export const translations = {
       name: "Faahaamii Jamaal Haaruun",
       role: "Barataa Injinariingii Sooftiweerii | Guddiftuu Full-Stack",
       subtitle: "Xiyyeeffannoo Backend & Cloud",
-      description: "Appilikeeshinii guddaa fi furmaata cloud-native ijaaruu irratti fedhii guddaa qaba. Yeroo ammaa digirii koo hordofaa pirojektii qabatamaa irratti hojjechaan jira.",
+      description:
+        "Appilikeeshinii guddaa fi furmaata cloud-native ijaaruu irratti fedhii guddaa qaba. Yeroo ammaa digirii koo hordofaa pirojektii qabatamaa irratti hojjechaan jira.",
       viewProjects: "Pirojektii Ilaali",
       downloadResume: "CV Buufadhu",
       contactMe: "Na Quunnamaa",
     },
     about: {
       title: "Waa'ee Koo",
-      description: "Ani barataa Injinariingii Sooftiweerii cimaa kan xiyyeeffannoo guddaa guddina backend fi teekinooloojii cloud irratti qabu dha. Imalli koo teeknooloojii keessatti teekinooloojii fi framework adda addaa waliin akkan hojjedhu na taasiseera, yeroo hunda koodii qulqulluu, gahumsa qabu, fi kunuunsa danda'u barreessuuf carraaqaa.",
+      description:
+        "Ani barataa Injinariingii Sooftiweerii cimaa kan xiyyeeffannoo guddaa guddina backend fi teekinooloojii cloud irratti qabu dha. Imalli koo teeknooloojii keessatti teekinooloojii fi framework adda addaa waliin akkan hojjedhu na taasiseera, yeroo hunda koodii qulqulluu, gahumsa qabu, fi kunuunsa danda'u barreessuuf carraaqaa.",
       education: "Barnootaa",
       experience: "Muuxannoo",
       interests: "Fedhii",

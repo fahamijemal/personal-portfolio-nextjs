@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, Mail, Heart, Send } from "lucide-react";
+import { Github, Linkedin, Mail, Send } from "lucide-react";
 import { useI18n } from "@/lib/i18n/context";
 import { getSocialLinkUrls } from "@/lib/site-content";
 import type { SocialLinks } from "@/lib/site-content";
@@ -66,14 +66,8 @@ export function Footer({ socialLinks }: FooterProps) {
             </a>
           </div>
 
-          <p className="text-sm text-muted-foreground flex items-center gap-1">
-            {t.footer.madeWith}{" "}
-            <Heart className="h-4 w-4 text-red-500 fill-current" /> by Fahami
-            Jemal Harun
-          </p>
-
           <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} {t.footer.rights}
+            &copy; {currentYear} Fahami Jemal Harun. {t.footer.rights}
           </p>
         </div>
       </div>

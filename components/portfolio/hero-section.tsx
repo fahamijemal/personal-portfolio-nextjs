@@ -1,8 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowDown, Download, Github, Linkedin, Mail, Send } from "lucide-react";
+import {
+  ArrowDown,
+  Download,
+  Github,
+  Linkedin,
+  Mail,
+  Send,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { personalBrand } from "@/lib/personal-seo";
 import { useI18n } from "@/lib/i18n/context";
 import type { HeroContent, SocialLinks } from "@/lib/site-content";
 
@@ -25,13 +33,13 @@ export function HeroSection({
   const { t, language } = useI18n();
 
   const greeting =
-    (language === "om" && heroContent?.greeting_om) || heroContent?.greeting_en || t.hero.greeting;
+    (language === "om" && heroContent?.greeting_om) ||
+    heroContent?.greeting_en ||
+    t.hero.greeting;
   const name =
-    (language === "om" && heroContent?.name_om) || heroContent?.name_en || t.hero.name;
-  const role =
-    (language === "om" && heroContent?.role_om) || heroContent?.role_en || t.hero.role;
-  const subtitle =
-    (language === "om" && heroContent?.subtitle_om) || heroContent?.subtitle_en || t.hero.subtitle;
+    (language === "om" && heroContent?.name_om) ||
+    heroContent?.name_en ||
+    t.hero.name;
   const description =
     (language === "om" && heroContent?.description_om) ||
     heroContent?.description_en ||
@@ -54,11 +62,15 @@ export function HeroSection({
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4 text-balance">
           {name}
         </h1>
-        <h2 className="text-xl sm:text-2xl text-muted-foreground mb-2">
-          {role}
-        </h2>
-        <p className="text-lg text-accent-brand/90 font-medium mb-6">
-          {subtitle}
+        <p className="text-lg sm:text-xl text-muted-foreground mb-6 text-balance">
+          Full-Stack Developer <span aria-hidden="true">&middot;</span> Founder
+          of{" "}
+          <a
+            href={personalBrand.companyUrl}
+            className="font-medium text-primary hover:underline underline-offset-4"
+          >
+            IFAA TECHNOLOGIES
+          </a>
         </p>
         <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-pretty">
           {description}
@@ -70,7 +82,11 @@ export function HeroSection({
           </Button>
           {resumeDownloadHref ? (
             <Button variant="outline" size="lg" asChild>
-              <a href={resumeDownloadHref} target="_blank" rel="noopener noreferrer">
+              <a
+                href={resumeDownloadHref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Download className="mr-2 h-4 w-4" />
                 {t.hero.downloadResume}
               </a>
@@ -120,6 +136,7 @@ export function HeroSection({
 
         <Link
           href="#about"
+          aria-label="About my background"
           className="inline-flex items-center text-muted-foreground hover:text-accent-brand transition-colors animate-bounce"
         >
           <ArrowDown className="h-6 w-6" />

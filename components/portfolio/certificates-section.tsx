@@ -3,11 +3,20 @@
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n/context";
 import type { Certificate } from "@/lib/types";
 
-export function CertificatesSection({ certificates }: { certificates: Certificate[] }) {
+export function CertificatesSection({
+  certificates,
+}: {
+  certificates: Certificate[];
+}) {
   const { language, t } = useI18n();
 
   return (
@@ -21,7 +30,9 @@ export function CertificatesSection({ certificates }: { certificates: Certificat
         </p>
 
         {certificates.length === 0 ? (
-          <p className="text-center text-muted-foreground py-10">No certificates yet.</p>
+          <p className="text-center text-muted-foreground py-10">
+            No certificates yet.
+          </p>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {certificates.map((c) => (
@@ -39,19 +50,24 @@ export function CertificatesSection({ certificates }: { certificates: Certificat
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={c.image_url}
-                      alt={c.title_en}
+                      alt=""
                       className="w-full h-40 object-contain rounded-md bg-secondary/20"
                     />
                   ) : null}
                   {c.issued_at ? (
                     <p className="text-xs text-muted-foreground mt-3">
-                      {t.certificates.issued}: {new Date(c.issued_at).toLocaleDateString()}
+                      {t.certificates.issued}:{" "}
+                      {new Date(c.issued_at).toLocaleDateString()}
                     </p>
                   ) : null}
                 </CardContent>
                 <CardFooter className="gap-2">
                   <Button size="sm" asChild>
-                    <a href={c.credential_url} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={c.credential_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <ExternalLink className="h-4 w-4 mr-1" />
                       {t.certificates.viewCredential}
                     </a>
@@ -71,4 +87,3 @@ export function CertificatesSection({ certificates }: { certificates: Certificat
     </section>
   );
 }
-

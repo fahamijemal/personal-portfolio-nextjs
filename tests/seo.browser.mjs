@@ -35,10 +35,7 @@ test("retired translation redirects and saved Oromo preferences cannot change th
     await page.goto(`${base}/om`, { waitUntil: "networkidle" });
     assert.equal(page.url(), `${base}/`);
     await page
-      .getByRole("heading", {
-        name: "Founder of IFAA TECHNOLOGIES.",
-        exact: true,
-      })
+      .locator('#home a[href="https://www.ifaatechnologies.tech/"]')
       .waitFor();
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
     assert.equal(await page.locator('a[href="/om"]').count(), 0);
@@ -46,21 +43,23 @@ test("retired translation redirects and saved Oromo preferences cannot change th
       await page.getByRole("button", { name: "Toggle language" }).count(),
       0,
     );
+    assert.match(
+      await page.locator("#home").innerText(),
+      /Full-Stack Developer.*Founder of/s,
+    );
+    assert.equal(await page.locator("#founder-title").count(), 0);
     assert.ok(
-      (await page.locator("#about").innerText()).includes(
-        "qormaata interaansii",
-      ),
+      !(await page.locator("#about").innerText()).includes("also known as"),
     );
     assert.ok(
-      (await page.locator("#about").innerText()).includes("Ifaa Teknoonoojii"),
+      !(await page.locator("#about").innerText()).includes(
+        "qormaata interaansii",
+      ),
     );
     await page.reload({ waitUntil: "networkidle" });
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
     await page
-      .getByRole("heading", {
-        name: "Founder of IFAA TECHNOLOGIES.",
-        exact: true,
-      })
+      .locator('#home a[href="https://www.ifaatechnologies.tech/"]')
       .waitFor();
   } finally {
     await context.close();

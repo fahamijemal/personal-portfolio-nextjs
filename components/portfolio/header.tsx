@@ -66,12 +66,16 @@ export function Header() {
       </a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
+          <Link
+            href="/"
+            aria-label="Fahami Jemal Harun home"
+            className="flex items-center gap-2"
+          >
             {!profileImageError ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src="/api/profile-image"
-                alt="Profile photo"
+                alt=""
                 width={48}
                 height={48}
                 className="rounded-full object-cover w-12 h-12"
