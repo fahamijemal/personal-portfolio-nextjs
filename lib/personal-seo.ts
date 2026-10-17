@@ -3,6 +3,24 @@ import { getSiteUrl, PERSONAL_ORIGIN } from "@/lib/site-url";
 
 export const personalBrand = {
   name: "Fahami Jemal Harun",
+  // Search/name variants supplied by the owner; keep one canonical identity.
+  nameVariants: [
+    "Fahami",
+    "Fami",
+    "Fahmi",
+    "Fahami Jemal",
+    "Fahami Jamal",
+    "Fahami Jamel",
+  ],
+  title: "Fahami Jemal Harun | Developer & Founder, IFAA Technologies",
+  location: { city: "Adama", region: "Oromia", country: "Ethiopia" },
+  topics: [
+    "Software engineering",
+    "Full-stack development",
+    "Backend development",
+    "Cloud computing",
+    "Digital products",
+  ],
   personId: `${PERSONAL_ORIGIN}/#person`,
   companyName: "IFAA TECHNOLOGIES",
   companyAliases: [
@@ -43,6 +61,17 @@ export function publicPageMetadata({
   return {
     title: home ? { absolute: title } : title,
     description,
+    robots: {
+      index: process.env.VERCEL_ENV !== "preview",
+      follow: true,
+      googleBot: {
+        index: process.env.VERCEL_ENV !== "preview",
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
     alternates: {
       canonical: url,
     },
@@ -88,6 +117,21 @@ export function personalIdentityGraph() {
         "@type": "Person",
         "@id": personalBrand.personId,
         name: personalBrand.name,
+        alternateName: personalBrand.nameVariants,
+        knowsAbout: personalBrand.topics,
+        homeLocation: {
+          "@type": "City",
+          name: personalBrand.location.city,
+          containedInPlace: {
+            "@type": "AdministrativeArea",
+            name: personalBrand.location.region,
+            containedInPlace: {
+              "@type": "Country",
+              name: personalBrand.location.country,
+            },
+          },
+        },
+        subjectOf: { "@id": `${PERSONAL_ORIGIN}/#profile` },
         url: `${PERSONAL_ORIGIN}/`,
         description: personalBrand.description,
         jobTitle: "Software Developer and Founder of IFAA TECHNOLOGIES",
@@ -112,6 +156,7 @@ export function personalIdentityGraph() {
         url: `${PERSONAL_ORIGIN}/`,
         name: personalBrand.name,
         inLanguage: "en",
+        about: { "@id": personalBrand.personId },
         publisher: { "@id": personalBrand.personId },
       },
     ],
@@ -130,6 +175,8 @@ export function profilePageGraph(path: "/") {
     "@id": `${url}#profile`,
     url,
     name: personalBrand.name,
+    description: personalBrand.description,
+    isPartOf: { "@id": `${PERSONAL_ORIGIN}/#website` },
     inLanguage: "en",
     mainEntity: { "@id": personalBrand.personId },
   };

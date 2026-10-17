@@ -44,6 +44,31 @@ test("English homepage identifies the founder and brand without translated-page 
     const person = graph.find((value) => value["@type"] === "Person");
     assert.equal(person["@id"], `${origin}/#person`);
     assert.equal(person.name, "Fahami Jemal Harun");
+    assert.deepEqual(person.alternateName, [
+      "Fahami",
+      "Fami",
+      "Fahmi",
+      "Fahami Jemal",
+      "Fahami Jamal",
+      "Fahami Jamel",
+    ]);
+    assert.equal(person.homeLocation.name, "Adama");
+    assert.equal(person.homeLocation.containedInPlace.name, "Oromia");
+    assert.equal(
+      person.homeLocation.containedInPlace.containedInPlace.name,
+      "Ethiopia",
+    );
+    assert.ok(person.knowsAbout.includes("Backend development"));
+    assert.equal(person.subjectOf["@id"], `${origin}/#profile`);
+    assert.match(html, /Developer &amp; Founder, IFAA Technologies/);
+    const robots = tags(html, "meta").find(
+      (meta) => meta.name === "robots",
+    )?.content;
+    assert.match(robots, /^index, follow/);
+    assert.match(
+      tags(html, "meta").find((meta) => meta.name === "googlebot")?.content,
+      /max-snippet:-1/,
+    );
     assert.equal(
       person.affiliation["@id"],
       "https://www.ifaatechnologies.tech/#organization",
@@ -60,13 +85,15 @@ test("English homepage identifies the founder and brand without translated-page 
       (meta) => meta.name === "keywords",
     )?.content;
     for (const alias of [
+      ...person.alternateName,
       "Ifaa Technology",
       "Ifaa Tech",
       "Ifaa Tech Ethiopia",
       "Ifaa Teknoonoojii",
       "Teknoolojii Ifaa",
     ]) {
-      assert.ok(organization.alternateName.includes(alias));
+      if (!person.alternateName.includes(alias))
+        assert.ok(organization.alternateName.includes(alias));
       assert.ok(keywords.includes(alias));
     }
     for (const phrase of [

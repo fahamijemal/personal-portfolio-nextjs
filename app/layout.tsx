@@ -31,12 +31,13 @@ const siteUrl = getSiteUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Fahami Jemal Harun | Software Developer & IFAA Founder",
+    default: personalBrand.title,
     template: "%s | Fahami Jemal Harun",
   },
   description: personalBrand.description,
   keywords: [
     personalBrand.name,
+    ...personalBrand.nameVariants,
     personalBrand.companyName,
     ...personalBrand.companyAliases,
     "IFAA",
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_ET",
-    title: "Fahami Jemal Harun | Software Developer & IFAA Founder",
+    title: personalBrand.title,
     description: personalBrand.description,
     siteName: personalBrand.name,
     images: [
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fahami Jemal Harun | Software Developer & IFAA Founder",
+    title: personalBrand.title,
     description: personalBrand.description,
     images: ["/opengraph-image"],
   },

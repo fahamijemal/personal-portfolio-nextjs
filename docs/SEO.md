@@ -36,3 +36,37 @@ The existing Next.js loading boundaries can stream a missing article response wi
 Keep the name **Fahami Jemal Harun**, founder role, and website consistent across owner-managed public profiles. Link original technical writing, real projects, and the company where relevant. Publish first-hand articles about software development, learning, and practical technology for Ethiopian and Oromo audiences.
 
 Use the supplied names **Ifaa Technologies**, **Ifaa Technology**, **Ifaa Tech**, **Ifaa Tech Ethiopia**, and **IFAA**, together with **Fahami Jemal Harun**, **Ethiopia**, and **Oromia** in relevant English content. The Oromo brand variants **Ifaa Teknoonoojii** and **Teknoolojii Ifaa** remain in organization aliases and metadata; **qormaata interaansii** remains in metadata. The company’s product page provides relevant entrance exam content. The personal biography avoids keyword lists and duplicate brand paragraphs. These phrases do not imply translated pages. Keep the founder and company identities consistent across owner-managed profiles. Avoid hidden keywords, repetition, fake offices, or unsupported ranking claims. Google does not use the keywords meta tag for ranking; useful visible content, real links, and accurate structured data matter.
+
+## Personal name discovery and AI answers (GEO)
+
+The canonical identity is **Fahami Jemal Harun**, a software developer and founder
+of **IFAA TECHNOLOGIES**. The owner supplied these search spelling variants:
+**Fahami**, **Fami**, **Fahmi**, **Fahami Jemal**, **Fahami Jamal**, and
+**Fahami Jamel**. Person.alternateName connects them to one identity; they are
+not separate people, pages, companies, or additional biographies. Keep the full
+name as the visible heading and in titles. Do not create duplicate typo pages or
+place a spelling list into the professional introduction.
+
+The Person, ProfilePage, WebSite and Organization nodes share stable references.
+The profile uses the existing public location Adama, Oromia, Ethiopia and the
+professional topics already described on the site. Geography does not imply an
+office address, service coverage guarantee, nationality, or invented credentials.
+Original projects/articles, a concise server-rendered introduction, profile links,
+and accurate metadata help both search engines and AI answer systems understand
+the same facts. Public pages allow snippets and large image previews; private
+pages remain noindex. GEO here means generative engine optimization, alongside
+accurate geographic context. There is no special metadata tag that guarantees
+AI citations, and no assumption that an llms.txt file is required.
+
+After deployment, open the **homepage** in URL Inspection, use Test live URL,
+then Request indexing if eligible. Submit the sitemap in the Sitemaps report;
+the sitemap is a discovery file, not the page expected to rank for your name.
+Check whether the homepage is indexed before diagnosing positions for spelling
+variants. Google does not use meta keywords as a ranking signal. Neither the
+name variants nor structured data guarantees indexing, AI inclusion, or first
+place for short/ambiguous queries such as Fami or Fahmi.
+
+Use the canonical full name and personal URL consistently on owner-managed
+LinkedIn, GitHub and company profiles. In Search Console, compare query results
+for the full name and supplied variants after Google has crawled the deployment;
+do not interpret local regression tests as live indexing or ranking evidence.

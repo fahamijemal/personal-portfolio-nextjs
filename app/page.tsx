@@ -7,12 +7,13 @@ import {
 } from "@/lib/site-content";
 import {
   publicPageMetadata,
+  personalBrand,
   profilePageGraph,
   serializeStructuredData,
 } from "@/lib/personal-seo";
 
 export const metadata = publicPageMetadata({
-  title: "Fahami Jemal Harun | Developer & IFAA Founder",
+  title: personalBrand.title,
   description:
     "Meet Fahami Jemal Harun, software developer and founder of IFAA TECHNOLOGIES. Explore software projects, technical writing, and digital ideas for Ethiopia and Oromia.",
   path: "/",
