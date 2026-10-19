@@ -20,6 +20,11 @@ export const personalBrand = {
     "Backend development",
     "Cloud computing",
     "Digital products",
+    "Agentic AI development",
+    "Spec-driven development",
+    "Retrieval-augmented generation",
+    "Prompt engineering",
+    "Entrepreneurship",
   ],
   personId: `${PERSONAL_ORIGIN}/#person`,
   companyName: "IFAA TECHNOLOGIES",
@@ -36,7 +41,7 @@ export const personalBrand = {
   linkedin: "https://linkedin.com/in/fahamijemal",
   telegram: "https://t.me/fahamijemal",
   description:
-    "Fahami Jemal Harun is a software developer and founder of IFAA TECHNOLOGIES, building practical digital products and software with a focus on Ethiopia and Oromia.",
+    "Fahami Jemal Harun is a full-stack developer, Software Engineering student, and founder of IFAA TECHNOLOGIES, building digital products with agentic AI, spec-driven development, and thoughtful engineering in Ethiopia.",
 } as const;
 
 export function publicPageMetadata({

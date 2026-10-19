@@ -75,7 +75,7 @@ NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:3019 NEXT_PUBLIC_SUPABASE_ANON_KEY=per
 pnpm run test:seo
 ```
 
-These settings are for local tests only. Vercel must build with the personal project's real environment settings. The eight HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
+These settings are for local tests only. Vercel must build with the personal project's real environment settings. The nine HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
 
 Optional browser checks use existing Playwright tooling without adding application dependencies. In the shared cloud environment:
 
@@ -83,7 +83,7 @@ Optional browser checks use existing Playwright tooling without adding applicati
 PLAYWRIGHT_MODULE_ROOT=/workspace/ifaatech pnpm run test:seo:browser
 ```
 
-Elsewhere, set `PLAYWRIGHT_MODULE_ROOT` to a tooling directory containing `@playwright/test` and set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to an installed Chromium executable. The two browser scenarios check English rendering despite old saved preferences, desktop/mobile layout, and local font loading. Run the HTTP and browser suites sequentially with ports 3018/3019 free.
+Elsewhere, set `PLAYWRIGHT_MODULE_ROOT` to a tooling directory containing `@playwright/test` and set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to an installed Chromium executable. The five browser scenarios check English rendering despite old saved preferences, desktop/mobile layout, real project navigation, contact feedback, accessibility, and local font loading. Run the HTTP and browser suites sequentially with ports 3018/3019 free.
 
 The repository's existing `lint` command references ESLint, but its dependency and configuration are not supplied in the current project. TypeScript and build checks do not replace a configured linter.
 
@@ -92,3 +92,27 @@ The bundled Geist and Geist Mono Latin fonts retain their [OFL license](app/font
 ## License
 
 MIT
+
+## Current portfolio presentation
+
+The homepage is an editorial developer/founder portfolio in
+`components/portfolio/studio-portfolio.tsx`, styled by `app/portfolio.css`.
+It introduces agentic AI, specification-driven development, prompt/context
+engineering, retrieval-augmented generation, review/testing, and product thinking
+alongside full-stack/backend/cloud foundations. It uses capability descriptions,
+not invented proficiency percentages or business metrics.
+
+`lib/portfolio.ts` contains the two owner-confirmed completed projects: IFAA
+ENTRANCE and the IFAA TECHNOLOGIES company platform. Their case studies live at
+`/work/ifaa-entrance` and `/work/ifaa-technologies`, and are included in the sitemap
+and project index. Screenshots are real public-page captures, not generated UI.
+The homepage prioritizes these completed projects; existing CMS projects remain
+in the project archive. No database records were inserted or overwritten.
+
+CMS social links, resume URL, education details, skills/tool names, certificates,
+and published writing continue to populate the portfolio. The new introduction,
+capabilities, development process, and curated case studies are maintained in
+source rather than inherited from old hero role/description settings. The portrait
+is the existing licensed/owner-provided `public/fahamijemal.jpg`. Existing admin,
+authentication, content publishing, and contact API/database behavior is retained.
+Contact UI checks mock responses and never send real inquiries.

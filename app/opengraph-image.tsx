@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Fahami Jemal Harun — Software Developer & Founder of IFAA TECHNOLOGIES";
+  "Fahami Jemal Harun — Full-Stack Developer & Founder of IFAA TECHNOLOGIES";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -14,8 +14,8 @@ export default function OpenGraphImage() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        background: "#0b1729",
-        color: "#ffffff",
+        background: "#f6f5f0",
+        color: "#202720",
         padding: "66px 76px",
       }}
     >
@@ -25,11 +25,11 @@ export default function OpenGraphImage() {
           alignItems: "center",
           gap: 16,
           fontSize: 19,
-          color: "#a1c2f4",
+          color: "#3e5932",
           letterSpacing: 3,
         }}
       >
-        SOFTWARE · PEOPLE · POSSIBILITIES
+        ENGINEERING · AI · ENTREPRENEURSHIP
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div
@@ -42,8 +42,8 @@ export default function OpenGraphImage() {
         >
           Fahami Jemal Harun
         </div>
-        <div style={{ fontSize: 29, color: "#b9cbe4", marginTop: 26 }}>
-          Software Developer & Founder of IFAA TECHNOLOGIES
+        <div style={{ fontSize: 29, color: "#62695f", marginTop: 26 }}>
+          Full-Stack Developer & Founder of IFAA TECHNOLOGIES
         </div>
       </div>
       <div
@@ -51,13 +51,13 @@ export default function OpenGraphImage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          borderTop: "1px solid #334155",
+          borderTop: "1px solid #dcded3",
           paddingTop: 27,
           fontSize: 19,
-          color: "#b9cbe4",
+          color: "#62695f",
         }}
       >
-        <span>Technology with a focus on Ethiopia & Oromia</span>
+        <span>Thoughtful software. Human direction.</span>
         <span>fahami.ifaatechnologies.tech</span>
       </div>
     </div>,

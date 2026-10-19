@@ -270,3 +270,40 @@ test("social preview is a real 1200 by 630 PNG", async () => {
   assert.equal(image.readUInt32BE(16), 1200);
   assert.equal(image.readUInt32BE(20), 630);
 });
+
+test("completed project case studies have unique canonicals and attributed structured data", async () => {
+  for (const [slug, title, liveUrl] of [
+    [
+      "ifaa-entrance",
+      "IFAA ENTRANCE",
+      "https://entrance.ifaatechnologies.tech/en",
+    ],
+    [
+      "ifaa-technologies",
+      "IFAA TECHNOLOGIES",
+      "https://www.ifaatechnologies.tech/",
+    ],
+  ]) {
+    const { response, html } = await readPage(`/work/${slug}`);
+    assert.equal(response.status, 200);
+    assert.equal(
+      tags(html, "link").find((link) => link.rel === "canonical")?.href,
+      `${origin}/work/${slug}`,
+    );
+    const work = graphs(html).find((node) => node["@type"] === "CreativeWork");
+    assert.equal(work.name, title);
+    assert.equal(work.url, liveUrl);
+    assert.equal(work.author["@id"], `${origin}/#person`);
+    assert.ok(!work.aggregateRating);
+    assert.ok(!work.offers);
+    const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
+    assert.ok(sitemap.includes(`${origin}/work/${slug}`));
+  }
+  const { html } = await readPage("/work/not-a-real-project");
+  assert.ok(
+    tags(html, "meta").some(
+      (meta) => meta.name === "robots" && meta.content.includes("noindex"),
+    ),
+  );
+  assert.ok(!graphs(html).some((node) => node["@type"] === "CreativeWork"));
+});

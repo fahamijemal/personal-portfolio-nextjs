@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { completedWork } from "@/lib/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 3600;
@@ -9,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages: MetadataRoute.Sitemap = [
     { url: `${siteUrl}/` },
     { url: `${siteUrl}/projects` },
+    ...completedWork.map((work) => ({ url: `${siteUrl}/work/${work.slug}` })),
     { url: `${siteUrl}/blog` },
     { url: `${siteUrl}/certificates` },
   ];

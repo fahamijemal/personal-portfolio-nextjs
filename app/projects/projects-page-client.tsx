@@ -3,10 +3,16 @@
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
 import { Header } from "@/components/portfolio/header";
+import { SelectedWork } from "@/components/portfolio/selected-work";
 import { Footer } from "@/components/portfolio/footer";
 import type { Project } from "@/lib/types";
 import type { SocialLinks } from "@/lib/site-content";
@@ -21,7 +27,7 @@ function ProjectsContent({
   const { language, t } = useI18n();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="studio min-h-screen">
       <Header />
       <main id="main-content" className="pt-24 pb-16 px-4">
         <div className="max-w-6xl mx-auto">
@@ -37,6 +43,10 @@ function ProjectsContent({
           </h1>
           <p className="text-muted-foreground mb-12">{t.projects.subtitle}</p>
 
+          <SelectedWork collection />
+          <h2 className="text-2xl font-medium mb-6">
+            From the project archive
+          </h2>
           {projects.length === 0 ? (
             <p className="text-center text-muted-foreground py-12">
               No projects yet. Check back soon!

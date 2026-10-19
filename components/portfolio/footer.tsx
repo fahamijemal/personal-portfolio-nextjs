@@ -1,75 +1,38 @@
-"use client";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { getSocialLinkUrls, type SocialLinks } from "@/lib/site-content";
 
-import { Github, Linkedin, Mail, Send } from "lucide-react";
-import { useI18n } from "@/lib/i18n/context";
-import { getSocialLinkUrls } from "@/lib/site-content";
-import type { SocialLinks } from "@/lib/site-content";
-
-type FooterProps = {
-  socialLinks?: SocialLinks | null;
-};
-
-export function Footer({ socialLinks }: FooterProps) {
-  const { t } = useI18n();
-  const currentYear = new Date().getFullYear();
+export function Footer({ socialLinks }: { socialLinks?: SocialLinks | null }) {
   const urls = getSocialLinkUrls(socialLinks);
-
   return (
-    <footer className="py-8 px-4 border-t border-border">
-      <div className="max-w-6xl mx-auto">
-        <nav
-          aria-label="Company"
-          className="mb-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm"
+    <footer className="portfolio-footer">
+      <div className="folio-container footer-top">
+        <Link href="/" className="folio-wordmark">
+          fahami<span>.</span>
+        </Link>
+        <p>Thoughtful software. Human direction.</p>
+        <a
+          href="https://www.ifaatechnologies.tech/"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <a
-            href="https://www.ifaatechnologies.tech/"
-            className="text-primary hover:underline underline-offset-4"
-          >
-            IFAA TECHNOLOGIES
+          IFAA TECHNOLOGIES <ArrowUpRight size={14} aria-hidden="true" />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+      </div>
+      <div className="folio-container footer-bottom">
+        <p>© {new Date().getFullYear()} Fahami Jemal Harun</p>
+        <nav aria-label="Footer navigation">
+          <a href={urls.github} target="_blank" rel="noopener noreferrer">
+            GitHub
           </a>
+          <a href={urls.linkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+          <Link href="/blog">Writing</Link>
+          <Link href="/certificates">Credentials</Link>
         </nav>
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <a
-              href={urls.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-accent-brand transition-colors"
-            >
-              <Github className="h-5 w-5" />
-              <span className="sr-only">GitHub</span>
-            </a>
-            <a
-              href={urls.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-accent-brand transition-colors"
-            >
-              <Linkedin className="h-5 w-5" />
-              <span className="sr-only">LinkedIn</span>
-            </a>
-            <a
-              href={urls.telegram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-accent-brand transition-colors"
-            >
-              <Send className="h-5 w-5" />
-              <span className="sr-only">Telegram</span>
-            </a>
-            <a
-              href={`mailto:${urls.email}`}
-              className="text-muted-foreground hover:text-accent-brand transition-colors"
-            >
-              <Mail className="h-5 w-5" />
-              <span className="sr-only">Email</span>
-            </a>
-          </div>
-
-          <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} Fahami Jemal Harun. {t.footer.rights}
-          </p>
-        </div>
+        <a href="#main-content">Back to top ↑</a>
       </div>
     </footer>
   );

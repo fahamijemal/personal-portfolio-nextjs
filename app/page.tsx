@@ -1,10 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { PortfolioClient } from "@/components/portfolio/portfolio-client";
-import {
-  getHeroContent,
-  getAboutContent,
-  getSocialLinks,
-} from "@/lib/site-content";
+import { getAboutContent, getSocialLinks } from "@/lib/site-content";
 import {
   publicPageMetadata,
   personalBrand,
@@ -15,7 +11,7 @@ import {
 export const metadata = publicPageMetadata({
   title: personalBrand.title,
   description:
-    "Meet Fahami Jemal Harun, software developer and founder of IFAA TECHNOLOGIES. Explore software projects, technical writing, and digital ideas for Ethiopia and Oromia.",
+    "Fahami Jemal Harun — full-stack developer and IFAA TECHNOLOGIES founder. Explore shipped products, agentic AI workflows, spec-driven development, and software engineering.",
   path: "/",
   home: true,
 });
@@ -24,19 +20,12 @@ export default async function Home() {
   const supabase = await createClient();
 
   const [
-    { data: projects },
     { data: posts },
     { data: resumeRow },
     { data: certificates },
     { data: skills },
     { data: settingsRows },
   ] = await Promise.all([
-    supabase
-      .from("projects")
-      .select("*")
-      .eq("featured", true)
-      .order("display_order", { ascending: true })
-      .limit(6),
     supabase
       .from("blog_posts")
       .select(
@@ -76,7 +65,6 @@ export default async function Home() {
     settingsMap[row.key] = row.value ?? "";
   });
 
-  const heroContent = getHeroContent(settingsMap);
   const aboutContent = getAboutContent(settingsMap);
   const socialLinks = getSocialLinks(settingsMap);
 
@@ -89,12 +77,10 @@ export default async function Home() {
         }}
       />
       <PortfolioClient
-        projects={projects || []}
         posts={posts || []}
         certificates={certificates || []}
         skills={skills || []}
         resumeDownloadHref={resumeDownloadHref}
-        heroContent={heroContent}
         aboutContent={aboutContent}
         socialLinks={socialLinks}
       />

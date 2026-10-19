@@ -11,6 +11,7 @@ import {
   serializeStructuredData,
 } from "@/lib/personal-seo";
 import "./globals.css";
+import "./portfolio.css";
 
 const geist = localFont({
   src: "./fonts/geist-latin.woff2",
