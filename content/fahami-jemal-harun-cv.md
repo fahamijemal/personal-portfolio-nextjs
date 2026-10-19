@@ -5,7 +5,7 @@ https://fahami.ifaatechnologies.tech | https://github.com/fahamijemal
 https://linkedin.com/in/fahamijemal
 
 ## Profile
-Full-stack developer and founder of IFAA TECHNOLOGIES, focused on backend systems, cloud delivery, and AI-enabled products. Project experience spans education platforms, MCP tool integration, agent orchestration, and document-based AI. Uses specifications, code review, and testing to build maintainable products for practical needs.
+Full-stack developer and founder of IFAA TECHNOLOGIES, focused on reliable backend systems, cloud delivery, and AI-enabled products. Works primarily with TypeScript and Python, using specification-led development, clear API contracts, and maintainable architecture to translate complex requirements into practical software. Applies code review and testing throughout delivery.
 
 ## Technical Skills
 **Application development:** TypeScript, JavaScript, Python, React, Next.js, Node.js, Express, NestJS, Django, REST APIs, Tailwind CSS.

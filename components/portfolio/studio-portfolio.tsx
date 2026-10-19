@@ -64,13 +64,14 @@ export function StudioPortfolio({
                 </a>
               </p>
               <p className="hero-description">
-                I build education platforms, backend services, and AI-powered
-                applications with TypeScript, Python, and specification-led
-                development.
+                I turn complex requirements into reliable software through clear
+                contracts, maintainable architecture, and specification-led
+                development. Working with TypeScript and Python, I build backend
+                systems, full-stack applications, and AI-enabled products.
               </p>
               <p className="hero-opportunity">
-                Open to software engineering opportunities and product
-                collaborations.
+                Open to software engineering roles and product collaborations
+                where technical rigor and practical impact matter.
               </p>
               <div className="hero-actions">
                 <a href="#projects" className="folio-button">
