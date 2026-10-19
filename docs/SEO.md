@@ -20,7 +20,7 @@ Keep the personal Vercel project's existing Supabase settings. This repository u
 
 After deployment, check `/`, `/om`, `/projects`, `/blog`, `/certificates`, `/sitemap.xml`, `/robots.txt`, and `/opengraph-image`. Confirm the canonical links use the personal domain, `/om` permanently redirects to `/`, no translated-page links or language alternates remain, and private/account pages stay excluded from indexing. Inspect actual published article/project URLs as well as missing-page behavior. Local fixture checks do not prove production database access, email delivery, or authenticated admin operations.
 
-For repeatable local checks, use Node.js 24 and run `pnpm run typecheck`, then the isolated fixture build and `pnpm run test:seo` commands in the README. The ten HTTP/data-boundary scenarios start their own read-only fixture and production app on loopback ports 3019/3018. A test-only guard rejects non-fixture server fetches. Optional `pnpm run test:seo:browser` runs five real-browser scenarios with externally supplied Playwright tooling, covering permanent redirects, English rendering despite old saved preferences, desktop/mobile fit, and bundled font loading. Run the suites sequentially; no hosted database credentials or real form submissions are needed. Fixture build settings must not replace the Vercel project's real environment settings. The repository's original ESLint command remains unconfigured; do not report it as passing.
+For repeatable local checks, use Node.js 24 and run `pnpm run typecheck`, then the isolated fixture build and `pnpm run test:seo` commands in the README. The twelve HTTP/data-boundary scenarios start their own read-only fixture and production app on loopback ports 3019/3018. A test-only guard rejects non-fixture server fetches. Optional `pnpm run test:seo:browser` runs six real-browser scenarios with externally supplied Playwright tooling, covering permanent redirects, English rendering despite old saved preferences, desktop/mobile fit, and bundled font loading. Run the suites sequentially; no hosted database credentials or real form submissions are needed. Fixture build settings must not replace the Vercel project's real environment settings. The repository's original ESLint command remains unconfigured; do not report it as passing.
 
 The existing Next.js loading boundaries can stream a missing article response with HTTP 200 before `notFound()` resolves. The regression checks verify noindex, the not-found view, and withheld unpublished content; they do not claim every missing URL returns an HTTP 404. Keep missing/draft URLs out of the sitemap and review their exclusion in Search Console.
 
@@ -78,11 +78,12 @@ spec-driven development, prompt/context engineering, RAG and entrepreneurship.
 The same facts are included in Person.knowsAbout and the homepage description;
 these are professional practices, not invented certifications or measured scores.
 
-Completed work is presented as two source-controlled case studies under `/work/`.
-Both have individual canonicals, sharing metadata, CreativeWork structured data
-attributed to the same Person, and sitemap entries. Public screenshots and scoped
-project descriptions distinguish implementation evidence from unverified hosted
-account behavior, email delivery or business/learning outcomes. Old CMS projects
-are retained in the archive without being presented as the two selected shipped
-products. No translated routes, duplicate biographies, typo landing pages or
-unsupported achievement claims were added.
+Three source-controlled case studies live under `/work/`: IFAA ENTRANCE,
+IFAA TECHNOLOGIES, and Project Chimera. Each has unique metadata, attributed
+CreativeWork data, architectural context, implementation tradeoffs, and scoped
+verification notes. `/approach` and the repository-maintained engineering notes
+are discoverable through visible links and sitemap entries. Private project
+summaries contain no private repository links and make no release/usage claims.
+Legacy sample projects are excluded from listings, details, and the sitemap;
+CMS records are retained. Actual publication/modification dates are used for
+editorial notes. No performance, indexing, ranking, or business metrics are invented.

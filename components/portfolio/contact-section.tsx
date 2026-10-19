@@ -67,13 +67,17 @@ export function ContactSection({ email }: { email?: string | null }) {
             starts a <span>conversation.</span>
           </h2>
           <p className="contact-intro">
-            Have a product in mind, an engineering challenge, or an opportunity
-            to collaborate? I’d like to hear about it.
+            I welcome software engineering opportunities, backend and AI product
+            work, and thoughtful collaborations. Tell me what you’re building
+            and where I can help.
           </p>
           <a className="contact-email" href={`mailto:${address}`}>
             <Mail size={18} aria-hidden="true" />
             {address}
             <ArrowUpRight size={18} aria-hidden="true" />
+          </a>
+          <a className="folio-text-link contact-cv" href="/api/resume">
+            Download my CV <ArrowUpRight size={16} aria-hidden="true" />
           </a>
           <p className="contact-location">
             <MapPin size={16} aria-hidden="true" /> Adama, Ethiopia · Working
@@ -158,7 +162,8 @@ export function ContactSection({ email }: { email?: string | null }) {
             <ArrowRight size={17} aria-hidden="true" />
           </button>
           <p className="form-note">
-            Your message goes directly to my portfolio inbox.
+            Your name, email, and message are saved to my portfolio inbox so I
+            can reply.
           </p>
         </form>
       </div>

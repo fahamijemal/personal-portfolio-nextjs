@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import { completedWork } from "@/lib/portfolio";
+import { completedWork, caseStudyDetails } from "@/lib/portfolio";
 import {
   personalBrand,
   publicPageMetadata,
@@ -34,7 +34,12 @@ export default async function WorkPage({ params }: Props) {
   const { slug } = await params;
   const work = completedWork.find((work) => work.slug === slug);
   if (!work) notFound();
-  const next = completedWork.find((item) => item.slug !== slug)!;
+  const next =
+    completedWork[
+      (completedWork.findIndex((item) => item.slug === slug) + 1) %
+        completedWork.length
+    ];
+  const details = caseStudyDetails[slug];
   return (
     <div className="case-study">
       <Header />
@@ -56,7 +61,11 @@ export default async function WorkPage({ params }: Props) {
             </div>
             <div>
               <dt className="folio-label">DELIVERY</dt>
-              <dd>Deployed website / application</dd>
+              <dd>
+                {work.sourceOnly
+                  ? "Public challenge codebase"
+                  : "Deployed website / application"}
+              </dd>
             </div>
             <div>
               <dt className="folio-label">FOCUS</dt>
@@ -69,7 +78,8 @@ export default async function WorkPage({ params }: Props) {
             rel="noopener noreferrer"
             className="folio-button"
           >
-            Visit the website <ArrowUpRight size={17} aria-hidden="true" />
+            {work.sourceOnly ? "Explore the source" : "Visit the website"}{" "}
+            <ArrowUpRight size={17} aria-hidden="true" />
             <span className="sr-only"> (opens in a new tab)</span>
           </a>
           <figure className="case-preview">
@@ -90,6 +100,31 @@ export default async function WorkPage({ params }: Props) {
             <p>{work.brief}</p>
           </section>
           <section className="case-body">
+            <h2>My contribution.</h2>
+            <p>{details.contribution}</p>
+          </section>
+          <section className="case-body">
+            <h2>Architecture.</h2>
+            <div>
+              <p className="architecture-caption">Simplified system overview</p>
+              <ol className="architecture-flow">
+                {details.architecture.map((part, i) => (
+                  <li key={part}>
+                    <span className="folio-label">0{i + 1}</span>
+                    {part}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </section>
+          <section className="case-body">
+            <h2>A key decision.</h2>
+            <div>
+              <h3>{details.decision}</h3>
+              <p>{details.tradeoff}</p>
+            </div>
+          </section>
+          <section className="case-body">
             <h2>The work.</h2>
             <div>
               {work.scope.map(([title, description]) => (
@@ -106,10 +141,21 @@ export default async function WorkPage({ params }: Props) {
             </div>
           </section>
           <section className="case-body">
-            <h2>What shipped.</h2>
+            <h2>{work.sourceOnly ? "The implementation." : "What shipped."}</h2>
             <div>
               <p>{work.outcome}</p>
-              <p className="case-boundary">{work.boundary}</p>
+            </div>
+          </section>
+          <section className="case-body">
+            <h2>Verification & learning.</h2>
+            <div>
+              <ul className="verification-list">
+                {details.verification.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <h3>What this reinforced</h3>
+              <p>{details.lesson}</p>
             </div>
           </section>
           <div className="case-next">
@@ -133,7 +179,11 @@ export default async function WorkPage({ params }: Props) {
               description: work.summary,
               url: work.url,
               author: { "@id": personalBrand.personId },
-              publisher: { "@id": personalBrand.companyId },
+              publisher: {
+                "@id": work.sourceOnly
+                  ? personalBrand.personId
+                  : personalBrand.companyId,
+              },
               mainEntityOfPage: `${PERSONAL_ORIGIN}/work/${work.slug}`,
               inLanguage: "en",
             }),

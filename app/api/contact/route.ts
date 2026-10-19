@@ -1,3 +1,4 @@
+import { notifyContact } from "@/lib/contact-notification";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { rateLimitContact } from "@/lib/rate-limit";
@@ -11,9 +12,11 @@ export async function POST(request: Request) {
       {
         status: 429,
         headers: {
-          "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)),
+          "Retry-After": String(
+            Math.ceil((rateLimit.resetAt - Date.now()) / 1000),
+          ),
         },
-      }
+      },
     );
   }
 
@@ -41,15 +44,20 @@ export async function POST(request: Request) {
     if (error) {
       return NextResponse.json(
         { error: "Failed to save message" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
+    const notification = await notifyContact({ name, email, subject, message });
+    if (notification === "failed")
+      console.error(
+        "Portfolio inbox message saved; email notification failed.",
+      );
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -127,7 +127,7 @@ test("retired /om permanently redirects without a translated page", async () => 
 });
 
 test("English collection pages use their own canonical and sharing URLs without fake translations", async () => {
-  for (const path of ["/projects", "/blog", "/certificates"]) {
+  for (const path of ["/projects", "/blog", "/certificates", "/approach"]) {
     const { response, html } = await readPage(path);
     assert.equal(response.status, 200);
     assert.equal(
@@ -242,8 +242,14 @@ test("sitemap queries public published data and uses only actual article dates",
     );
     assert.ok(!pages.some((page) => page.url.includes("seo-fixture-draft")));
     const dated = pages.filter((page) => page.lastModified);
-    assert.equal(dated.length, 1);
-    assert.equal(dated[0].lastModified.toISOString(), fixturePost.published_at);
+    assert.equal(dated.length, 4);
+    assert.equal(
+      dated
+        .find((page) => page.url.endsWith(fixturePost.slug))
+        .lastModified.toISOString(),
+      fixturePost.published_at,
+    );
+    assert.ok(pages.some((page) => page.url === `${origin}/approach`));
     assert.ok(
       harness.requests.some(
         (request) =>
@@ -273,6 +279,11 @@ test("social preview is a real 1200 by 630 PNG", async () => {
 
 test("completed project case studies have unique canonicals and attributed structured data", async () => {
   for (const [slug, title, liveUrl] of [
+    [
+      "project-chimera",
+      "Project Chimera",
+      "https://github.com/fahamijemal/Chimera",
+    ],
     [
       "ifaa-entrance",
       "IFAA ENTRANCE",
@@ -340,4 +351,42 @@ test("CV download replaces the legacy file and permits a future admin upload", a
   } finally {
     harness.setResumeSignedPath(null);
   }
+});
+
+test("engineering notes have substantive content, metadata, and sitemap entries", async () => {
+  for (const slug of [
+    "mcp-tool-contracts-in-project-chimera",
+    "document-context-and-retrieval",
+    "getting-started-with-cloud-computing",
+  ]) {
+    const { response, html } = await readPage(`/blog/${slug}`);
+    assert.equal(response.status, 200);
+    assert.equal(
+      tags(html, "link").find((link) => link.rel === "canonical")?.href,
+      `${origin}/blog/${slug}`,
+    );
+    assert.ok(graphs(html).some((value) => value["@type"] === "BlogPosting"));
+    assert.ok(!html.includes("take our first steps with AWS..."));
+  }
+});
+
+test("legacy sample projects are excluded without exposing private source URLs", async () => {
+  const { html } = await readPage("/projects");
+  assert.ok(!html.includes("E-Commerce Platform"));
+  assert.ok(html.includes("OpsFlow"));
+  assert.ok(html.includes("Smart Pharmacy Locator API"));
+  for (const privateName of [
+    "opsflow",
+    "smart-pharmacy-locator-api",
+    "ifaa-entrance-mobile",
+  ])
+    assert.ok(!html.includes(`https://github.com/fahamijemal/${privateName}`));
+  const legacy = await readPage("/projects/legacy-sample");
+  assert.ok(
+    tags(legacy.html, "meta").some(
+      (meta) => meta.name === "robots" && meta.content.includes("noindex"),
+    ),
+  );
+  const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
+  assert.ok(!sitemap.includes("/projects/legacy-sample"));
 });

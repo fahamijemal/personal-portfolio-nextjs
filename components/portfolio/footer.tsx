@@ -29,7 +29,9 @@ export function Footer({ socialLinks }: { socialLinks?: SocialLinks | null }) {
           <a href={urls.linkedin} target="_blank" rel="noopener noreferrer">
             LinkedIn
           </a>
+          <Link href="/projects">Projects</Link>
           <Link href="/blog">Writing</Link>
+          <a href="/api/resume">Download CV</a>
           <Link href="/certificates">Credentials</Link>
         </nav>
         <a href="#main-content">Back to top ↑</a>

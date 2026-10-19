@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
-import { completedWork } from "@/lib/portfolio";
+import { editorialPosts } from "@/lib/editorial";
+import { completedWork, isReviewedArchiveProject } from "@/lib/portfolio";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 3600;
@@ -10,6 +11,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages: MetadataRoute.Sitemap = [
     { url: `${siteUrl}/` },
     { url: `${siteUrl}/projects` },
+    { url: `${siteUrl}/approach` },
+    ...editorialPosts.map((post) => ({
+      url: `${siteUrl}/blog/${post.slug}`,
+      lastModified: new Date("2026-10-19T00:00:00Z"),
+    })),
     ...completedWork.map((work) => ({ url: `${siteUrl}/work/${work.slug}` })),
     { url: `${siteUrl}/blog` },
     { url: `${siteUrl}/certificates` },
@@ -39,10 +45,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select("slug, published_at")
       .eq("published", true),
     // Existing projects are publicly readable and have no draft flag.
-    supabase.from("projects").select("id"),
+    supabase.from("projects").select("id, title_en, github_url, live_url"),
   ]);
   for (const post of posts ?? []) {
     if (typeof post.slug !== "string" || !post.slug) continue;
+    if (editorialPosts.some((note) => note.slug === post.slug)) continue;
     const date = post.published_at ? new Date(post.published_at) : null;
     pages.push({
       url: `${siteUrl}/blog/${encodeURIComponent(post.slug)}`,
@@ -50,6 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
   for (const project of projects ?? []) {
+    if (project.title_en && !isReviewedArchiveProject(project)) continue;
     if (typeof project.id === "string" && project.id)
       pages.push({
         url: `${siteUrl}/projects/${encodeURIComponent(project.id)}`,

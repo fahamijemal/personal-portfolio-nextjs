@@ -1,3 +1,4 @@
+import { mergeEditorialPosts } from "@/lib/editorial";
 import { createClient } from "@/lib/supabase/server";
 import { PortfolioClient } from "@/components/portfolio/portfolio-client";
 import { getAboutContent, getSocialLinks } from "@/lib/site-content";
@@ -78,7 +79,7 @@ export default async function Home() {
         }}
       />
       <PortfolioClient
-        posts={posts || []}
+        posts={mergeEditorialPosts(posts || [])}
         certificates={certificates || []}
         skills={skills || []}
         resumeDownloadHref={resumeDownloadHref}

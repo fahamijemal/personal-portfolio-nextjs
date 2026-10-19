@@ -5,11 +5,11 @@ import { Share2, Linkedin, Send, MessageCircle } from "lucide-react";
 
 type ShareButtonsProps = {
   title: string;
+  url: string;
 };
 
-export function ShareButtons({ title }: ShareButtonsProps) {
+export function ShareButtons({ title, url }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
-  const url = typeof window !== "undefined" ? window.location.href : "";
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 

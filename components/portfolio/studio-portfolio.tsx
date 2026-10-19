@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -15,13 +14,7 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 import { ContactSection } from "./contact-section";
 import { SelectedWork } from "./selected-work";
-import {
-  capabilities,
-  developmentProcess,
-  engineeringFoundations,
-  githubWork,
-  aiPractices,
-} from "@/lib/portfolio";
+import { capabilities } from "@/lib/portfolio";
 import { personalBrand } from "@/lib/personal-seo";
 import {
   getSocialLinkUrls,
@@ -29,11 +22,11 @@ import {
   type SocialLinks,
 } from "@/lib/site-content";
 import type { BlogPost, Certificate, Skill } from "@/lib/types";
+import { formatCredentialDate, credentialIssuer } from "@/lib/presentation";
 
 export function StudioPortfolio({
   posts,
   certificates,
-  skills,
   aboutContent,
   socialLinks,
   resumeDownloadHref,
@@ -46,10 +39,6 @@ export function StudioPortfolio({
   resumeDownloadHref?: string | null;
 }) {
   const social = getSocialLinkUrls(socialLinks);
-  const additionalTools = [...new Set(skills.map((skill) => skill.name))].slice(
-    0,
-    18,
-  );
   return (
     <div className="studio">
       <Header />
@@ -58,8 +47,8 @@ export function StudioPortfolio({
           <div className="folio-container hero-grid">
             <div className="hero-copy">
               <p className="folio-label">
-                <span className="status-dot" /> DEVELOPER · FOUNDER · PRODUCT
-                BUILDER
+                <span className="status-dot" />
+                DEVELOPER · FOUNDER · PRODUCT BUILDER
               </p>
               <h1>
                 Fahami Jemal
@@ -75,17 +64,22 @@ export function StudioPortfolio({
                 </a>
               </p>
               <p className="hero-description">
-                I turn ideas into practical software. Combining full-stack
-                engineering, product thinking, and agentic AI — with clear
-                specifications, thoughtful design, MCP-connected tools, and a
-                human review loop.
+                I build education platforms, backend services, and AI-powered
+                applications with TypeScript, Python, and specification-led
+                development.
+              </p>
+              <p className="hero-opportunity">
+                Open to software engineering opportunities and product
+                collaborations.
               </p>
               <div className="hero-actions">
                 <a href="#projects" className="folio-button">
-                  Explore my work <ArrowRight size={18} aria-hidden="true" />
+                  Explore my work
+                  <ArrowRight size={18} aria-hidden="true" />
                 </a>
                 <a href="#contact" className="folio-button secondary">
-                  Let’s talk <ArrowUpRight size={18} aria-hidden="true" />
+                  Let’s talk
+                  <ArrowUpRight size={18} aria-hidden="true" />
                 </a>
               </div>
               <div className="hero-socials">
@@ -112,7 +106,7 @@ export function StudioPortfolio({
                     rel="noopener noreferrer"
                   >
                     <Download size={16} aria-hidden="true" />
-                    Resume
+                    Download CV
                   </a>
                 )}
               </div>
@@ -130,7 +124,7 @@ export function StudioPortfolio({
                     width={960}
                     height={1200}
                     priority
-                    sizes="(max-width: 760px) 80vw, 360px"
+                    sizes="(max-width: 760px) 70vw, 360px"
                   />
                 </div>
                 <div className="portrait-caption">
@@ -148,65 +142,8 @@ export function StudioPortfolio({
               </div>
             </div>
           </div>
-          <div className="folio-container hero-bottom">
-            <span>ENGINEERING × AI × ENTREPRENEURSHIP</span>
-            <a href="#projects">
-              A closer look at the work <span aria-hidden="true">↓</span>
-            </a>
-          </div>
         </section>
         <SelectedWork />
-        <section
-          className="folio-section github-lab"
-          aria-labelledby="github-title"
-        >
-          <div className="folio-container">
-            <div className="section-heading">
-              <div>
-                <p className="folio-label">FROM MY GITHUB</p>
-                <h2 id="github-title">
-                  Ideas, explored <span>in code.</span>
-                </h2>
-              </div>
-              <a
-                className="folio-text-link"
-                href="https://github.com/fahamijemal?tab=repositories"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Explore GitHub <ArrowUpRight size={16} aria-hidden="true" />
-              </a>
-            </div>
-            <p className="lab-intro">
-              A selection of public AI, academic, and learning projects
-              alongside my shipped products. Open the repositories to explore
-              the implementation and development history.
-            </p>
-            <div className="github-grid">
-              {githubWork.map((project) => (
-                <article key={project.repo}>
-                  <p className="folio-label">{project.kind}</p>
-                  <h3>
-                    <a
-                      href={`https://github.com/fahamijemal/${project.repo}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {project.name}
-                      <ArrowUpRight size={18} aria-hidden="true" />
-                    </a>
-                  </h3>
-                  <p>{project.description}</p>
-                  <ul className="folio-tags">
-                    {project.tags.map((tag) => (
-                      <li key={tag}>{tag}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
         <section
           id="skills"
           className="folio-section expertise"
@@ -215,15 +152,14 @@ export function StudioPortfolio({
           <div className="folio-container">
             <div className="section-heading">
               <div>
-                <p className="folio-label">02 / EXPERTISE</p>
+                <p className="folio-label">02 / CAPABILITIES</p>
                 <h2 id="expertise-title">
-                  A builder’s <span>toolkit.</span>
+                  A focused <span>toolkit.</span>
                 </h2>
               </div>
               <p>
-                Strong foundations. Modern workflows.
-                <br />
-                The judgment to connect them.
+                Applied in projects, strengthened through study, and reviewed
+                through evidence.
               </p>
             </div>
             <div className="expertise-grid">
@@ -233,7 +169,7 @@ export function StudioPortfolio({
                   <h3>{item.title}</h3>
                   <p>{item.description}</p>
                   <ul className="capability-list">
-                    {item.tags.map((tag) => (
+                    {item.tags.slice(0, 5).map((tag) => (
                       <li key={tag}>
                         <Check size={13} aria-hidden="true" />
                         {tag}
@@ -243,98 +179,73 @@ export function StudioPortfolio({
                 </article>
               ))}
             </div>
-            <div className="foundations-heading">
-              <p className="folio-label">AI ENGINEERING IN PRACTICE</p>
-              <h3>Useful context. Explicit tools. Measurable quality.</h3>
+            <div className="practice-evidence">
+              <Link href="/work/project-chimera">
+                MCP & agents: Project Chimera ↗
+              </Link>
+              <a
+                href="https://github.com/fahamijemal/automaton-auditor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LangGraph & retrieval: Automaton Auditor ↗
+              </a>
+              <Link href="/approach">
+                RAG, evaluation & engineering foundations ↗
+              </Link>
             </div>
-            <div className="foundation-grid">
-              {aiPractices.map((item) => (
-                <article key={item.title}>
-                  <h4>{item.title}</h4>
-                  <p>{item.description}</p>
-                </article>
-              ))}
-            </div>
-            <div className="foundations-heading">
-              <p className="folio-label">SOFTWARE ENGINEERING FOUNDATIONS</p>
-              <h3>The thinking behind the tools.</h3>
-              <p>
-                Foundations I’m strengthening through my degree, programming
-                practice, and project work.
-              </p>
-            </div>
-            <div className="foundation-grid">
-              {engineeringFoundations.map((item) => (
-                <article key={item.title}>
-                  <h4>{item.title}</h4>
-                  <p>{item.description}</p>
-                  <ul className="folio-tags">
-                    {item.tags.map((tag) => (
-                      <li key={tag}>{tag}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-            {additionalTools.length > 0 && (
-              <div className="additional-tools">
-                <p className="folio-label">ALSO IN MY TOOLKIT</p>
-                <ul className="folio-tags">
-                  {additionalTools.map((tool) => (
-                    <li key={tool}>{tool}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </section>
         <section
           id="approach"
-          className="folio-section approach"
+          className="folio-section approach compact-approach"
           aria-labelledby="approach-title"
         >
           <div className="folio-container">
             <div className="section-heading">
               <div>
-                <p className="folio-label">
-                  03 / THE SOFTWARE DEVELOPMENT LIFECYCLE
-                </p>
+                <p className="folio-label">03 / HOW I BUILD</p>
                 <h2 id="approach-title">
-                  AI moves fast.
+                  Clear specifications.
                   <br />
-                  <span>Good engineering leads.</span>
+                  <span>Accountable delivery.</span>
                 </h2>
               </div>
               <p>
-                From requirements to maintenance: a practical workflow I keep
-                refining through study, product work, and AI-assisted
-                development.
+                I use agentic AI to support bounded tasks, then review the
+                implementation against the intended behavior.
               </p>
             </div>
-            <ol className="process-grid">
-              {developmentProcess.map((step, i) => (
-                <li key={step.title}>
-                  <span className="process-number">0{i + 1}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                  <span className="process-detail">{step.detail}</span>
-                  <details className="process-practices">
-                    <summary>
-                      Practices for{" "}
-                      {step.title.replace(/\.$/, "").toLowerCase()}
-                    </summary>
-                    <p>{step.practices}</p>
-                  </details>
-                </li>
-              ))}
+            <ol className="approach-summary">
+              <li>
+                <span>01</span>
+                <h3>Understand & design</h3>
+                <p>
+                  Define users, requirements, acceptance criteria, and system
+                  boundaries.
+                </p>
+              </li>
+              <li>
+                <span>02</span>
+                <h3>Build & verify</h3>
+                <p>
+                  Implement in focused changes; review code, permissions, tests,
+                  and accessibility.
+                </p>
+              </li>
+              <li>
+                <span>03</span>
+                <h3>Release & improve</h3>
+                <p>
+                  Check deployment, learn from failures and feedback, and
+                  maintain the product.
+                </p>
+              </li>
             </ol>
-            <div className="process-principle">
-              <span className="status-dot" />
-              <p>
-                Write the spec. Give the context. Review the code. Own the
-                result.
-              </p>
-            </div>
+            <Link href="/approach" className="folio-text-link">
+              Explore my full development lifecycle
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
           </div>
         </section>
         <section
@@ -344,97 +255,49 @@ export function StudioPortfolio({
         >
           <div className="folio-container about-grid">
             <div>
-              <p className="folio-label">04 / A LITTLE ABOUT ME</p>
+              <p className="folio-label">04 / ABOUT</p>
               <h2 id="about-title">
-                Curiosity, with a bias for <span>building.</span>
+                Rooted in curiosity.
+                <br />
+                <span>Driven to build.</span>
               </h2>
             </div>
             <div className="about-copy">
               <p className="about-lead">
-                An engineer’s curiosity. An entrepreneur’s perspective.
+                Software engineering, with a founder’s perspective.
               </p>
               <p>
-                I’m a Software Engineering student and the founder of IFAA
-                TECHNOLOGIES. I’m interested in the space where useful ideas,
-                reliable systems, and real people meet.
+                I’m a Software Engineering student at Adama Science and
+                Technology University and founder of IFAA TECHNOLOGIES. Based in
+                Adama, Ethiopia, I’m building useful digital products for local
+                needs with a wider perspective.
               </p>
               <p>
-                My focus spans backend development, cloud systems, and
-                AI-assisted product development. I use spec-driven development,
-                prompt and context engineering, MCP, and retrieval techniques to
-                make the work more deliberate — then review and test what gets
-                built.
-              </p>
-              <p>
-                Based in Adama, Ethiopia, I’m building for local needs with a
-                wider perspective. I value clear communication, small meaningful
-                iterations, and software that earns its place in someone’s day.
+                My interests span backend systems, cloud delivery, and
+                AI-assisted development. I value clear communication,
+                maintainable code, and small iterations that solve a real
+                problem.
               </p>
               <div className="about-facts">
                 <div>
-                  <span className="folio-label">CURRENTLY</span>
+                  <span className="folio-label">EDUCATION</span>
                   <p>
                     {aboutContent?.education_text_en ||
-                      "Studying Software Engineering"}
+                      "BSc in Software Engineering · In progress"}
                   </p>
                 </div>
                 <div>
-                  <span className="folio-label">BUILDING</span>
+                  <span className="folio-label">COLLABORATIVE WORK</span>
                   <p>
-                    Digital products through{" "}
-                    <a href={personalBrand.companyUrl}>
-                      IFAA TECHNOLOGIES{" "}
-                      <ArrowUpRight size={14} aria-hidden="true" />
-                    </a>
+                    Document-management contribution to OpsFlow, alongside
+                    independent product and AI projects.{" "}
+                    <Link href="/projects">Explore the project library ↗</Link>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        {certificates.length > 0 && (
-          <section
-            id="certificates"
-            className="folio-section credentials"
-            aria-labelledby="credentials-title"
-          >
-            <div className="folio-container">
-              <div className="section-heading">
-                <div>
-                  <p className="folio-label">CONTINUOUS LEARNING</p>
-                  <h2 id="credentials-title">
-                    Always a <span>student.</span>
-                  </h2>
-                </div>
-                <Link href="/certificates" className="folio-text-link">
-                  All credentials <ArrowUpRight size={16} aria-hidden="true" />
-                </Link>
-              </div>
-              <div className="credential-list">
-                {certificates.slice(0, 4).map((c) => (
-                  <a
-                    key={c.id}
-                    href={c.credential_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div>
-                      <span className="folio-label">
-                        {c.issuer || "Professional development"}
-                      </span>
-                      <h3>{c.title_en}</h3>
-                    </div>
-                    <ArrowUpRight size={22} aria-hidden="true" />
-                    <span className="sr-only">
-                      {" "}
-                      (opens credential in a new tab)
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
         {posts.length > 0 && (
           <section
             id="blog"
@@ -444,20 +307,21 @@ export function StudioPortfolio({
             <div className="folio-container">
               <div className="section-heading">
                 <div>
-                  <p className="folio-label">NOTES FROM THE WORK</p>
+                  <p className="folio-label">ENGINEERING NOTES</p>
                   <h2 id="notes-title">
-                    Learning, <span>out loud.</span>
+                    Lessons from <span>the work.</span>
                   </h2>
                 </div>
                 <Link href="/blog" className="folio-text-link">
-                  All writing <ArrowUpRight size={16} aria-hidden="true" />
+                  All writing
+                  <ArrowUpRight size={16} aria-hidden="true" />
                 </Link>
               </div>
               <div className="notes-grid">
-                {posts.map((post) => (
+                {posts.slice(0, 2).map((post) => (
                   <article key={post.id}>
                     <span className="folio-label">
-                      {post.tags?.[0] || "ENGINEERING NOTES"}
+                      {post.tags?.[0] || "ENGINEERING"}
                     </span>
                     <h3>
                       <Link href={`/blog/${post.slug}`}>{post.title_en}</Link>
@@ -467,10 +331,57 @@ export function StudioPortfolio({
                       href={`/blog/${post.slug}`}
                       className="folio-text-link"
                     >
-                      Read the note{" "}
+                      Read the note
                       <ArrowUpRight size={15} aria-hidden="true" />
                     </Link>
                   </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+        {certificates.length > 0 && (
+          <section
+            id="certificates"
+            className="folio-section credentials compact-credentials"
+            aria-labelledby="credentials-title"
+          >
+            <div className="folio-container">
+              <div className="section-heading">
+                <div>
+                  <p className="folio-label">CONTINUOUS LEARNING</p>
+                  <h2 id="credentials-title">
+                    Learning that <span>supports the work.</span>
+                  </h2>
+                </div>
+                <Link href="/certificates" className="folio-text-link">
+                  All credentials
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </Link>
+              </div>
+              <div className="credential-list">
+                {certificates.slice(0, 3).map((c) => (
+                  <a
+                    key={c.id}
+                    href={c.credential_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div>
+                      <span className="folio-label">
+                        {credentialIssuer(c)}
+                        {c.issued_at
+                          ? ` · ${formatCredentialDate(c.issued_at)}`
+                          : ""}
+                      </span>
+                      <h3>{c.title_en}</h3>
+                    </div>
+                    <ArrowUpRight size={22} aria-hidden="true" />
+                    <span className="sr-only">
+                      {" "}
+                      (opens credential in a new tab)
+                    </span>
+                  </a>
                 ))}
               </div>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PERSONAL_ORIGIN } from "@/lib/site-url";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,14 +20,17 @@ function ProjectDetailContent({
   socialLinks?: SocialLinks | null;
 }) {
   const { language } = useI18n();
-  const title = language === "om" && project.title_om ? project.title_om : project.title_en;
+  const title =
+    language === "om" && project.title_om ? project.title_om : project.title_en;
   const description =
-    language === "om" && project.description_om ? project.description_om : project.description_en;
+    language === "om" && project.description_om
+      ? project.description_om
+      : project.description_en;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="studio reading-page">
       <Header />
-      <main id="main-content" className="pt-24 pb-16 px-4">
+      <main id="main-content" className="collection-main">
         <div className="max-w-4xl mx-auto">
           <Button variant="ghost" asChild className="mb-8">
             <Link href="/projects">
@@ -50,7 +54,9 @@ function ProjectDetailContent({
 
           {project.technologies?.length ? (
             <div className="mb-8">
-              <h2 className="text-lg font-semibold text-foreground mb-3">Technologies</h2>
+              <h2 className="text-lg font-semibold text-foreground mb-3">
+                Technologies
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech) => (
                   <Badge key={tech} variant="secondary">
@@ -64,7 +70,11 @@ function ProjectDetailContent({
           <div className="flex flex-wrap gap-3 mb-6">
             {project.github_url ? (
               <Button variant="outline" asChild>
-                <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={project.github_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Github className="h-4 w-4 mr-2" />
                   View Code
                 </a>
@@ -72,14 +82,21 @@ function ProjectDetailContent({
             ) : null}
             {project.live_url ? (
               <Button asChild>
-                <a href={project.live_url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={project.live_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <ExternalLink className="h-4 w-4 mr-2" />
                   View Project
                 </a>
               </Button>
             ) : null}
           </div>
-          <ShareButtons title={title} />
+          <ShareButtons
+            title={title}
+            url={new URL(`/projects/${project.id}`, PERSONAL_ORIGIN).href}
+          />
         </div>
       </main>
       <Footer socialLinks={socialLinks} />
@@ -100,4 +117,3 @@ export function ProjectDetailClient({
     </I18nProvider>
   );
 }
-

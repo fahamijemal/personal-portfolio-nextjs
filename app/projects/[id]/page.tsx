@@ -19,7 +19,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .eq("id", id)
     .maybeSingle();
 
-  if (!project) {
+  if (
+    !project ||
+    ["E-Commerce Platform", "Cloud Task Manager"].includes(project.title_en)
+  ) {
     return { ...noIndexMetadata, title: "Project Not Found" };
   }
 
@@ -48,7 +51,11 @@ export default async function ProjectDetailPage({
     .eq("id", id)
     .maybeSingle();
 
-  if (!project) notFound();
+  if (
+    !project ||
+    ["E-Commerce Platform", "Cloud Task Manager"].includes(project.title_en)
+  )
+    notFound();
 
   const socialLinks = await fetchSocialLinks(supabase);
 

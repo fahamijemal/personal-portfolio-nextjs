@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { PERSONAL_ORIGIN } from "@/lib/site-url";
+import { ContentImage } from "@/components/portfolio/content-image";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { I18nProvider, useI18n } from "@/lib/i18n/context";
@@ -45,16 +46,18 @@ function BlogPostContent({
   const title =
     language === "om" && post.title_om ? post.title_om : post.title_en;
   const content =
-    (language === "om" && post.content_om ? post.content_om : post.content_en) ?? "";
+    (language === "om" && post.content_om
+      ? post.content_om
+      : post.content_en) ?? "";
 
   const readingTime = getReadingTimeMinutes(content);
   const tocItems = extractHeadings(content);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="studio reading-page">
       <Header />
-      <main id="main-content" className="pt-24 pb-16 px-4">
-        <div className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-12">
+      <main id="main-content" className="collection-main">
+        <div className="folio-container reading-layout">
           {tocItems.length > 0 && (
             <aside className="lg:w-56 shrink-0 order-2 lg:order-1">
               <nav className="lg:sticky lg:top-28">
@@ -88,18 +91,11 @@ function BlogPostContent({
               </Link>
             </Button>
 
-            {post.image_url && (
-              <div className="relative h-64 sm:h-80 w-full mb-8 rounded-lg overflow-hidden">
-                <Image
-                  src={post.image_url}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 768px"
-                  priority
-                />
-              </div>
-            )}
+            <ContentImage
+              src={post.image_url}
+              alt=""
+              className="article-preview"
+            />
 
             <h1 className="text-4xl font-bold text-foreground mb-4 text-balance">
               {title}
@@ -116,7 +112,9 @@ function BlogPostContent({
                 <Clock className="h-4 w-4" />
                 {readingTime} {t.blog.minRead}
               </span>
-              <span>{t.blog.writtenBy} {AUTHOR_NAME}</span>
+              <span>
+                {t.blog.writtenBy} {AUTHOR_NAME}
+              </span>
             </div>
 
             {post.tags && post.tags.length > 0 && (
@@ -134,7 +132,10 @@ function BlogPostContent({
             )}
 
             <MarkdownContent content={content} />
-            <ShareButtons title={title} />
+            <ShareButtons
+              title={title}
+              url={new URL(`/blog/${post.slug}`, PERSONAL_ORIGIN).href}
+            />
 
             {relatedPosts.length > 0 && (
               <div className="mt-16 pt-8 border-t border-border">
@@ -146,9 +147,11 @@ function BlogPostContent({
                     <li key={r.id}>
                       <Link
                         href={`/blog/${r.slug}`}
-                        className="text-primary hover:underline"
+                        className="folio-text-link"
                       >
-                        {language === "om" && r.title_om ? r.title_om : r.title_en}
+                        {language === "om" && r.title_om
+                          ? r.title_om
+                          : r.title_en}
                       </Link>
                     </li>
                   ))}
@@ -174,7 +177,11 @@ export function BlogPostClient({
 }) {
   return (
     <I18nProvider>
-      <BlogPostContent post={post} relatedPosts={relatedPosts} socialLinks={socialLinks} />
+      <BlogPostContent
+        post={post}
+        relatedPosts={relatedPosts}
+        socialLinks={socialLinks}
+      />
     </I18nProvider>
   );
 }

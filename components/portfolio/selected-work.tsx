@@ -19,12 +19,12 @@ export function SelectedWork({ collection = false }: { collection?: boolean }) {
             </h2>
           </div>
           <p>
-            Products I’ve built and shipped.
+            Products and engineering explorations.
             <br />
-            Real work, with the thinking behind it.
+            The implementation and decisions behind them.
           </p>
         </div>
-        <div className="work-grid">
+        <div className="work-grid three-projects">
           {completedWork.map((work) => (
             <article className="work-card" key={work.slug}>
               <Link
@@ -43,7 +43,7 @@ export function SelectedWork({ collection = false }: { collection?: boolean }) {
                   alt={work.imageAlt}
                   width={work.imageWidth}
                   height={work.imageHeight}
-                  sizes="(max-width: 760px) 100vw, 50vw"
+                  sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 33vw"
                   className="work-screenshot"
                 />
                 <span className="work-image-arrow">
@@ -51,7 +51,11 @@ export function SelectedWork({ collection = false }: { collection?: boolean }) {
                 </span>
               </Link>
               <div className="work-meta">
-                <span>{work.category}</span>
+                <span>
+                  {work.sourceOnly
+                    ? "AI challenge · public source"
+                    : work.category}
+                </span>
                 <span>{work.number}</span>
               </div>
               <h3>
@@ -68,10 +72,11 @@ export function SelectedWork({ collection = false }: { collection?: boolean }) {
               </ul>
               <div className="work-links">
                 <Link href={`/work/${work.slug}`}>
-                  Inside the project <ArrowRight size={16} aria-hidden="true" />
+                  Read case study <ArrowRight size={16} aria-hidden="true" />
                 </Link>
                 <a href={work.url} target="_blank" rel="noopener noreferrer">
-                  Visit website <ArrowUpRight size={16} aria-hidden="true" />
+                  {work.sourceOnly ? "View source" : "Visit website"}{" "}
+                  <ArrowUpRight size={16} aria-hidden="true" />
                   <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               </div>
@@ -80,7 +85,7 @@ export function SelectedWork({ collection = false }: { collection?: boolean }) {
         </div>
         {!collection && (
           <Link href="/projects" className="folio-text-link all-work">
-            Explore the project archive{" "}
+            Explore all projects · public & private work{" "}
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         )}

@@ -104,7 +104,6 @@ test("modern portfolio exposes real work, AI engineering skills, and accessible 
       "RAG",
       "MCP",
       "LangGraph",
-      "Requirements engineering",
       "Spec-driven",
       "entrepreneur",
     ]) {
@@ -116,15 +115,25 @@ test("modern portfolio exposes real work, AI engineering skills, and accessible 
       );
     }
     assert.equal(await page.locator("#skills").getByText(/\d+%/).count(), 0);
-    assert.equal(await page.locator("#projects article").count(), 2);
-    assert.equal(await page.locator(".github-grid article").count(), 4);
-    assert.equal(await page.locator("#approach ol > li").count(), 6);
-    const practice = page.locator("#approach details").first();
+    assert.equal(await page.locator("#projects article").count(), 3);
+    assert.equal(await page.locator("#approach ol > li").count(), 3);
+    await page
+      .getByRole("link", { name: /Explore my full development lifecycle/ })
+      .click();
+    await page.waitForURL(`${base}/approach`);
+    await page.locator(".process-grid > li").first().waitFor();
+    assert.equal(await page.locator(".process-grid > li").count(), 6);
+    const practice = page.locator("details").first();
     await practice.locator("summary").focus();
     await page.keyboard.press("Enter");
     assert.equal(await practice.getAttribute("open"), "");
     assert.ok(
       (await practice.innerText()).includes("non-functional requirements"),
+    );
+    await page.goto(`${base}/projects`, { waitUntil: "networkidle" });
+    assert.equal(await page.locator(".private-projects article").count(), 3);
+    assert.ok(
+      !(await page.locator("main").innerText()).includes("E-Commerce Platform"),
     );
     for (const link of await page.locator(".github-grid h3 a").all()) {
       assert.match(
@@ -133,6 +142,8 @@ test("modern portfolio exposes real work, AI engineering skills, and accessible 
       );
       assert.equal(await link.getAttribute("rel"), "noopener noreferrer");
     }
+    assert.equal(await page.locator(".private-projects a").count(), 0);
+    await page.goto(`${base}/`, { waitUntil: "networkidle" });
     await page.getByRole("button", { name: "Open navigation" }).click();
     await page
       .getByRole("navigation", { name: "Mobile navigation" })
@@ -249,7 +260,15 @@ test("light and dark portfolio pages have no serious accessibility violations", 
             .map((animation) => animation.finished.catch(() => {})),
         ),
       );
-      for (const path of ["/", "/work/ifaa-entrance"]) {
+      for (const path of [
+        "/",
+        "/work/ifaa-entrance",
+        "/approach",
+        "/projects",
+        "/blog",
+        "/certificates",
+        "/blog/mcp-tool-contracts-in-project-chimera",
+      ]) {
         if (path !== "/")
           await page.goto(`${base}${path}`, { waitUntil: "networkidle" });
         const result = await new AxeBuilder({ page })
@@ -267,5 +286,46 @@ test("light and dark portfolio pages have no serious accessibility violations", 
     }
   } finally {
     await context.close();
+  }
+});
+
+test("writing search, topic filters, and credential fallbacks remain usable", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  try {
+    await page.goto(`${base}/blog`, { waitUntil: "networkidle" });
+    await page
+      .getByRole("searchbox", { name: "Search engineering notes" })
+      .fill("retrieval");
+    assert.equal(await page.locator(".writing-grid article").count(), 1);
+    await page.getByRole("searchbox").fill("no matching note xyz");
+    await page
+      .getByRole("status")
+      .getByText("No notes match your search.")
+      .waitFor();
+    await page.goto(`${base}/blog?tag=MCP`, { waitUntil: "networkidle" });
+    assert.equal(await page.locator(".writing-grid article").count(), 1);
+    await page.getByRole("link", { name: "Clear topic: MCP ×" }).click();
+    await page.waitForURL(`${base}/blog`);
+    assert.ok((await page.locator(".writing-grid article").count()) >= 3);
+    await page.goto(`${base}/blog/document-context-and-retrieval`, {
+      waitUntil: "networkidle",
+    });
+    assert.ok(
+      (
+        await page
+          .getByRole("link", { name: "Share on LinkedIn" })
+          .getAttribute("href")
+      ).includes(
+        encodeURIComponent(
+          "https://fahami.ifaatechnologies.tech/blog/document-context-and-retrieval",
+        ),
+      ),
+    );
+    await page.goto(`${base}/certificates`, { waitUntil: "networkidle" });
+    assert.equal(await page.locator("main img").count(), 0);
+    assert.ok((await page.locator("main").innerText()).includes("20 Aug 2025"));
+    assert.ok((await page.locator("main").innerText()).includes("Coursera"));
+  } finally {
+    await page.close();
   }
 });

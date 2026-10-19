@@ -10,3 +10,7 @@
 These are public website screenshots, not generated product interfaces or
 screenshots of private student/customer accounts. They support presentation
 only and do not establish production account, email, AI-quality or user metrics.
+
+WebP derivatives retain the same public screenshots and are used for delivery.
+`chimera-architecture.svg` is an authored architecture illustration based on
+the public Project Chimera repository; it is not a screenshot of a running app.

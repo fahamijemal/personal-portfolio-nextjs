@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test:seo": "node --test tests/seo.test.mjs",
     "test:seo:browser": "node --test tests/seo.browser.mjs",
-    "start": "next start"
+    "start": "next start",
+    "test:contact": "node --test tests/contact-notification.test.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

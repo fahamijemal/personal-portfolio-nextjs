@@ -9,7 +9,7 @@ import { ArrowUpRight, Menu, X, Sun, Moon } from "lucide-react";
 const links = [
   ["Work", "#projects"],
   ["Expertise", "#skills"],
-  ["Approach", "#approach"],
+  ["Approach", "/approach"],
   ["About", "#about"],
 ] as const;
 export function Header() {
@@ -17,7 +17,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const trigger = useRef<HTMLButtonElement>(null);
-  const href = (hash: string) => (pathname === "/" ? hash : `/${hash}`);
+  const href = (hash: string) =>
+    hash.startsWith("/") ? hash : pathname === "/" ? hash : `/${hash}`;
   useEffect(() => {
     if (!open) return;
     const close = (event: KeyboardEvent) => {

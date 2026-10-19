@@ -1,3 +1,4 @@
+import { isReviewedArchiveProject } from "@/lib/portfolio";
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
 import { ProjectsPageClient } from "./projects-page-client";
@@ -22,6 +23,9 @@ export default async function ProjectsPage() {
   ]);
 
   return (
-    <ProjectsPageClient projects={projects || []} socialLinks={socialLinks} />
+    <ProjectsPageClient
+      projects={(projects || []).filter(isReviewedArchiveProject)}
+      socialLinks={socialLinks}
+    />
   );
 }

@@ -45,9 +45,21 @@ export async function startHarness() {
   const requests = [];
   let resumeSignedPath = null;
   const tables = {
-    projects: [project],
+    projects: [
+      project,
+      { ...project, id: "legacy-sample", title_en: "E-Commerce Platform" },
+    ],
     blog_posts: [fixturePost, draft],
-    certificates: [],
+    certificates: [
+      {
+        id: "cert-fixture",
+        title_en: "Full Stack Software Developer Assessment V2",
+        issuer: null,
+        credential_url: "https://coursera.org/verify/local-fixture",
+        image_url: "https://www.credly.com/badges/local-fixture",
+        issued_at: "2025-08-20",
+      },
+    ],
     skills: [],
     site_settings: [],
     profiles: [],

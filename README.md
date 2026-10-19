@@ -75,7 +75,7 @@ NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:3019 NEXT_PUBLIC_SUPABASE_ANON_KEY=per
 pnpm run test:seo
 ```
 
-These settings are for local tests only. Vercel must build with the personal project's real environment settings. The ten HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
+These settings are for local tests only. Vercel must build with the personal project's real environment settings. The twelve HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
 
 Optional browser checks use existing Playwright tooling without adding application dependencies. In the shared cloud environment:
 
@@ -83,7 +83,7 @@ Optional browser checks use existing Playwright tooling without adding applicati
 PLAYWRIGHT_MODULE_ROOT=/workspace/ifaatech pnpm run test:seo:browser
 ```
 
-Elsewhere, set `PLAYWRIGHT_MODULE_ROOT` to a tooling directory containing `@playwright/test` and set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to an installed Chromium executable. The five browser scenarios check English rendering despite old saved preferences, desktop/mobile layout, real project navigation, contact feedback, accessibility, and local font loading. Run the HTTP and browser suites sequentially with ports 3018/3019 free.
+Elsewhere, set `PLAYWRIGHT_MODULE_ROOT` to a tooling directory containing `@playwright/test` and set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to an installed Chromium executable. The six browser scenarios check English rendering despite old saved preferences, desktop/mobile layout, real project navigation, contact feedback, accessibility, and local font loading. Run the HTTP and browser suites sequentially with ports 3018/3019 free.
 
 The repository's existing `lint` command references ESLint, but its dependency and configuration are not supplied in the current project. TypeScript and build checks do not replace a configured linter.
 
@@ -95,38 +95,54 @@ MIT
 
 ## Current portfolio presentation
 
-The homepage is an editorial developer/founder portfolio in
-`components/portfolio/studio-portfolio.tsx`, styled by `app/portfolio.css`.
-It introduces agentic AI, specification-driven development, prompt/context
-engineering, retrieval-augmented generation, review/testing, and product thinking
-alongside full-stack/backend/cloud foundations. It uses capability descriptions,
-not invented proficiency percentages or business metrics.
+The homepage in `components/portfolio/studio-portfolio.tsx` prioritizes software
+engineering roles and collaborations: three case studies, focused capabilities,
+a brief approach, biography/education, two engineering notes, credentials, and contact.
+Detailed lifecycle, AI practices, and foundations live at `/approach`.
 
-`lib/portfolio.ts` contains the two owner-confirmed completed projects: IFAA
-ENTRANCE and the IFAA TECHNOLOGIES company platform. Their case studies live at
-`/work/ifaa-entrance` and `/work/ifaa-technologies`, and are included in the sitemap
-and project index. Screenshots are real public-page captures, not generated UI.
-The homepage prioritizes these completed projects; existing CMS projects remain
-in the project archive. No database records were inserted or overwritten.
+`lib/portfolio.ts` maintains completed product work and the public AI challenge
+case study, contribution/decision/architecture/verification details, and curated
+public/private project cards. Private summaries were authorized by the owner;
+they contain no private source URLs, credentials, account data, or copied code.
+OpsFlow identifies the owner's document-management contribution to a team project.
+Mobile work is a companion codebase, without an app-store release claim.
 
-CMS social links, resume URL, education details, skills/tool names, certificates,
-and published writing continue to populate the portfolio. The new introduction,
-capabilities, development process, and curated case studies are maintained in
-source rather than inherited from old hero role/description settings. The portrait
-is the existing licensed/owner-provided `public/fahamijemal.jpg`. Existing admin,
-authentication, content publishing, and contact API/database behavior is retained.
-Contact UI checks mock responses and never send real inquiries.
+The project library combines three case studies, public-source projects, and
+high-level private-source summaries. The legacy E-Commerce Platform and Cloud
+Task Manager sample records are excluded from listings, detail routes, and the
+sitemap. Existing database records are retained. Other CMS archive entries need
+a source or live link to appear in the library.
 
-### Public GitHub work and engineering practice
+`lib/editorial.ts` supplies two original engineering notes and the completed cloud
+article under its existing slug. Repository notes take precedence over CMS entries
+with the same slug. New notes were published October 19, 2026; the cloud article
+retains its original publication date and has an explicit modification date.
+CMS writing remains supported. Edit these source-controlled notes in this file;
+admin edits to the same slug do not override them.
 
-The homepage also presents four public source projects from `fahamijemal`: Chimera,
-Automaton Auditor, EduAI Assistant, and the ASTU Smart Complaints API. README files
-and relevant source files were reviewed on October 19, 2026. These cards describe
-challenge, learning, and academic work; they do not imply independently verified
-production deployments or measured AI performance. Edit `githubWork`, `aiPractices`,
-`engineeringFoundations`, and the six-stage `developmentProcess` in `lib/portfolio.ts`.
-MCP, LangGraph, context engineering, and keyword-based document retrieval are tied
-to concrete source examples. Broader RAG evaluation is presented as developing practice.
+CMS social links, resume URL, education, certificates, and additional writing
+remain supported. The homepage toolkit is curated in source to avoid duplicating
+CMS technology lists. Public collections share `app/portfolio.css`; credential
+previews omit webpage URLs and hide images that fail to load. Credentials derive
+an issuer from a recognized credential host only when the issuer is missing.
+
+### Contact notifications
+
+Messages are saved to the existing portfolio inbox first. Optional Resend email
+notifications require the server-only `RESEND_API_KEY`, `CONTACT_NOTIFICATION_FROM`
+(verified sender), and `CONTACT_NOTIFICATION_TO` variables. Missing configuration
+skips email; a provider error is logged without PII and does not undo a saved message.
+No live notifications were sent during implementation. Run `pnpm run test:contact`
+for isolated provider success, missing-config, and failure tests.
+
+### Performance verification
+
+Public project screenshots use WebP derivatives (~125 KB combined, down from
+~452 KB of PNG source). Original captures remain for provenance. Local browser
+metrics are lab observations, not real-user Core Web Vitals. The cloud environment
+blocks Google's PageSpeed API; use PageSpeed Insights and Search Console against
+the deployed site to collect live and field measurements. Site indexing and
+profile changes require access to the respective external accounts.
 
 ### Current CV
 

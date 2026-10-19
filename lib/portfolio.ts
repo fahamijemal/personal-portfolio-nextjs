@@ -1,5 +1,25 @@
 /** Public portfolio facts supplied by the owner and supported by the project repositories. */
-export const completedWork = [
+export type PortfolioWork = {
+  slug: string;
+  number: string;
+  name: string;
+  category: string;
+  summary: string;
+  role: string;
+  url: string;
+  image: string;
+  imageWidth: number;
+  imageHeight: number;
+  imageAlt: string;
+  imageNote: string;
+  stack: readonly string[];
+  brief: string;
+  scope: readonly (readonly [string, string])[];
+  outcome: string;
+  boundary: string;
+  sourceOnly?: boolean;
+};
+export const completedWork: readonly PortfolioWork[] = [
   {
     slug: "ifaa-entrance",
     number: "01",
@@ -9,7 +29,7 @@ export const completedWork = [
       "A place for Ethiopian students to practice, understand, and prepare for national examinations.",
     role: "Founder & developer",
     url: "https://entrance.ifaatechnologies.tech/en",
-    image: "/work/ifaa-entrance.png",
+    image: "/work/ifaa-entrance.webp",
     imageWidth: 1280,
     imageHeight: 961,
     imageAlt:
@@ -46,7 +66,7 @@ export const completedWork = [
       "A home for the company’s products, services, and client relationships — built with clarity and purpose.",
     role: "Founder & developer",
     url: "https://www.ifaatechnologies.tech/",
-    image: "/work/ifaa-technologies.png",
+    image: "/work/ifaa-technologies.webp",
     imageWidth: 1440,
     imageHeight: 1020,
     imageAlt: "The actual IFAA TECHNOLOGIES company website homepage.",
@@ -72,6 +92,44 @@ export const completedWork = [
       "A deployed company website and application codebase connecting public discovery with protected customer and administration workflows.",
     boundary:
       "Local integration tests exercise isolated fixtures. They do not establish the current state of hosted accounts, production email delivery, or client outcomes.",
+  },
+  {
+    slug: "project-chimera",
+    number: "03",
+    name: "Project Chimera",
+    category: "MCP & agent orchestration",
+    role: "Developer · AI challenge project",
+    summary:
+      "A specification-led agent workflow connecting planning, execution, and review through explicit MCP tools.",
+    url: "https://github.com/fahamijemal/Chimera",
+    sourceOnly: true,
+    image: "/work/chimera-architecture.svg",
+    imageWidth: 1200,
+    imageHeight: 800,
+    imageAlt:
+      "Architecture overview: a specification guides planner, worker, and judge roles; the worker connects to tools through MCP.",
+    imageNote: "Architecture illustration based on the public repository",
+    stack: ["Python", "MCP", "Gemini", "Spec-driven development"],
+    brief:
+      "Explore how a high-level goal can become a tool-using agent workflow with explicit responsibilities and a written specification.",
+    scope: [
+      [
+        "Agent roles",
+        "Planner, worker, and judge components separate task decomposition, execution, and review.",
+      ],
+      [
+        "Tool integration",
+        "An MCP client connects to tool servers and exposes tool calls and resource reads.",
+      ],
+      [
+        "Development workflow",
+        "Specifications and task boundaries guide implementation, with repository tests for agent and integration behavior.",
+      ],
+    ],
+    outcome:
+      "A public challenge codebase with agent components, MCP connections, specifications, and an autonomous-loop demonstration script.",
+    boundary:
+      "Challenge implementation; external tool availability and model output quality depend on runtime configuration.",
   },
 ] as const;
 
@@ -255,3 +313,119 @@ export const aiPractices = [
       "Structured outputs and reviewer roles make AI workflows easier to inspect. I aim to test representative and failure cases, verify claims against sources, and consider latency and cost alongside output quality.",
   },
 ] as const;
+
+/** Owner-authorized high-level summaries of private source. No private URLs or code. */
+export const privateWork = [
+  {
+    name: "OpsFlow — Document Management",
+    kind: "Team project · private source",
+    role: "Document-management module contributor",
+    description:
+      "Contributed the document-management module within a team-built institutional operations platform. The shared workflow connects specifications, implementation tasks, and acceptance checks.",
+    tags: ["Next.js", "NestJS", "Prisma", "Spec-driven development"],
+  },
+  {
+    name: "Smart Pharmacy Locator API",
+    kind: "Backend project · private source",
+    role: "Backend development",
+    description:
+      "A pharmacy discovery and medicine price-comparison API with location-based search, inventory workflows, role-based access, and API documentation.",
+    tags: ["TypeScript", "Express", "PostgreSQL / PostGIS", "OpenAPI"],
+  },
+  {
+    name: "IFAA ENTRANCE Mobile",
+    kind: "Mobile companion · private source",
+    role: "Product development",
+    description:
+      "A Flutter companion codebase for exam practice, study cards, progress views, and offline data. Uses local persistence and API synchronization; app-store release is a separate milestone.",
+    tags: ["Flutter", "Dart", "Riverpod", "SQLite"],
+  },
+] as const;
+
+export const caseStudyDetails: Record<
+  string,
+  {
+    contribution: string;
+    decision: string;
+    tradeoff: string;
+    architecture: readonly string[];
+    verification: readonly string[];
+    lesson: string;
+  }
+> = {
+  "ifaa-entrance": {
+    contribution:
+      "Founder and developer across the product experience, frontend/API integration, and specification-led delivery.",
+    decision:
+      "Separate question delivery, session rules, and AI-provider integration behind explicit module boundaries.",
+    tradeoff:
+      "An AI provider adapter makes provider changes easier, while server-owned session rules keep scoring and answer integrity outside the client. This adds contracts to maintain across the frontend and API.",
+    architecture: [
+      "Next.js learning interface",
+      "NestJS application API",
+      "PostgreSQL persistence · Redis cache",
+      "AI provider adapter",
+    ],
+    verification: [
+      "Frontend regression and accessibility checks are represented in the repository workflow.",
+      "Backend tests and typed contracts exercise application modules; session behavior and authorization need checks at their boundaries.",
+      "Offline persistence and reconnection require separate end-to-end scenarios.",
+    ],
+    lesson:
+      "Offline learning and server-owned assessment rules need a clear synchronization contract. AI explanations belong beside the learning workflow, with explicit failure states.",
+  },
+  "ifaa-technologies": {
+    contribution:
+      "Founder and developer of the public company presence and its customer/administration application workflows.",
+    decision:
+      "Use one Next.js application for public discovery and protected workspaces, with permissions enforced at the data boundary.",
+    tradeoff:
+      "A shared codebase keeps publishing and customer workflows close together. It also makes access policies and public/private query boundaries essential.",
+    architecture: [
+      "Public product & service pages",
+      "Protected customer/admin workspaces",
+      "Supabase authentication",
+      "PostgreSQL policies & storage",
+    ],
+    verification: [
+      "Read-only local fixtures exercise public-content and authentication boundaries.",
+      "Playwright checks cover responsive navigation and application interactions.",
+      "Accessibility checks cover public pages; hosted accounts and delivery services need environment-specific checks.",
+    ],
+    lesson:
+      "Clear permission boundaries and realistic failure states matter as much as the public-facing design. Publishing and protected workflows need independent regression coverage.",
+  },
+  "project-chimera": {
+    contribution:
+      "Developed a Python challenge implementation exploring agent roles, MCP tool connections, and specification-led tasks.",
+    decision:
+      "Use MCP as the explicit interface between agent execution and external tools.",
+    tradeoff:
+      "Tool contracts make integration easier to inspect and extend. They also introduce connection lifecycles, argument validation, and error handling that agents must handle deliberately.",
+    architecture: [
+      "Specification & goal",
+      "Planner → worker → judge",
+      "MCP client & tool contracts",
+      "News / image tool servers",
+    ],
+    verification: [
+      "The repository contains agent, logic, and integration test suites.",
+      "The MCP client validates selected tool arguments and returns explicit failure results.",
+      "An autonomous-loop script provides a runnable demonstration when model and tool services are configured.",
+    ],
+    lesson:
+      "Agent autonomy becomes easier to reason about when responsibilities, context, tool contracts, and review criteria are explicit. A working tool call alone does not establish output quality.",
+  },
+};
+
+export function isReviewedArchiveProject(project: {
+  title_en: string;
+  github_url?: string | null;
+  live_url?: string | null;
+}) {
+  return (
+    !["e-commerce platform", "cloud task manager"].includes(
+      project.title_en.toLowerCase(),
+    ) && Boolean(project.github_url || project.live_url)
+  );
+}

@@ -1,3 +1,4 @@
+import { mergeEditorialPosts } from "@/lib/editorial";
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
 import { BlogPageClient } from "./blog-page-client";
@@ -37,7 +38,7 @@ export default async function BlogPage({ searchParams }: Props) {
 
   return (
     <BlogPageClient
-      posts={posts || []}
+      posts={mergeEditorialPosts(posts || [], tag)}
       initialTag={tag ?? undefined}
       socialLinks={socialLinks}
     />
