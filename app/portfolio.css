@@ -1812,20 +1812,9 @@
   }
 }
 
-.profile-languages {
-  margin-top: 24px;
-  font-size: 14px;
+.education-context {
+  margin-top: 8px;
   color: var(--folio-muted);
-}
-.profile-list,
-.evolution-list {
-  padding-left: 20px;
-  margin: 20px 0;
-}
-.profile-list li,
-.evolution-list li {
-  font-size: 14px;
-  line-height: 1.85;
-  color: var(--folio-muted);
-  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.8;
 }

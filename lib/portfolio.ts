@@ -167,7 +167,7 @@ export const capabilities = [
     title: "Systems & delivery",
     description:
       "Thinking beyond the feature: data, permissions, deployment, and maintainability.",
-    tags: ["PostgreSQL", "Supabase", "Docker", "CI/CD", "Cloud foundations"],
+    tags: ["PostgreSQL", "Supabase", "Docker", "CI/CD", "Cloud deployment"],
   },
   {
     number: "04",
@@ -237,9 +237,9 @@ export const developmentProcess = [
 
 export const engineeringFoundations = [
   {
-    title: "Computer science foundations",
+    title: "Problem solving & design",
     description:
-      "Building on my Software Engineering studies and programming practice: data structures, algorithms, object-oriented programming, and problem decomposition.",
+      "Data structures, algorithms, object-oriented design, and problem decomposition inform how I structure application logic and reason about tradeoffs.",
     tags: ["Data structures & algorithms", "OOP", "Problem solving"],
   },
   {
@@ -264,7 +264,7 @@ export const engineeringFoundations = [
 export const githubWork = [
   {
     name: "Project Chimera",
-    kind: "Agentic AI · challenge project",
+    kind: "Agent orchestration · public source",
     repo: "Chimera",
     description:
       "A planner, worker, and judge architecture with MCP clients and tool servers. Explores agent orchestration through a specification-led development workflow.",
@@ -272,7 +272,7 @@ export const githubWork = [
   },
   {
     name: "Automaton Auditor",
-    kind: "AI evaluation · challenge project",
+    kind: "AI evaluation · public source",
     repo: "automaton-auditor",
     description:
       "A LangGraph audit workflow that combines repository and document evidence, parallel reviewer roles, structured outputs, and rule-based synthesis. Includes PDF chunking and keyword retrieval.",
@@ -280,7 +280,7 @@ export const githubWork = [
   },
   {
     name: "EduAI Assistant",
-    kind: "Applied AI · learning project",
+    kind: "AI learning platform · public source",
     repo: "eduai-assistant",
     description:
       "A full-stack learning assistant with document-context questions, summaries, comparisons, and quiz generation using Gemini, React, Express, and MongoDB.",
@@ -313,7 +313,7 @@ export const aiPractices = [
   {
     title: "Retrieval & grounded answers",
     description:
-      "I’m developing RAG skills through document extraction, chunking, and retrieval. Automaton Auditor uses keyword retrieval; EduAI supplies document context to Gemini. I’m extending this foundation toward better retrieval evaluation and source attribution.",
+      "My document-based AI work covers extraction, chunking, and retrieval. Automaton Auditor selects evidence with keyword retrieval; EduAI supplies document context to Gemini. Evaluation priorities include grounding, source attribution, and representative questions.",
   },
   {
     title: "Evaluation & human judgment",
@@ -367,7 +367,7 @@ export const caseStudyDetails: Record<
     decision:
       "Separate question delivery, session rules, and AI-provider integration behind explicit module boundaries.",
     tradeoff:
-      "An AI provider adapter makes provider changes easier, while server-owned session rules keep scoring and answer integrity outside the client. This adds contracts to maintain across the frontend and API.",
+      "The platform evolved from Express/MongoDB toward a modular NestJS, Prisma, and PostgreSQL architecture. AI provider adapters support changes in model services, while server-owned session rules keep scoring and answer integrity outside the client. Offline clients add synchronization contracts to maintain.",
     architecture: [
       "Next.js learning interface",
       "NestJS application API",

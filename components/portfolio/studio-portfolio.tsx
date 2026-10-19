@@ -15,7 +15,6 @@ import { Footer } from "./footer";
 import { ContactSection } from "./contact-section";
 import { SelectedWork } from "./selected-work";
 import { capabilities } from "@/lib/portfolio";
-import { profileContext } from "@/lib/profile";
 import { personalBrand } from "@/lib/personal-seo";
 import {
   getSocialLinkUrls,
@@ -268,37 +267,36 @@ export function StudioPortfolio({
                 Software engineering, with a founder’s perspective.
               </p>
               <p>
-                I’m a fifth-year Software Engineering student at Adama Science
-                and Technology University and founder of IFAA TECHNOLOGIES.
-                Based in Adama, Ethiopia, I’m building useful digital products
-                for local needs with a wider perspective.
+                I’m a full-stack developer and founder of IFAA TECHNOLOGIES,
+                based in Adama, Ethiopia. My focus is backend engineering, cloud
+                delivery, and AI-enabled products that address practical needs.
               </p>
               <p>
-                My interests span backend systems, cloud delivery, and
-                AI-assisted development. I value clear communication,
-                maintainable code, and small iterations that solve a real
-                problem.
+                I work across product definition, system design, implementation,
+                and release. Clear specifications, maintainable code, and
+                thoughtful testing guide how I build independently and
+                contribute within a team.
               </p>
               <div className="about-facts">
                 <div>
                   <span className="folio-label">EDUCATION</span>
                   <p>
                     {aboutContent?.education_text_en ||
-                      "BSc in Software Engineering · In progress"}
+                      "BSc in Software Engineering · Adama Science and Technology University"}
+                  </p>
+                  <p className="education-context">
+                    Currently in my fifth year.
                   </p>
                 </div>
                 <div>
                   <span className="folio-label">INTERNSHIP & TEAMWORK</span>
                   <p>
-                    Internship contribution to OpsFlow’s document-management
-                    module, alongside independent product and AI projects.{" "}
+                    Contributed document-management work to OpsFlow within a
+                    multidisciplinary internship team.{" "}
                     <Link href="/projects">Explore the project library ↗</Link>
                   </p>
                 </div>
               </div>
-              <p className="profile-languages">
-                Working languages: {profileContext.languages.join(" · ")}
-              </p>
             </div>
           </div>
         </section>

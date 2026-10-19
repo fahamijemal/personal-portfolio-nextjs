@@ -5,7 +5,7 @@ https://fahami.ifaatechnologies.tech | https://github.com/fahamijemal
 https://linkedin.com/in/fahamijemal
 
 ## Profile
-Fifth-year Software Engineering student, full-stack developer, and founder of IFAA TECHNOLOGIES. Focused on backend and cloud engineering, with project work in education platforms, MCP tool integration, agent orchestration, and document-based AI. Uses specifications, code review, and testing to build maintainable products for practical needs.
+Full-stack developer and founder of IFAA TECHNOLOGIES, focused on backend systems, cloud delivery, and AI-enabled products. Project experience spans education platforms, MCP tool integration, agent orchestration, and document-based AI. Uses specifications, code review, and testing to build maintainable products for practical needs.
 
 ## Technical Skills
 **Application development:** TypeScript, JavaScript, Python, React, Next.js, Node.js, Express, NestJS, Django, REST APIs, Tailwind CSS.
@@ -26,12 +26,12 @@ https://entrance.ifaatechnologies.tech/en
 
 ## Internship Experience
 ### OpsFlow | Document-Management Contributor
-Contributed document-management work to a team-built institutional platform using Next.js, NestJS, TypeScript, and PostgreSQL. Applied specifications-first development, architecture planning, data modeling, and university internship documentation.
+Contributed document-management work to a team-built institutional platform using Next.js, NestJS, TypeScript, and PostgreSQL. Applied specifications-first development, architecture planning, data modeling, and technical documentation.
 
 ## Education
 ### BSc in Software Engineering | Fifth Year, In Progress
 Adama Science and Technology University, Ethiopia
-Foundations: algorithms, data structures, OOP, requirements, database design, and the software development lifecycle.
+Engineering background in algorithms, data structures, software design, requirements engineering, databases, and the software development lifecycle.
 
 ---PAGE---
 
@@ -62,12 +62,10 @@ https://github.com/fahamijemal/astu-smart-complaints-backend
 **Release:** Validate configuration, migrations, automated checks, deployed workflows, and rollback options.
 **Maintain:** Use feedback and error/performance signals to prioritize fixes; update documentation and dependencies. Develop retrieval evaluation skills while considering AI quality, latency, and cost.
 
-## Academic & Research Focus
+## Research & Languages
+Afaan Oromo handwriting recognition: research proposal and prototype work with CRNN/CTC.
 **Working languages:** English, Afaan Oromo, and Amharic.
-Current coursework: Senior Project I, Machine Learning, Natural Language Processing, Software Evolution and Maintenance, Entrepreneurship and Business Development, and Ethics and Professionalism in Computing.
-Research: Afaan Oromo handwriting recognition proposal and prototype work with CRNN/CTC.
 
-## Continuous Learning
+## Selected Credentials
 **Coursera:** JavaScript Full Stack Capstone Project; Python for Data Science and AI; Developing Applications with SQL, Databases, and Django; Git and GitHub Essentials.
 **AWS Educate:** Introduction to Cloud 101 training badge.
-Developing further: RAG evaluation, reliable agents, AWS/GCP, Kubernetes, DevSecOps, and cybersecurity.

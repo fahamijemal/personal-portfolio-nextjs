@@ -1,4 +1,3 @@
-import { projectEvolution } from "@/lib/profile";
 import { ArrowUpRight } from "lucide-react";
 import { completedWork, githubWork, privateWork } from "@/lib/portfolio";
 
@@ -9,12 +8,12 @@ export function ProjectLibrary() {
         <div>
           <p className="folio-label">PUBLIC SOURCE</p>
           <h2>
-            Built to <span>explore.</span>
+            Engineering <span>projects.</span>
           </h2>
         </div>
         <p>
-          AI challenges, learning tools, and backend engineering. Each links to
-          its implementation.
+          Agent orchestration, applied AI, and backend systems, with source code
+          and implementation details.
         </p>
       </div>
       <div className="github-grid">
@@ -52,12 +51,12 @@ export function ProjectLibrary() {
         <div>
           <p className="folio-label">PRIVATE-SOURCE WORK</p>
           <h2>
-            More ways <span>of building.</span>
+            Product & team <span>contributions.</span>
           </h2>
         </div>
         <p>
-          High-level summaries of private projects, with my contribution and
-          current scope.
+          Selected private-source work, with a clear account of my role and
+          scope.
         </p>
       </div>
       <div className="github-grid private-projects">
@@ -75,33 +74,6 @@ export function ProjectLibrary() {
           </article>
         ))}
       </div>
-      <section className="project-evolution" aria-labelledby="evolution-title">
-        <div className="section-heading library-heading">
-          <div>
-            <p className="folio-label">HOW THE WORK EVOLVED</p>
-            <h2 id="evolution-title">
-              From experiments to <span>systems.</span>
-            </h2>
-          </div>
-          <p>
-            Different projects, connected lessons in product growth and
-            engineering.
-          </p>
-        </div>
-        <div className="github-grid">
-          {projectEvolution.map((project) => (
-            <article key={project.name}>
-              <h3>{project.name}</h3>
-              <ol className="evolution-list">
-                {project.stages.map((stage) => (
-                  <li key={stage}>{stage}</li>
-                ))}
-              </ol>
-              <p>{project.lesson}</p>
-            </article>
-          ))}
-        </div>
-      </section>
     </>
   );
 }

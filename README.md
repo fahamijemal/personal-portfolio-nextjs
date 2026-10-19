@@ -163,12 +163,11 @@ the cloud environment network policy. Content uses the owner's supplied profile,
 previously listed credentials, and reviewed public GitHub projects. No employment
 dates, graduation date, GPA, project usage figures, or AI performance claims were invented.
 
-### Owner-supplied academic and career context
+### Professional content scope
 
-`lib/profile.ts` maintains the owner's October 2026 update: fifth-year Software
-Engineering studies at ASTU, working languages, current coursework, developing
-technical interests, and project evolution. These are owner-supplied facts;
-no internship/employment dates or graduation date are inferred. Hardware and
-editor preferences are omitted from public professional content. The portfolio
-and two-page CV identify the scoped OpsFlow internship contribution and the
-Afaan Oromo handwriting recognition research/prototype without accuracy claims.
+The owner-supplied history informs the copy rather than appearing as a full biography.
+The portfolio prioritizes product work, engineering judgment, and team contributions.
+Education is a concise ASTU degree/fifth-year note. Semester course lists, device/editor preferences, speculative
+technology lists, and repeated project histories are omitted. The flagship case study
+retains the relevant Express/MongoDB to NestJS/Prisma/PostgreSQL architecture evolution.
+The CV follows the same scope and remains two pages.
