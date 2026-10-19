@@ -15,7 +15,13 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 import { ContactSection } from "./contact-section";
 import { SelectedWork } from "./selected-work";
-import { capabilities, developmentProcess } from "@/lib/portfolio";
+import {
+  capabilities,
+  developmentProcess,
+  engineeringFoundations,
+  githubWork,
+  aiPractices,
+} from "@/lib/portfolio";
 import { personalBrand } from "@/lib/personal-seo";
 import {
   getSocialLinkUrls,
@@ -71,7 +77,8 @@ export function StudioPortfolio({
               <p className="hero-description">
                 I turn ideas into practical software. Combining full-stack
                 engineering, product thinking, and agentic AI — with clear
-                specifications, thoughtful design, and a human review loop.
+                specifications, thoughtful design, MCP-connected tools, and a
+                human review loop.
               </p>
               <div className="hero-actions">
                 <a href="#projects" className="folio-button">
@@ -150,6 +157,57 @@ export function StudioPortfolio({
         </section>
         <SelectedWork />
         <section
+          className="folio-section github-lab"
+          aria-labelledby="github-title"
+        >
+          <div className="folio-container">
+            <div className="section-heading">
+              <div>
+                <p className="folio-label">FROM MY GITHUB</p>
+                <h2 id="github-title">
+                  Ideas, explored <span>in code.</span>
+                </h2>
+              </div>
+              <a
+                className="folio-text-link"
+                href="https://github.com/fahamijemal?tab=repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Explore GitHub <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
+            </div>
+            <p className="lab-intro">
+              A selection of public AI, academic, and learning projects
+              alongside my shipped products. Open the repositories to explore
+              the implementation and development history.
+            </p>
+            <div className="github-grid">
+              {githubWork.map((project) => (
+                <article key={project.repo}>
+                  <p className="folio-label">{project.kind}</p>
+                  <h3>
+                    <a
+                      href={`https://github.com/fahamijemal/${project.repo}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {project.name}
+                      <ArrowUpRight size={18} aria-hidden="true" />
+                    </a>
+                  </h3>
+                  <p>{project.description}</p>
+                  <ul className="folio-tags">
+                    {project.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section
           id="skills"
           className="folio-section expertise"
           aria-labelledby="expertise-title"
@@ -185,6 +243,39 @@ export function StudioPortfolio({
                 </article>
               ))}
             </div>
+            <div className="foundations-heading">
+              <p className="folio-label">AI ENGINEERING IN PRACTICE</p>
+              <h3>Useful context. Explicit tools. Measurable quality.</h3>
+            </div>
+            <div className="foundation-grid">
+              {aiPractices.map((item) => (
+                <article key={item.title}>
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
+                </article>
+              ))}
+            </div>
+            <div className="foundations-heading">
+              <p className="folio-label">SOFTWARE ENGINEERING FOUNDATIONS</p>
+              <h3>The thinking behind the tools.</h3>
+              <p>
+                Foundations I’m strengthening through my degree, programming
+                practice, and project work.
+              </p>
+            </div>
+            <div className="foundation-grid">
+              {engineeringFoundations.map((item) => (
+                <article key={item.title}>
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
+                  <ul className="folio-tags">
+                    {item.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
             {additionalTools.length > 0 && (
               <div className="additional-tools">
                 <p className="folio-label">ALSO IN MY TOOLKIT</p>
@@ -205,7 +296,9 @@ export function StudioPortfolio({
           <div className="folio-container">
             <div className="section-heading">
               <div>
-                <p className="folio-label">03 / HOW I BUILD</p>
+                <p className="folio-label">
+                  03 / THE SOFTWARE DEVELOPMENT LIFECYCLE
+                </p>
                 <h2 id="approach-title">
                   AI moves fast.
                   <br />
@@ -213,9 +306,9 @@ export function StudioPortfolio({
                 </h2>
               </div>
               <p>
-                I use agents to extend my work,
-                <br />
-                while keeping the decisions accountable.
+                From requirements to maintenance: a practical workflow I keep
+                refining through study, product work, and AI-assisted
+                development.
               </p>
             </div>
             <ol className="process-grid">
@@ -225,6 +318,13 @@ export function StudioPortfolio({
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                   <span className="process-detail">{step.detail}</span>
+                  <details className="process-practices">
+                    <summary>
+                      Practices for{" "}
+                      {step.title.replace(/\.$/, "").toLowerCase()}
+                    </summary>
+                    <p>{step.practices}</p>
+                  </details>
                 </li>
               ))}
             </ol>
@@ -261,8 +361,9 @@ export function StudioPortfolio({
               <p>
                 My focus spans backend development, cloud systems, and
                 AI-assisted product development. I use spec-driven development,
-                prompt and context engineering, and RAG to make the work more
-                deliberate — then review and test what gets built.
+                prompt and context engineering, MCP, and retrieval techniques to
+                make the work more deliberate — then review and test what gets
+                built.
               </p>
               <p>
                 Based in Adama, Ethiopia, I’m building for local needs with a

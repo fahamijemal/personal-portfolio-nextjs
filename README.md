@@ -116,3 +116,14 @@ source rather than inherited from old hero role/description settings. The portra
 is the existing licensed/owner-provided `public/fahamijemal.jpg`. Existing admin,
 authentication, content publishing, and contact API/database behavior is retained.
 Contact UI checks mock responses and never send real inquiries.
+
+### Public GitHub work and engineering practice
+
+The homepage also presents four public source projects from `fahamijemal`: Chimera,
+Automaton Auditor, EduAI Assistant, and the ASTU Smart Complaints API. README files
+and relevant source files were reviewed on October 19, 2026. These cards describe
+challenge, learning, and academic work; they do not imply independently verified
+production deployments or measured AI performance. Edit `githubWork`, `aiPractices`,
+`engineeringFoundations`, and the six-stage `developmentProcess` in `lib/portfolio.ts`.
+MCP, LangGraph, context engineering, and keyword-based document retrieval are tied
+to concrete source examples. Broader RAG evaluation is presented as developing practice.

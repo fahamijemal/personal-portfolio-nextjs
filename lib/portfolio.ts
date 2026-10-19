@@ -85,8 +85,10 @@ export const capabilities = [
       "Agentic AI",
       "Prompt engineering",
       "Context engineering",
+      "MCP tool integration",
+      "LangGraph orchestration",
       "RAG",
-      "Evaluation & review",
+      "Structured outputs & evaluation",
     ],
   },
   {
@@ -98,7 +100,7 @@ export const capabilities = [
       "TypeScript",
       "Next.js & React",
       "Node.js & NestJS",
-      "Python",
+      "Python & Django",
       "REST APIs",
     ],
   },
@@ -126,27 +128,130 @@ export const capabilities = [
 
 export const developmentProcess = [
   {
-    title: "Define the right problem.",
+    title: "Discover & specify.",
     description:
-      "Start with the user, the constraints, and a written specification. Make acceptance criteria explicit before writing code.",
-    detail: "Brief → spec → focused tasks",
+      "Understand the user, business goal, and constraints. Translate the problem into user stories, a scoped specification, and testable acceptance criteria.",
+    detail: "Deliverables: brief · backlog · acceptance criteria",
+    practices:
+      "Clarify functional and non-functional requirements, identify risks, and prioritize a small useful release. Keep the specification connected to implementation tasks.",
   },
   {
-    title: "Build with context.",
+    title: "Design the system.",
     description:
-      "Use AI agents for bounded tasks. Apply prompt engineering and retrieval-augmented generation where relevant context improves the result.",
-    detail: "Context → implementation → feedback",
+      "Plan interfaces, data models, API contracts, and permission boundaries before implementation. Record the tradeoffs that affect reliability and future change.",
+    detail: "Deliverables: architecture · schema · API contract",
+    practices:
+      "Use separation of concerns, clear module responsibilities, and database constraints. Consider accessibility, failure states, threat scenarios, and deployment needs early.",
   },
   {
-    title: "Verify the work.",
+    title: "Implement with context.",
     description:
-      "Review generated code and check types, tests, security boundaries, and accessibility. The developer remains accountable.",
-    detail: "Review → test → refine",
+      "Build in small, reviewable changes. Give AI agents a specification, relevant repository context, bounded tools, and a clear definition of done.",
+    detail: "Deliverables: working increments · reviewed changes",
+    practices:
+      "Use prompt and context engineering, MCP where tool integration helps, and retrieval when source material is needed. Review generated code; keep secrets outside prompts and repositories.",
   },
   {
-    title: "Ship, observe, improve.",
+    title: "Test & evaluate.",
     description:
-      "Deploy deliberately, document decisions, and use real feedback to guide the next iteration.",
-    detail: "Release → observe → learn",
+      "Check behavior against acceptance criteria with appropriate unit, integration, and browser tests. Review security, accessibility, and AI outputs alongside code quality.",
+    detail: "Deliverables: test results · evaluation cases",
+    practices:
+      "Exercise unhappy paths and authorization boundaries. For AI features, check grounding, output schemas, prompt-injection exposure, and fallback behavior; compare results with representative examples.",
+  },
+  {
+    title: "Release deliberately.",
+    description:
+      "Use version control and automated checks to prepare a reproducible release. Verify configuration, database changes, and the deployed user journey.",
+    detail: "Deliverables: release · smoke checks · rollback plan",
+    practices:
+      "Keep environment configuration separate, use least-privilege credentials, and plan reversible migrations. Document what changed and confirm key workflows after deployment.",
+  },
+  {
+    title: "Observe & improve.",
+    description:
+      "Use errors, performance signals, and user feedback to guide maintenance. Update documentation and specifications as the product evolves.",
+    detail: "Deliverables: fixes · learning · next iteration",
+    practices:
+      "Investigate failures, maintain dependencies, and revisit assumptions. For AI workflows, track quality, latency, and cost; adjust prompts, retrieval, and models based on evidence.",
+  },
+] as const;
+
+export const engineeringFoundations = [
+  {
+    title: "Computer science foundations",
+    description:
+      "Building on my Software Engineering studies and programming practice: data structures, algorithms, object-oriented programming, and problem decomposition.",
+    tags: ["Data structures & algorithms", "OOP", "Problem solving"],
+  },
+  {
+    title: "Software design & teamwork",
+    description:
+      "Connecting requirements to maintainable code through modular design, API contracts, Git collaboration, and clear technical documentation.",
+    tags: [
+      "Requirements engineering",
+      "Separation of concerns",
+      "Agile iteration",
+    ],
+  },
+  {
+    title: "Reliable application systems",
+    description:
+      "Applying database modeling, authentication, authorization, validation, and testing across backend services and full-stack applications.",
+    tags: ["Relational data modeling", "RBAC", "Testing & debugging"],
+  },
+] as const;
+
+/** Public source projects reviewed October 19, 2026; no deployment or performance claims. */
+export const githubWork = [
+  {
+    name: "Project Chimera",
+    kind: "Agentic AI · challenge project",
+    repo: "Chimera",
+    description:
+      "A planner, worker, and judge architecture with MCP clients and tool servers. Explores agent orchestration through a specification-led development workflow.",
+    tags: ["Python", "MCP", "Multi-agent systems", "Spec-driven development"],
+  },
+  {
+    name: "Automaton Auditor",
+    kind: "AI evaluation · challenge project",
+    repo: "automaton-auditor",
+    description:
+      "A LangGraph audit workflow that combines repository and document evidence, parallel reviewer roles, structured outputs, and rule-based synthesis. Includes PDF chunking and keyword retrieval.",
+    tags: ["LangGraph", "Gemini", "Retrieval", "Structured outputs"],
+  },
+  {
+    name: "EduAI Assistant",
+    kind: "Applied AI · learning project",
+    repo: "eduai-assistant",
+    description:
+      "A full-stack learning assistant with document-context questions, summaries, comparisons, and quiz generation using Gemini, React, Express, and MongoDB.",
+    tags: ["React", "Express", "MongoDB", "Context engineering"],
+  },
+  {
+    name: "ASTU Smart Complaints API",
+    kind: "Backend engineering · academic project",
+    repo: "astu-smart-complaints-backend",
+    description:
+      "A TypeScript API for complaint tracking, with role-based workflows, authentication, notifications, and OpenAPI documentation. Built around PostgreSQL and Redis.",
+    tags: ["TypeScript", "PostgreSQL", "Redis", "OpenAPI"],
+  },
+] as const;
+
+export const aiPractices = [
+  {
+    title: "Agents & MCP",
+    description:
+      "I use specifications and repository context to guide agents, and explore MCP for explicit tool connections. My practice is to keep tasks bounded, inspect tool inputs and outputs, and review changes before release.",
+  },
+  {
+    title: "Retrieval & grounded answers",
+    description:
+      "I’m developing RAG skills through document extraction, chunking, and retrieval. Automaton Auditor uses keyword retrieval; EduAI supplies document context to Gemini. I’m extending this foundation toward better retrieval evaluation and source attribution.",
+  },
+  {
+    title: "Evaluation & human judgment",
+    description:
+      "Structured outputs and reviewer roles make AI workflows easier to inspect. I aim to test representative and failure cases, verify claims against sources, and consider latency and cost alongside output quality.",
   },
 ] as const;

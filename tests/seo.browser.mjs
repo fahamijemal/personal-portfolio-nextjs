@@ -102,6 +102,9 @@ test("modern portfolio exposes real work, AI engineering skills, and accessible 
       "Agentic AI",
       "Prompt engineering",
       "RAG",
+      "MCP",
+      "LangGraph",
+      "Requirements engineering",
       "Spec-driven",
       "entrepreneur",
     ]) {
@@ -114,6 +117,22 @@ test("modern portfolio exposes real work, AI engineering skills, and accessible 
     }
     assert.equal(await page.locator("#skills").getByText(/\d+%/).count(), 0);
     assert.equal(await page.locator("#projects article").count(), 2);
+    assert.equal(await page.locator(".github-grid article").count(), 4);
+    assert.equal(await page.locator("#approach ol > li").count(), 6);
+    const practice = page.locator("#approach details").first();
+    await practice.locator("summary").focus();
+    await page.keyboard.press("Enter");
+    assert.equal(await practice.getAttribute("open"), "");
+    assert.ok(
+      (await practice.innerText()).includes("non-functional requirements"),
+    );
+    for (const link of await page.locator(".github-grid h3 a").all()) {
+      assert.match(
+        await link.getAttribute("href"),
+        /^https:\/\/github\.com\/fahamijemal\//,
+      );
+      assert.equal(await link.getAttribute("rel"), "noopener noreferrer");
+    }
     await page.getByRole("button", { name: "Open navigation" }).click();
     await page
       .getByRole("navigation", { name: "Mobile navigation" })
