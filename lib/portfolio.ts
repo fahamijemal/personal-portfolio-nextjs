@@ -294,6 +294,14 @@ export const githubWork = [
       "A TypeScript API for complaint tracking, with role-based workflows, authentication, notifications, and OpenAPI documentation. Built around PostgreSQL and Redis.",
     tags: ["TypeScript", "PostgreSQL", "Redis", "OpenAPI"],
   },
+  {
+    name: "OroHandwriting",
+    kind: "Research & prototype",
+    repo: "orohandwriting",
+    description:
+      "Afaan Oromo handwriting recognition research with CRNN/CTC and TrOCR model code, preprocessing, and a FastAPI/React interface. Explores local-language educational record digitization.",
+    tags: ["Python", "CRNN / CTC", "OCR", "FastAPI"],
+  },
 ] as const;
 
 export const aiPractices = [
@@ -319,7 +327,7 @@ export const privateWork = [
   {
     name: "OpsFlow — Document Management",
     kind: "Team project · private source",
-    role: "Document-management module contributor",
+    role: "Internship contributor · document management",
     description:
       "Contributed the document-management module within a team-built institutional operations platform. The shared workflow connects specifications, implementation tasks, and acceptance checks.",
     tags: ["Next.js", "NestJS", "Prisma", "Spec-driven development"],

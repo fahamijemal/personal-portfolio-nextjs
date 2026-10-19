@@ -1,3 +1,4 @@
+import { projectEvolution } from "@/lib/profile";
 import { ArrowUpRight } from "lucide-react";
 import { completedWork, githubWork, privateWork } from "@/lib/portfolio";
 
@@ -74,6 +75,33 @@ export function ProjectLibrary() {
           </article>
         ))}
       </div>
+      <section className="project-evolution" aria-labelledby="evolution-title">
+        <div className="section-heading library-heading">
+          <div>
+            <p className="folio-label">HOW THE WORK EVOLVED</p>
+            <h2 id="evolution-title">
+              From experiments to <span>systems.</span>
+            </h2>
+          </div>
+          <p>
+            Different projects, connected lessons in product growth and
+            engineering.
+          </p>
+        </div>
+        <div className="github-grid">
+          {projectEvolution.map((project) => (
+            <article key={project.name}>
+              <h3>{project.name}</h3>
+              <ol className="evolution-list">
+                {project.stages.map((stage) => (
+                  <li key={stage}>{stage}</li>
+                ))}
+              </ol>
+              <p>{project.lesson}</p>
+            </article>
+          ))}
+        </div>
+      </section>
     </>
   );
 }

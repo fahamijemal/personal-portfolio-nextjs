@@ -162,3 +162,13 @@ The previous PDF could not be read because its storage redirect was blocked by
 the cloud environment network policy. Content uses the owner's supplied profile,
 previously listed credentials, and reviewed public GitHub projects. No employment
 dates, graduation date, GPA, project usage figures, or AI performance claims were invented.
+
+### Owner-supplied academic and career context
+
+`lib/profile.ts` maintains the owner's October 2026 update: fifth-year Software
+Engineering studies at ASTU, working languages, current coursework, developing
+technical interests, and project evolution. These are owner-supplied facts;
+no internship/employment dates or graduation date are inferred. Hardware and
+editor preferences are omitted from public professional content. The portfolio
+and two-page CV identify the scoped OpsFlow internship contribution and the
+Afaan Oromo handwriting recognition research/prototype without accuracy claims.

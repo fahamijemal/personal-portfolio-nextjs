@@ -129,6 +129,7 @@ export function personalIdentityGraph() {
         name: personalBrand.name,
         alternateName: personalBrand.nameVariants,
         knowsAbout: personalBrand.topics,
+        knowsLanguage: ["English", "Afaan Oromo", "Amharic"],
         homeLocation: {
           "@type": "City",
           name: personalBrand.location.city,

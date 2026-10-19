@@ -15,6 +15,7 @@ import { Footer } from "./footer";
 import { ContactSection } from "./contact-section";
 import { SelectedWork } from "./selected-work";
 import { capabilities } from "@/lib/portfolio";
+import { profileContext } from "@/lib/profile";
 import { personalBrand } from "@/lib/personal-seo";
 import {
   getSocialLinkUrls,
@@ -267,10 +268,10 @@ export function StudioPortfolio({
                 Software engineering, with a founder’s perspective.
               </p>
               <p>
-                I’m a Software Engineering student at Adama Science and
-                Technology University and founder of IFAA TECHNOLOGIES. Based in
-                Adama, Ethiopia, I’m building useful digital products for local
-                needs with a wider perspective.
+                I’m a fifth-year Software Engineering student at Adama Science
+                and Technology University and founder of IFAA TECHNOLOGIES.
+                Based in Adama, Ethiopia, I’m building useful digital products
+                for local needs with a wider perspective.
               </p>
               <p>
                 My interests span backend systems, cloud delivery, and
@@ -287,14 +288,17 @@ export function StudioPortfolio({
                   </p>
                 </div>
                 <div>
-                  <span className="folio-label">COLLABORATIVE WORK</span>
+                  <span className="folio-label">INTERNSHIP & TEAMWORK</span>
                   <p>
-                    Document-management contribution to OpsFlow, alongside
-                    independent product and AI projects.{" "}
+                    Internship contribution to OpsFlow’s document-management
+                    module, alongside independent product and AI projects.{" "}
                     <Link href="/projects">Explore the project library ↗</Link>
                   </p>
                 </div>
               </div>
+              <p className="profile-languages">
+                Working languages: {profileContext.languages.join(" · ")}
+              </p>
             </div>
           </div>
         </section>

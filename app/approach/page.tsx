@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { profileContext } from "@/lib/profile";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
@@ -108,6 +109,55 @@ export default function ApproachPage() {
                   </ul>
                 </article>
               ))}
+            </div>
+          </section>
+          <section
+            className="folio-section foundations-section"
+            aria-labelledby="academic-focus-title"
+          >
+            <p className="folio-label">ACADEMIC & PROFESSIONAL GROWTH</p>
+            <h2 id="academic-focus-title">Study connected to practice.</h2>
+            <div className="foundation-grid">
+              <article>
+                <h3>Current coursework</h3>
+                <p>
+                  {profileContext.studyStage} at {profileContext.university}.
+                </p>
+                <ul className="profile-list">
+                  {profileContext.coursework.map((course) => (
+                    <li key={course}>{course}</li>
+                  ))}
+                </ul>
+              </article>
+              <article>
+                <h3>Research direction</h3>
+                <p>
+                  Afaan Oromo handwriting recognition: research and prototype
+                  work with CRNN/CTC, connecting machine learning and natural
+                  language processing to local-language educational records.
+                </p>
+                <a
+                  className="folio-text-link"
+                  href="https://github.com/fahamijemal/orohandwriting"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Explore the research code ↗
+                </a>
+              </article>
+              <article>
+                <h3>Developing next</h3>
+                <p>
+                  My long-term focus is scalable software businesses grounded in
+                  backend engineering, cloud infrastructure, and practical
+                  Ethiopian needs.
+                </p>
+                <ul className="folio-tags">
+                  {profileContext.exploring.map((topic) => (
+                    <li key={topic}>{topic}</li>
+                  ))}
+                </ul>
+              </article>
             </div>
           </section>
           <div className="collection-cta">

@@ -5,11 +5,11 @@ https://fahami.ifaatechnologies.tech | https://github.com/fahamijemal
 https://linkedin.com/in/fahamijemal
 
 ## Profile
-Software Engineering student and full-stack developer building web applications, backend services, and AI-assisted products. Founder of IFAA TECHNOLOGIES, with project work spanning education platforms, MCP tool integration, agent orchestration, and document-based AI workflows. Uses specifications, focused iterations, code review, and testing to connect product ideas with maintainable software.
+Fifth-year Software Engineering student, full-stack developer, and founder of IFAA TECHNOLOGIES. Focused on backend and cloud engineering, with project work in education platforms, MCP tool integration, agent orchestration, and document-based AI. Uses specifications, code review, and testing to build maintainable products for practical needs.
 
 ## Technical Skills
 **Application development:** TypeScript, JavaScript, Python, React, Next.js, Node.js, Express, NestJS, Django, REST APIs, Tailwind CSS.
-**Data and delivery:** PostgreSQL, MongoDB, Supabase, Redis, Git/GitHub, Docker, CI/CD workflows, cloud fundamentals, OpenAPI.
+**Data and delivery:** PostgreSQL, Prisma, MongoDB, Supabase, Redis, Git/GitHub, Docker, CI/CD workflows, cloud fundamentals, OpenAPI.
 **AI engineering:** Agentic AI, Model Context Protocol (MCP), LangGraph, Gemini integration, prompt/context engineering, structured outputs, document extraction and chunking, keyword retrieval, RAG fundamentals.
 **Engineering practice:** Requirements analysis, spec-driven development, modular design, relational data modeling, authentication/RBAC, input validation, automated testing, accessibility, debugging, technical documentation.
 
@@ -18,18 +18,20 @@ Software Engineering student and full-stack developer building web applications,
 https://www.ifaatechnologies.tech
 - Built the company website and application codebase using Next.js, TypeScript, Supabase, and Tailwind CSS.
 - Connected public product and service pages with protected customer and administrator workflows for projects, inquiries, conversations, and content.
-- Applied database access policies, responsive browser checks, accessibility checks, and search metadata to support a clear public presence.
 
 ### IFAA ENTRANCE | Founder & Developer
 https://entrance.ifaatechnologies.tech/en
-- Developed an Ethiopian examination preparation product with a multilingual Next.js frontend and a NestJS/PostgreSQL backend.
+- Evolved an Express/MongoDB examination-preparation application toward Next.js, NestJS, Prisma, and PostgreSQL, with a Flutter offline-first companion codebase.
 - Implemented subject practice, timed sessions, progress views, role-based workspaces, offline support, and AI-assisted explanations.
-- Used written specifications, contextual prompts, reviewed changes, and regression checks to guide development.
+
+## Internship Experience
+### OpsFlow | Document-Management Contributor
+Contributed document-management work to a team-built institutional platform using Next.js, NestJS, TypeScript, and PostgreSQL. Applied specifications-first development, architecture planning, data modeling, and university internship documentation.
 
 ## Education
-### BSc in Software Engineering | In Progress
+### BSc in Software Engineering | Fifth Year, In Progress
 Adama Science and Technology University, Ethiopia
-Developing foundations in algorithms, data structures, object-oriented programming, software requirements, database design, and the software development lifecycle through study and project practice.
+Foundations: algorithms, data structures, OOP, requirements, database design, and the software development lifecycle.
 
 ---PAGE---
 
@@ -60,7 +62,12 @@ https://github.com/fahamijemal/astu-smart-complaints-backend
 **Release:** Validate configuration, migrations, automated checks, deployed workflows, and rollback options.
 **Maintain:** Use feedback and error/performance signals to prioritize fixes; update documentation and dependencies. Develop retrieval evaluation skills while considering AI quality, latency, and cost.
 
+## Academic & Research Focus
+**Working languages:** English, Afaan Oromo, and Amharic.
+Current coursework: Senior Project I, Machine Learning, Natural Language Processing, Software Evolution and Maintenance, Entrepreneurship and Business Development, and Ethics and Professionalism in Computing.
+Research: Afaan Oromo handwriting recognition proposal and prototype work with CRNN/CTC.
+
 ## Continuous Learning
 **Coursera:** JavaScript Full Stack Capstone Project; Python for Data Science and AI; Developing Applications with SQL, Databases, and Django; Git and GitHub Essentials.
 **AWS Educate:** Introduction to Cloud 101 training badge.
-Current focus: retrieval-augmented generation evaluation, source attribution, reliable tool-using agents, and backend/cloud engineering.
+Developing further: RAG evaluation, reliable agents, AWS/GCP, Kubernetes, DevSecOps, and cybersecurity.
