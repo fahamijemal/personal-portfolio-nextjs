@@ -15,9 +15,10 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { createClient } from "@/lib/supabase/client";
+import { RESUME_STORAGE_FILE } from "@/lib/resume";
 
 const RESUME_BUCKET = "resumes";
-const RESUME_FILE_NAME = "resume.pdf";
+const RESUME_FILE_NAME = RESUME_STORAGE_FILE;
 const AVATAR_BUCKET = "avatars";
 const AVATAR_FILE_NAME = "profile.jpg";
 
@@ -595,7 +596,7 @@ export function SettingsAdminClient({
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Enter a direct link to your resume PDF
+                The updated CV is included with the website. Upload a new PDF to replace it, or enter a custom download URL.
               </p>
               {resumeUploadError && (
                 <p className="text-xs text-destructive">{resumeUploadError}</p>

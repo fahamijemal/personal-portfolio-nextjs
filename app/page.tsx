@@ -58,7 +58,8 @@ export default async function Home() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
   const isOurStorage =
     resumeUrl && supabaseUrl && resumeUrl.startsWith(supabaseUrl);
-  const resumeDownloadHref = isOurStorage ? "/api/resume" : resumeUrl;
+  const resumeDownloadHref =
+    !resumeUrl || isOurStorage ? "/api/resume" : resumeUrl;
 
   const settingsMap: Record<string, string> = {};
   settingsRows?.forEach((row) => {

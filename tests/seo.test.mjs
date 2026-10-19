@@ -307,3 +307,37 @@ test("completed project case studies have unique canonicals and attributed struc
   );
   assert.ok(!graphs(html).some((node) => node["@type"] === "CreativeWork"));
 });
+
+test("CV download replaces the legacy file and permits a future admin upload", async () => {
+  const { html } = await readPage("/");
+  assert.ok(tags(html, "a").some((link) => link.href === "/api/resume"));
+  const fallback = await fetch(`${base}/api/resume`, { redirect: "manual" });
+  assert.equal(fallback.status, 302);
+  assert.equal(
+    new URL(fallback.headers.get("location")).pathname,
+    "/resume/Fahami-Jemal-Harun-CV.pdf",
+  );
+  assert.equal(fallback.headers.get("cache-control"), "no-store");
+  const pdf = await fetch(new URL(fallback.headers.get("location")));
+  assert.equal(pdf.status, 200);
+  assert.match(pdf.headers.get("content-type"), /application\/pdf/);
+  assert.equal(
+    Buffer.from(await pdf.arrayBuffer())
+      .subarray(0, 5)
+      .toString(),
+    "%PDF-",
+  );
+  try {
+    harness.setResumeSignedPath(
+      "/object/sign/resumes/fahami-jemal-harun-cv.pdf?token=local-fixture",
+    );
+    const uploaded = await fetch(`${base}/api/resume`, { redirect: "manual" });
+    assert.equal(uploaded.status, 302);
+    assert.match(
+      uploaded.headers.get("location"),
+      /storage\/v1\/object\/sign\/resumes\/fahami-jemal-harun-cv\.pdf\?token=local-fixture$/,
+    );
+  } finally {
+    harness.setResumeSignedPath(null);
+  }
+});

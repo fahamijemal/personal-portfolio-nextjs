@@ -43,6 +43,7 @@ const draft = {
 
 export async function startHarness() {
   const requests = [];
+  let resumeSignedPath = null;
   const tables = {
     projects: [project],
     blog_posts: [fixturePost, draft],
@@ -59,6 +60,20 @@ export async function startHarness() {
       method: req.method,
     });
     res.setHeader("Content-Type", "application/json");
+    if (
+      url.pathname ===
+      "/storage/v1/object/sign/resumes/fahami-jemal-harun-cv.pdf"
+    ) {
+      res.writeHead(resumeSignedPath ? 200 : 404);
+      res.end(
+        JSON.stringify(
+          resumeSignedPath
+            ? { signedURL: resumeSignedPath }
+            : { message: "Not found" },
+        ),
+      );
+      return;
+    }
     if (req.method !== "GET") {
       res.writeHead(405);
       res.end(JSON.stringify({ message: "Read-only fixture" }));
@@ -137,7 +152,14 @@ export async function startHarness() {
   for (let attempt = 0; attempt < 80; attempt++) {
     try {
       const response = await fetch(`${base}/`);
-      if (response.ok) return { stop, requests };
+      if (response.ok)
+        return {
+          stop,
+          requests,
+          setResumeSignedPath: (path) => {
+            resumeSignedPath = path;
+          },
+        };
     } catch {}
     if (app.exitCode !== null) {
       await stop();

@@ -75,7 +75,7 @@ NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:3019 NEXT_PUBLIC_SUPABASE_ANON_KEY=per
 pnpm run test:seo
 ```
 
-These settings are for local tests only. Vercel must build with the personal project's real environment settings. The nine HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
+These settings are for local tests only. Vercel must build with the personal project's real environment settings. The ten HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
 
 Optional browser checks use existing Playwright tooling without adding application dependencies. In the shared cloud environment:
 
@@ -127,3 +127,22 @@ production deployments or measured AI performance. Edit `githubWork`, `aiPractic
 `engineeringFoundations`, and the six-stage `developmentProcess` in `lib/portfolio.ts`.
 MCP, LangGraph, context engineering, and keyword-based document retrieval are tied
 to concrete source examples. Broader RAG evaluation is presented as developing practice.
+
+### Current CV
+
+The updated two-page CV is bundled at `public/resume/Fahami-Jemal-Harun-CV.pdf`.
+Its editable source is `content/fahami-jemal-harun-cv.md`. Rebuild it with
+`python scripts/build-cv.py` (Python ReportLab and DejaVu Sans fonts required;
+these are authoring tools, not app runtime dependencies).
+
+The homepage uses `/api/resume` for storage-backed or unset resume settings.
+That route checks the new `resumes/fahami-jemal-harun-cv.pdf` storage key for
+future administrator uploads, then falls back to the bundled PDF. The old
+`resumes/resume.pdf` is retained in storage but no longer overrides the new CV.
+The admin upload control uses the new key; custom external resume URLs remain supported.
+Redirects are not cached. No production database or storage records were changed.
+
+The previous PDF could not be read because its storage redirect was blocked by
+the cloud environment network policy. Content uses the owner's supplied profile,
+previously listed credentials, and reviewed public GitHub projects. No employment
+dates, graduation date, GPA, project usage figures, or AI performance claims were invented.
