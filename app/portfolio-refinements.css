@@ -1,0 +1,342 @@
+/* Shared editorial rhythm, readable supporting text, and responsive cards. */
+.portfolio-header {
+  background: color-mix(in srgb, var(--folio-bg) 94%, transparent);
+  backdrop-filter: blur(16px);
+}
+.header-line {
+  height: 82px;
+}
+.folio-desktop-nav {
+  gap: 24px;
+}
+.folio-desktop-nav a {
+  position: relative;
+  padding-block: 14px;
+  font-size: 13px;
+}
+.folio-desktop-nav a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 7px;
+  height: 2px;
+  background: var(--folio-green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms;
+}
+.folio-desktop-nav a:hover::after,
+.folio-desktop-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.folio-icon-button {
+  width: 44px;
+  height: 44px;
+}
+.folio-hero {
+  padding-top: clamp(48px, 6vw, 88px);
+}
+.hero-grid {
+  gap: clamp(48px, 7vw, 100px);
+}
+.hero-description {
+  max-width: 560px;
+  line-height: 1.8;
+}
+.hero-opportunity {
+  max-width: 520px;
+  font-size: 14px;
+}
+.hero-socials a {
+  font-size: 12px;
+  min-height: 32px;
+}
+.hero-visual {
+  max-width: 390px;
+}
+.portrait-frame {
+  border-radius: 12px;
+}
+.portrait-image {
+  border-radius: 5px;
+}
+.portrait-topline,
+.portrait-caption {
+  font-size: 10px;
+}
+.hero-bottom {
+  font-size: 11px;
+  padding-block: 24px;
+}
+.folio-section {
+  padding-block: clamp(72px, 7vw, 100px);
+}
+.section-heading > p {
+  font-size: 14px;
+  max-width: 370px;
+}
+.three-projects {
+  gap: 26px;
+}
+.work-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.work-card .work-image {
+  flex: none;
+}
+.three-projects .work-image {
+  height: auto;
+  aspect-ratio: 1.35;
+  padding: 20px 20px 0;
+}
+.work-image {
+  transition: border-color 180ms;
+}
+.work-image:hover {
+  border-color: var(--folio-green);
+}
+.work-meta {
+  font-size: 10px;
+  line-height: 1.7;
+  gap: 12px;
+}
+.work-card h3 {
+  font-size: 24px;
+  line-height: 1.3;
+}
+.work-summary {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.three-projects .work-summary {
+  min-height: 0;
+}
+.work-card .folio-tags {
+  margin-bottom: 24px;
+}
+.work-card .work-links {
+  margin-top: auto;
+}
+.work-links {
+  font-size: 12px;
+}
+.expertise-grid {
+  background: var(--folio-paper);
+  border-radius: 12px;
+}
+.expertise-grid article {
+  padding: 30px 24px;
+}
+.expertise-grid h3 {
+  font-size: 21px;
+}
+.expertise-grid article > p {
+  font-size: 14px;
+  min-height: 110px;
+}
+.capability-list li {
+  font-size: 12px;
+}
+.approach-summary li {
+  border-top: 1px solid #64765b70;
+  padding-top: 24px;
+}
+.approach-summary h3 {
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+.about-copy > p {
+  font-size: 15px;
+  line-height: 1.85;
+}
+.about-facts p:last-child {
+  font-size: 13px;
+}
+.notes-grid article {
+  padding: 26px;
+  border: 1px solid var(--folio-line);
+  border-radius: 12px;
+  background: var(--folio-paper);
+}
+.notes-grid h3 {
+  font-size: 24px;
+  line-height: 1.4;
+}
+.notes-grid article > p {
+  font-size: 14px;
+}
+.credential-list h3 {
+  font-size: 15px;
+}
+.credential-list > a {
+  transition: color 180ms;
+}
+.credential-list > a:hover {
+  color: var(--folio-green);
+}
+.contact-intro {
+  font-size: 15px;
+}
+.contact-email {
+  font-size: 15px;
+}
+.contact-location {
+  font-size: 12px;
+}
+.folio-contact-form {
+  background: var(--folio-bg);
+  padding: 30px;
+  border: 1px solid var(--folio-line);
+  border-radius: 12px;
+}
+.folio-field label {
+  font-size: 12px;
+}
+.folio-field input,
+.folio-field textarea {
+  font-size: 16px;
+  background: var(--folio-paper);
+  border-radius: 6px;
+}
+.form-note {
+  font-size: 11px;
+  line-height: 1.7;
+}
+.footer-bottom {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.footer-bottom nav {
+  gap: 14px;
+}
+.foundations-section > h2 {
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.2;
+  letter-spacing: -0.045em;
+  margin-bottom: 36px;
+}
+.collection-main {
+  padding-top: 64px;
+}
+.collection-intro {
+  margin-top: 32px;
+}
+@media (max-width: 1100px) {
+  .hero-grid {
+    gap: 40px;
+  }
+  .folio-desktop-nav {
+    gap: 17px;
+  }
+  .wordmark-caption {
+    display: none;
+  }
+  .expertise-grid article > p {
+    min-height: 0;
+  }
+  .contact-grid {
+    gap: 40px;
+  }
+}
+@media (max-width: 760px) {
+  .header-line {
+    height: 74px;
+  }
+  .folio-section {
+    padding-block: 64px;
+  }
+  .folio-hero {
+    padding-top: 42px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(50px, 12.5vw, 78px);
+    letter-spacing: -0.065em;
+  }
+  .hero-description {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .hero-opportunity {
+    font-size: 14px;
+  }
+  .hero-grid {
+    gap: 44px;
+  }
+  .hero-visual {
+    max-width: 300px;
+  }
+  .portrait-image {
+    height: 300px;
+  }
+  .portrait-topline,
+  .portrait-caption {
+    font-size: 9px;
+  }
+  .hero-bottom {
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+  .three-projects {
+    gap: 44px;
+  }
+  .three-projects .work-image {
+    aspect-ratio: 1.4;
+  }
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
+  .expertise-grid article {
+    border-right: 0;
+    border-bottom: 1px solid var(--folio-line);
+    padding: 26px;
+  }
+  .expertise-grid article:last-child {
+    border-bottom: 0;
+  }
+  .expertise-grid h3 {
+    min-height: 0;
+    margin: 14px 0;
+  }
+  .capability-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .capability-list li {
+    font-size: 12px;
+  }
+  .about-facts {
+    grid-template-columns: 1fr;
+  }
+  .notes-grid article {
+    padding: 24px;
+  }
+  .folio-contact-form {
+    padding: 22px;
+  }
+  .form-pair {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .folio-field input,
+  .folio-field textarea {
+    padding: 14px;
+  }
+  .collection-main {
+    padding-top: 36px;
+  }
+  .folio-mobile-nav {
+    max-height: calc(100dvh - 74px);
+    overflow-y: auto;
+  }
+  .folio-mobile-nav a[aria-current="page"] {
+    color: var(--folio-green);
+    font-weight: 600;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .folio-desktop-nav a::after,
+  .work-image {
+    transition: none;
+  }
+}

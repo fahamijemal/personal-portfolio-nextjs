@@ -11,12 +11,16 @@ const links = [
   ["Expertise", "#skills"],
   ["Approach", "/approach"],
   ["About", "#about"],
+  ["Writing", "/blog"],
 ] as const;
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const trigger = useRef<HTMLButtonElement>(null);
+  const active = (path: string) =>
+    path.startsWith("/") &&
+    (pathname === path || pathname.startsWith(`${path}/`));
   const href = (hash: string) =>
     hash.startsWith("/") ? hash : pathname === "/" ? hash : `/${hash}`;
   useEffect(() => {
@@ -46,7 +50,11 @@ export function Header() {
         </Link>
         <nav className="folio-desktop-nav" aria-label="Main navigation">
           {links.map(([label, hash]) => (
-            <Link key={hash} href={href(hash)}>
+            <Link
+              key={hash}
+              href={href(hash)}
+              aria-current={active(hash) ? "page" : undefined}
+            >
               {label}
             </Link>
           ))}
@@ -86,7 +94,12 @@ export function Header() {
           aria-label="Mobile navigation"
         >
           {[...links, ["Contact", "#contact"]].map(([label, hash]) => (
-            <Link key={hash} href={href(hash)} onClick={() => setOpen(false)}>
+            <Link
+              key={hash}
+              href={href(hash)}
+              aria-current={active(hash) ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
               {label}
               <ArrowUpRight size={20} aria-hidden="true" />
             </Link>

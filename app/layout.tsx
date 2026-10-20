@@ -12,6 +12,7 @@ import {
 } from "@/lib/personal-seo";
 import "./globals.css";
 import "./portfolio.css";
+import "./portfolio-refinements.css";
 
 const geist = localFont({
   src: "./fonts/geist-latin.woff2",
