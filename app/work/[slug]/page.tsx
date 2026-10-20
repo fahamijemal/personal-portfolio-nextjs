@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { StructuredData } from "@/components/structured-data";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { completedWork, caseStudyDetails } from "@/lib/portfolio";
 import {
   personalBrand,
+  publicPageGraph,
   publicPageMetadata,
   serializeStructuredData,
 } from "@/lib/personal-seo";
@@ -43,6 +45,15 @@ export default async function WorkPage({ params }: Props) {
   return (
     <div className="case-study">
       <Header />
+      <StructuredData
+        value={publicPageGraph({
+          path: `/work/${work.slug}`,
+          name: `${work.name} — Project case study`,
+          description: work.summary,
+          parent: { path: "/projects", name: "Software projects" },
+          mainEntityId: `${PERSONAL_ORIGIN}/work/${work.slug}#project`,
+        })}
+      />
       <main id="main-content">
         <div className="folio-container case-hero">
           <Link href="/#projects" className="folio-text-link case-back">
@@ -176,6 +187,9 @@ export default async function WorkPage({ params }: Props) {
               "@type": "CreativeWork",
               "@id": `${PERSONAL_ORIGIN}/work/${work.slug}#project`,
               name: work.name,
+              image: `${PERSONAL_ORIGIN}${work.image}`,
+              about: work.stack.map((name) => ({ "@type": "Thing", name })),
+              genre: work.category,
               description: work.summary,
               url: work.url,
               author: { "@id": personalBrand.personId },
@@ -184,7 +198,9 @@ export default async function WorkPage({ params }: Props) {
                   ? personalBrand.personId
                   : personalBrand.companyId,
               },
-              mainEntityOfPage: `${PERSONAL_ORIGIN}/work/${work.slug}`,
+              mainEntityOfPage: {
+                "@id": `${PERSONAL_ORIGIN}/work/${work.slug}#webpage`,
+              },
               inLanguage: "en",
             }),
           }}

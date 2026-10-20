@@ -1,7 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
 import { CertificatesPageClient } from "./certificates-page-client";
-import { publicPageMetadata } from "@/lib/personal-seo";
+import { StructuredData } from "@/components/structured-data";
+import { publicPageGraph, publicPageMetadata } from "@/lib/personal-seo";
 
 export const metadata = publicPageMetadata({
   title: "Certificates & Credentials",
@@ -24,9 +25,19 @@ export default async function CertificatesPage() {
   ]);
 
   return (
-    <CertificatesPageClient
-      certificates={certificates || []}
-      socialLinks={socialLinks}
-    />
+    <>
+      <StructuredData
+        value={publicPageGraph({
+          path: "/certificates",
+          name: "Certificates and credentials",
+          description:
+            "Credentials published by Fahami Jemal Harun, with links to issuing organizations.",
+        })}
+      />
+      <CertificatesPageClient
+        certificates={certificates || []}
+        socialLinks={socialLinks}
+      />
+    </>
   );
 }

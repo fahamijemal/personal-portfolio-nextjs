@@ -46,7 +46,7 @@ export const personalBrand = {
   linkedin: "https://linkedin.com/in/fahamijemal",
   telegram: "https://t.me/fahamijemal",
   description:
-    "Fahami Jemal Harun is a full-stack developer, Software Engineering student, and founder of IFAA TECHNOLOGIES, building digital products with agentic AI, spec-driven development, and thoughtful engineering in Ethiopia.",
+    "Fahami Jemal Harun, full-stack developer and IFAA TECHNOLOGIES founder in Ethiopia. Explore backend systems, AI engineering, project case studies, and technical writing.",
 } as const;
 
 export function publicPageMetadata({
@@ -84,6 +84,7 @@ export function publicPageMetadata({
     },
     alternates: {
       canonical: url,
+      types: { "application/rss+xml": `${origin}/blog/feed.xml` },
     },
     openGraph: {
       type: article ? "article" : "website",
@@ -145,6 +146,13 @@ export function personalIdentityGraph() {
         },
         subjectOf: { "@id": `${PERSONAL_ORIGIN}/#profile` },
         url: `${PERSONAL_ORIGIN}/`,
+        image: {
+          "@type": "ImageObject",
+          "@id": `${PERSONAL_ORIGIN}/#portrait`,
+          contentUrl: `${PERSONAL_ORIGIN}/fahamijemal.jpg`,
+          caption: personalBrand.name,
+        },
+        mainEntityOfPage: { "@id": `${PERSONAL_ORIGIN}/#profile` },
         description: personalBrand.description,
         jobTitle: "Software Developer and Founder of IFAA TECHNOLOGIES",
         affiliation: { "@id": personalBrand.companyId },
@@ -191,5 +199,73 @@ export function profilePageGraph(path: "/") {
     isPartOf: { "@id": `${PERSONAL_ORIGIN}/#website` },
     inLanguage: "en",
     mainEntity: { "@id": personalBrand.personId },
+    primaryImageOfPage: { "@id": `${PERSONAL_ORIGIN}/#portrait` },
+  };
+}
+
+/** Crawlable page hierarchy and lists use the same public URLs as the interface. */
+export function publicPageGraph({
+  path,
+  name,
+  description,
+  parent,
+  items,
+  mainEntityId,
+}: {
+  path: string;
+  name: string;
+  description: string;
+  parent?: { path: string; name: string };
+  items?: { path: string; name: string }[];
+  mainEntityId?: string;
+}) {
+  const url = new URL(path, PERSONAL_ORIGIN).href;
+  const hierarchy = [
+    { path: "/", name: personalBrand.name },
+    ...(parent ? [parent] : []),
+    { path, name },
+  ];
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": items ? "CollectionPage" : "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name,
+        description,
+        inLanguage: "en",
+        isPartOf: { "@id": `${PERSONAL_ORIGIN}/#website` },
+        author: { "@id": personalBrand.personId },
+        breadcrumb: { "@id": `${url}#breadcrumbs` },
+        ...(items && { mainEntity: { "@id": `${url}#list` } }),
+        ...(mainEntityId && { mainEntity: { "@id": mainEntityId } }),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumbs`,
+        itemListElement: hierarchy.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+          item: new URL(item.path, PERSONAL_ORIGIN).href,
+        })),
+      },
+      ...(items
+        ? [
+            {
+              "@type": "ItemList",
+              "@id": `${url}#list`,
+              numberOfItems: items.length,
+              itemListElement: items.map((item, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: item.name,
+                url: new URL(item.path, PERSONAL_ORIGIN).href,
+              })),
+            },
+          ]
+        : []),
+    ],
   };
 }

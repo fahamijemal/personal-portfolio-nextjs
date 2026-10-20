@@ -193,3 +193,27 @@ Run `pnpm run test:blog` for editorial/related-post boundaries. After the docume
 fixture build, run `PLAYWRIGHT_MODULE_ROOT=/workspace/ifaatech pnpm run test:blog:browser`
 for topic/search navigation, mobile anchors, code/tables, and both-theme accessibility.
 Run fixture browser/HTTP suites sequentially because they share ports 3018/3019.
+
+### Search and AI discovery
+
+`lib/personal-seo.ts` maintains one canonical person/company identity, profile image,
+page hierarchy, and collection lists. Public pages publish server-rendered JSON-LD;
+article and case-study entities link to their canonical WebPage and author. These
+schemas describe the visible content; they do not claim ratings, clients, or outcomes.
+Blog tag views are `noindex, follow` with `/blog` as their canonical. Keep authentication
+pages crawlable so crawlers can read their existing noindex metadata; robots exclusions
+are not a substitute for access control. The sitemap includes published articles only,
+with real content dates rather than the time of a build. Public metadata advertises RSS.
+
+`/llms.txt` is a supplementary plain-text guide generated from the public project and
+article records. It is not an indexing standard or a guarantee that AI services will
+read or cite the site. Update the profile facts when the owner's background changes;
+keep private project summaries at their approved public level. Cite the canonical
+article/case-study URL, rather than this guide, for substantive engineering claims.
+
+After a fixture build, run `node --test tests/discovery.test.mjs` and
+`pnpm run test:seo` sequentially. The discovery suite checks graph connections,
+canonical source links, portrait availability, RSS discovery, and filtered-page rules.
+Submit `https://fahami.ifaatechnologies.tech/sitemap.xml` in the domain's Google Search
+Console property and inspect the homepage and important case studies after deployment.
+Search Console access and search-engine indexing are external to repository deployment.

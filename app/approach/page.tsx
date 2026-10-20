@@ -7,7 +7,8 @@ import {
   engineeringFoundations,
   aiPractices,
 } from "@/lib/portfolio";
-import { publicPageMetadata } from "@/lib/personal-seo";
+import { StructuredData } from "@/components/structured-data";
+import { publicPageGraph, publicPageMetadata } from "@/lib/personal-seo";
 export const metadata = publicPageMetadata({
   title: "Engineering Approach & Software Development Lifecycle",
   description:
@@ -18,6 +19,14 @@ export default function ApproachPage() {
   return (
     <div className="studio">
       <Header />
+      <StructuredData
+        value={publicPageGraph({
+          path: "/approach",
+          name: "Engineering approach and development lifecycle",
+          description:
+            "Requirements, system design, AI-assisted development, testing, release, and maintenance in Fahami Jemal Harun’s work.",
+        })}
+      />
       <main id="main-content" className="collection-main">
         <div className="folio-container">
           <Link href="/" className="folio-text-link">

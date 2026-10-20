@@ -11,8 +11,7 @@ import {
 
 export const metadata = publicPageMetadata({
   title: personalBrand.title,
-  description:
-    "Fahami Jemal Harun — full-stack developer and IFAA TECHNOLOGIES founder. Explore shipped products, agentic AI workflows, spec-driven development, and software engineering.",
+  description: personalBrand.description,
   path: "/",
   home: true,
 });

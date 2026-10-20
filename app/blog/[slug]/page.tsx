@@ -1,3 +1,4 @@
+import { StructuredData } from "@/components/structured-data";
 import { editorialPost, relatedArticles } from "@/lib/editorial";
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
@@ -6,6 +7,7 @@ import { BlogPostClient } from "./blog-post-client";
 import { getSiteUrl } from "@/lib/site-url";
 import type { Metadata } from "next";
 import {
+  publicPageGraph,
   noIndexMetadata,
   publicPageMetadata,
   personalBrand,
@@ -79,23 +81,35 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
+      <StructuredData
+        value={publicPageGraph({
+          path: `/blog/${encodeURIComponent(slug)}`,
+          name: post.title_en,
+          description: post.excerpt_en || post.title_en,
+          parent: { path: "/blog", name: "Engineering articles" },
+          mainEntityId: `${getSiteUrl()}/blog/${encodeURIComponent(slug)}#article`,
+        })}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: serializeStructuredData({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
+            "@id": `${getSiteUrl()}/blog/${encodeURIComponent(slug)}#article`,
             headline: post.title_en,
             description: post.excerpt_en || undefined,
             url: `${getSiteUrl()}/blog/${encodeURIComponent(slug)}`,
-            mainEntityOfPage: `${getSiteUrl()}/blog/${encodeURIComponent(slug)}`,
+            mainEntityOfPage: {
+              "@id": `${getSiteUrl()}/blog/${encodeURIComponent(slug)}#webpage`,
+            },
             author: { "@id": personalBrand.personId },
             publisher: { "@id": personalBrand.personId },
             ...(post.published_at && { datePublished: post.published_at }),
             ...(post.updated_at && { dateModified: post.updated_at }),
-            ...(post.image_url?.startsWith("https://") && {
-              image: post.image_url,
-            }),
+            image: post.image_url?.startsWith("https://")
+              ? post.image_url
+              : `${getSiteUrl()}/opengraph-image`,
             inLanguage: "en",
             ...(post.tags?.length && { keywords: post.tags.join(", ") }),
             isPartOf: {

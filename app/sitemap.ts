@@ -12,12 +12,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/` },
     { url: `${siteUrl}/projects` },
     { url: `${siteUrl}/approach` },
-    ...editorialPosts.map((post) => ({
-      url: `${siteUrl}/blog/${post.slug}`,
-      ...(post.updated_at || post.published_at
-        ? { lastModified: new Date((post.updated_at || post.published_at)!) }
-        : {}),
-    })),
+    ...editorialPosts
+      .filter((post) => post.published)
+      .map((post) => ({
+        url: `${siteUrl}/blog/${post.slug}`,
+        ...(post.updated_at || post.published_at
+          ? { lastModified: new Date((post.updated_at || post.published_at)!) }
+          : {}),
+      })),
     ...completedWork.map((work) => ({ url: `${siteUrl}/work/${work.slug}` })),
     { url: `${siteUrl}/blog` },
     { url: `${siteUrl}/certificates` },

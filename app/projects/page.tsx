@@ -1,8 +1,9 @@
-import { isReviewedArchiveProject } from "@/lib/portfolio";
+import { completedWork, isReviewedArchiveProject } from "@/lib/portfolio";
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
 import { ProjectsPageClient } from "./projects-page-client";
-import { publicPageMetadata } from "@/lib/personal-seo";
+import { StructuredData } from "@/components/structured-data";
+import { publicPageGraph, publicPageMetadata } from "@/lib/personal-seo";
 
 export const metadata = publicPageMetadata({
   title: "Software Projects",
@@ -23,9 +24,23 @@ export default async function ProjectsPage() {
   ]);
 
   return (
-    <ProjectsPageClient
-      projects={(projects || []).filter(isReviewedArchiveProject)}
-      socialLinks={socialLinks}
-    />
+    <>
+      <StructuredData
+        value={publicPageGraph({
+          path: "/projects",
+          name: "Software projects",
+          description:
+            "Project case studies and software engineering contributions by Fahami Jemal Harun.",
+          items: completedWork.map((work) => ({
+            path: `/work/${work.slug}`,
+            name: work.name,
+          })),
+        })}
+      />
+      <ProjectsPageClient
+        projects={(projects || []).filter(isReviewedArchiveProject)}
+        socialLinks={socialLinks}
+      />
+    </>
   );
 }

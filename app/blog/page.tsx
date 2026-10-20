@@ -3,9 +3,10 @@ import { mergeEditorialPosts } from "@/lib/editorial";
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
 import { BlogPageClient } from "./blog-page-client";
-import { publicPageMetadata } from "@/lib/personal-seo";
+import { StructuredData } from "@/components/structured-data";
+import { publicPageGraph, publicPageMetadata } from "@/lib/personal-seo";
 
-export const metadata = {
+const blogMetadata = {
   ...publicPageMetadata({
     title: "Engineering Articles: Backend Systems, AI & Reliable Software",
     description:
@@ -24,6 +25,16 @@ export const metadata = {
 type Props = {
   searchParams: Promise<{ tag?: string }>;
 };
+
+export async function generateMetadata({ searchParams }: Props) {
+  const { tag } = await searchParams;
+  return tag
+    ? {
+        ...blogMetadata,
+        robots: { index: false, follow: true },
+      }
+    : blogMetadata;
+}
 
 export default async function BlogPage({ searchParams }: Props) {
   const { tag } = await searchParams;
@@ -53,11 +64,27 @@ export default async function BlogPage({ searchParams }: Props) {
       ...(content_en && { reading_minutes: getReadingTimeMinutes(content_en) }),
     }));
   return (
-    <BlogPageClient
-      posts={visiblePosts}
-      topics={topics}
-      initialTag={tag ?? undefined}
-      socialLinks={socialLinks}
-    />
+    <>
+      {!tag && (
+        <StructuredData
+          value={publicPageGraph({
+            path: "/blog",
+            name: "Engineering articles",
+            description:
+              "Original articles by Fahami Jemal Harun on backend systems, AI engineering, and reliable software.",
+            items: visiblePosts.map((post) => ({
+              path: `/blog/${encodeURIComponent(post.slug)}`,
+              name: post.title_en,
+            })),
+          })}
+        />
+      )}
+      <BlogPageClient
+        posts={visiblePosts}
+        topics={topics}
+        initialTag={tag ?? undefined}
+        socialLinks={socialLinks}
+      />
+    </>
   );
 }
