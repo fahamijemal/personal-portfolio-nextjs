@@ -84,6 +84,23 @@ test("portfolio remains readable and accessible across responsive widths and the
           "project links align",
         );
     }
+    for (const width of [390, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`${base}/projects`, { waitUntil: "networkidle" });
+      const [intro, work] = await Promise.all([
+        page.locator(".collection-main > .folio-container:has(.collection-intro)").boundingBox(),
+        page.locator(".work-collection .folio-container").boundingBox(),
+      ]);
+      assert.ok(
+        Math.abs(intro.x - work.x) <= 1,
+        "featured work shares the page gutter",
+      );
+      assert.ok(
+        Math.abs(intro.width - work.width) <= 1,
+        "featured work shares the content width",
+      );
+      assert.ok(work.x >= 20 && work.x + work.width <= width - 20);
+    }
     for (const theme of ["light", "dark"]) {
       await page.evaluate(
         (value) => localStorage.setItem("theme", value),
