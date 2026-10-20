@@ -18,15 +18,36 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-export function MarkdownContent({ content, className = "" }: MarkdownContentProps) {
+export function MarkdownContent({
+  content,
+  className = "",
+}: MarkdownContentProps) {
   const components = {
+    table: ({ children }: { children?: React.ReactNode }) => (
+      <div
+        className="article-table"
+        tabIndex={0}
+        role="region"
+        aria-label="Scrollable comparison table"
+      >
+        <table>{children}</table>
+      </div>
+    ),
     h2: ({ children, ...props }: { children?: React.ReactNode }) => (
-      <h2 id={slugify(String(children ?? ""))} className="scroll-mt-24" {...props}>
+      <h2
+        id={slugify(String(children ?? ""))}
+        className="scroll-mt-24"
+        {...props}
+      >
         {children}
       </h2>
     ),
     h3: ({ children, ...props }: { children?: React.ReactNode }) => (
-      <h3 id={slugify(String(children ?? ""))} className="scroll-mt-24" {...props}>
+      <h3
+        id={slugify(String(children ?? ""))}
+        className="scroll-mt-24"
+        {...props}
+      >
         {children}
       </h3>
     ),
@@ -41,11 +62,22 @@ export function MarkdownContent({ content, className = "" }: MarkdownContentProp
       </a>
     ),
     pre: ({ children }: { children?: React.ReactNode }) => (
-      <pre className="overflow-x-auto rounded-lg border border-border bg-muted/50 p-4">
+      <pre
+        tabIndex={0}
+        aria-label="Code example"
+        className="overflow-x-auto rounded-lg border border-border bg-muted/50 p-4"
+      >
         {children}
       </pre>
     ),
-    code: ({ className, children, ...props }: { className?: string; children?: React.ReactNode }) => {
+    code: ({
+      className,
+      children,
+      ...props
+    }: {
+      className?: string;
+      children?: React.ReactNode;
+    }) => {
       const isInline = !className;
       if (isInline) {
         return (

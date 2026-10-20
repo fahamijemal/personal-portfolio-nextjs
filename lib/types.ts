@@ -28,6 +28,9 @@ export type BlogPost = {
   published?: boolean;
   published_at: string | null;
   created_at?: string;
+  updated_at?: string | null;
+  takeaways?: string[];
+  reading_minutes?: number;
   image_url?: string | null;
   tags?: string[];
 };

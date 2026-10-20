@@ -1,4 +1,4 @@
-import { editorialPost, editorialPosts } from "@/lib/editorial";
+import { editorialPost, relatedArticles } from "@/lib/editorial";
 import { createClient } from "@/lib/supabase/server";
 import { fetchSocialLinks } from "@/lib/site-content";
 import { notFound } from "next/navigation";
@@ -43,7 +43,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     path: `/blog/${encodeURIComponent(slug)}`,
     image: imageUrl,
-    article: { publishedAt: post.published_at },
+    article: {
+      publishedAt: post.published_at,
+      modifiedAt: editorialPost(slug)?.updated_at,
+    },
   });
 }
 
@@ -64,54 +67,14 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  // Related posts: by shared tags or recent
-  let related: {
-    id: string;
-    slug: string;
-    title_en: string;
-    title_om: string | null;
-  }[] = [];
-  const postTags = (post.tags ?? []) as string[];
-  if (postTags.length > 0) {
-    const { data: byTag } = await supabase
-      .from("blog_posts")
-      .select("id, slug, title_en, title_om")
-      .eq("published", true)
-      .neq("slug", slug)
-      .overlaps("tags", postTags)
-      .order("published_at", { ascending: false })
-      .limit(3);
-    related = byTag ?? [];
-  }
-  if (related.length < 3) {
-    const excludeIds = related.map((r) => r.id);
-    const { data: recent } = await supabase
-      .from("blog_posts")
-      .select("id, slug, title_en, title_om")
-      .eq("published", true)
-      .neq("slug", slug)
-      .order("published_at", { ascending: false })
-      .limit(5);
-    const filtered = (recent ?? []).filter((p) => !excludeIds.includes(p.id));
-    related = [...related, ...filtered].slice(0, 3);
-  }
-
-  related = [
-    ...editorialPosts
-      .filter((note) => note.slug !== slug)
-      .map((note) => ({
-        id: note.id,
-        slug: note.slug,
-        title_en: note.title_en,
-        title_om: note.title_om,
-      })),
-    ...related,
-  ]
-    .filter(
-      (item, index, items) =>
-        items.findIndex((other) => other.slug === item.slug) === index,
-    )
-    .slice(0, 3);
+  const { data: candidates } = await supabase
+    .from("blog_posts")
+    .select("id, slug, title_en, title_om, tags, published_at")
+    .eq("published", true)
+    .neq("slug", slug)
+    .order("published_at", { ascending: false })
+    .limit(20);
+  const related = relatedArticles(post, candidates || []);
   const socialLinks = await fetchSocialLinks(supabase);
 
   return (
@@ -129,13 +92,17 @@ export default async function BlogPostPage({ params }: Props) {
             author: { "@id": personalBrand.personId },
             publisher: { "@id": personalBrand.personId },
             ...(post.published_at && { datePublished: post.published_at }),
-            ...(editorialPost(slug) && {
-              dateModified: "2026-10-19T00:00:00Z",
-            }),
+            ...(post.updated_at && { dateModified: post.updated_at }),
             ...(post.image_url?.startsWith("https://") && {
               image: post.image_url,
             }),
             inLanguage: "en",
+            ...(post.tags?.length && { keywords: post.tags.join(", ") }),
+            isPartOf: {
+              "@type": "Blog",
+              "@id": `${getSiteUrl()}/blog#blog`,
+              url: `${getSiteUrl()}/blog`,
+            },
           }),
         }}
       />

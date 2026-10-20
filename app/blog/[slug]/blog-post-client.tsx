@@ -10,6 +10,7 @@ import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
 import { ShareButtons } from "@/components/portfolio/share-buttons";
 import { MarkdownContent } from "@/components/blog/markdown-content";
+import { formatCredentialDate } from "@/lib/presentation";
 import { getReadingTimeMinutes, extractHeadings } from "@/lib/blog-utils";
 import type { BlogPost } from "@/lib/types";
 import type { SocialLinks } from "@/lib/site-content";
@@ -59,11 +60,11 @@ function BlogPostContent({
       <main id="main-content" className="collection-main">
         <div className="folio-container reading-layout">
           {tocItems.length > 0 && (
-            <aside className="lg:w-56 shrink-0 order-2 lg:order-1">
-              <nav className="lg:sticky lg:top-28">
-                <h3 className="text-sm font-semibold text-foreground mb-3">
+            <aside className="article-toc-desktop">
+              <nav className="lg:sticky lg:top-28" aria-label="On this page">
+                <h2 className="text-sm font-semibold text-foreground mb-3">
                   {t.blog.tableOfContents}
-                </h3>
+                </h2>
                 <ul className="space-y-1 text-sm text-muted-foreground">
                   {tocItems.map((item) => (
                     <li
@@ -117,6 +118,14 @@ function BlogPostContent({
               </span>
             </div>
 
+            {post.updated_at && post.updated_at !== post.published_at && (
+              <p className="article-updated">
+                Updated {formatCredentialDate(post.updated_at)}
+              </p>
+            )}
+            {post.excerpt_en && (
+              <p className="article-deck">{post.excerpt_en}</p>
+            )}
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-8">
                 {post.tags.map((tag) => (
@@ -131,17 +140,53 @@ function BlogPostContent({
               </div>
             )}
 
+            {post.takeaways?.length ? (
+              <section
+                className="article-takeaways"
+                aria-labelledby="takeaways-title"
+              >
+                <h2 id="takeaways-title">Key ideas</h2>
+                <ul>
+                  {post.takeaways.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+            {tocItems.length > 0 && (
+              <details className="article-toc-mobile">
+                <summary>On this page</summary>
+                <nav aria-label="Article sections">
+                  <ol>
+                    {tocItems.map((item) => (
+                      <li key={item.slug}>
+                        <a href={`#${item.slug}`}>{item.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </details>
+            )}
             <MarkdownContent content={content} />
+            <div className="article-author">
+              <p className="folio-label">ABOUT THE AUTHOR</p>
+              <p>
+                <Link href="/#about">Fahami Jemal Harun</Link> is a software
+                developer and founder of IFAA TECHNOLOGIES, working on backend
+                systems, full-stack products, and applied AI.
+              </p>
+            </div>
             <ShareButtons
               title={title}
               url={new URL(`/blog/${post.slug}`, PERSONAL_ORIGIN).href}
             />
 
             {relatedPosts.length > 0 && (
-              <div className="mt-16 pt-8 border-t border-border">
-                <h3 className="text-lg font-semibold text-foreground mb-4">
-                  {t.blog.relatedPosts}
-                </h3>
+              <section
+                className="related-articles"
+                aria-labelledby="related-articles-title"
+              >
+                <h2 id="related-articles-title">Continue reading</h2>
                 <ul className="space-y-2">
                   {relatedPosts.map((r) => (
                     <li key={r.id}>
@@ -156,7 +201,7 @@ function BlogPostContent({
                     </li>
                   ))}
                 </ul>
-              </div>
+              </section>
             )}
           </article>
         </div>

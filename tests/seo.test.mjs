@@ -242,7 +242,7 @@ test("sitemap queries public published data and uses only actual article dates",
     );
     assert.ok(!pages.some((page) => page.url.includes("seo-fixture-draft")));
     const dated = pages.filter((page) => page.lastModified);
-    assert.equal(dated.length, 4);
+    assert.equal(dated.length, 7);
     assert.equal(
       dated
         .find((page) => page.url.endsWith(fixturePost.slug))
@@ -389,4 +389,37 @@ test("legacy sample projects are excluded without exposing private source URLs",
   );
   const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
   assert.ok(!sitemap.includes("/projects/legacy-sample"));
+});
+
+test("published engineering articles and RSS use actual dates and canonical URLs", async () => {
+  for (const slug of [
+    "specification-led-api-contracts",
+    "offline-first-synchronization",
+    "reliable-ai-api-boundaries",
+  ]) {
+    const { response, html } = await readPage(`/blog/${slug}`);
+    assert.equal(response.status, 200);
+    assert.equal(
+      tags(html, "link").find((link) => link.rel === "canonical")?.href,
+      `${origin}/blog/${slug}`,
+    );
+    const schema = graphs(html).find((node) => node["@type"] === "BlogPosting");
+    assert.equal(schema.datePublished, "2026-10-20T00:00:00Z");
+    assert.equal(schema.dateModified, "2026-10-20T00:00:00Z");
+    assert.equal(schema.author["@id"], `${origin}/#person`);
+    assert.ok(html.includes("Key ideas"));
+  }
+  const response = await fetch(`${base}/blog/feed.xml`);
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /application\/rss\+xml/);
+  const feed = await response.text();
+  assert.ok(feed.includes(`${origin}/blog/specification-led-api-contracts`));
+  assert.ok(feed.includes(`${origin}/blog/${fixturePost.slug}`));
+  assert.ok(!feed.includes("seo-fixture-draft"));
+  assert.equal((feed.match(/<item>/g) || []).length, 7);
+  const cloud = graphs(
+    (await readPage("/blog/getting-started-with-cloud-computing")).html,
+  ).find((node) => node["@type"] === "BlogPosting");
+  assert.equal(cloud.datePublished, "2026-02-17T00:00:00Z");
+  assert.equal(cloud.dateModified, "2026-10-20T00:00:00Z");
 });

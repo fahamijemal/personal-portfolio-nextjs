@@ -62,7 +62,7 @@ export function publicPageMetadata({
   path: string;
   home?: boolean;
   image?: string;
-  article?: { publishedAt?: string | null };
+  article?: { publishedAt?: string | null; modifiedAt?: string | null };
 }): Metadata {
   const origin = getSiteUrl();
   const url = new URL(path, `${origin}/`).href;
@@ -103,6 +103,7 @@ export function publicPageMetadata({
       ...(article && {
         authors: [PERSONAL_ORIGIN],
         ...(article.publishedAt && { publishedTime: article.publishedAt }),
+        ...(article.modifiedAt && { modifiedTime: article.modifiedAt }),
       }),
     },
     twitter: {

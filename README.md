@@ -75,7 +75,7 @@ NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:3019 NEXT_PUBLIC_SUPABASE_ANON_KEY=per
 pnpm run test:seo
 ```
 
-These settings are for local tests only. Vercel must build with the personal project's real environment settings. The twelve HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
+These settings are for local tests only. Vercel must build with the personal project's real environment settings. The thirteen HTTP/data-boundary scenarios run with a read-only loopback Supabase fixture on ports 3018/3019, covering founder identity, canonical/social URLs, retired translation redirects, published versus draft content, auth gates, sitemap dates, and the social image. A test-only network guard rejects non-fixture server fetches. The checks do not send inquiries or access the hosted backend.
 
 Optional browser checks use existing Playwright tooling without adding application dependencies. In the shared cloud environment:
 
@@ -113,12 +113,13 @@ Task Manager sample records are excluded from listings, detail routes, and the
 sitemap. Existing database records are retained. Other CMS archive entries need
 a source or live link to appear in the library.
 
-`lib/editorial.ts` supplies two original engineering notes and the completed cloud
-article under its existing slug. Repository notes take precedence over CMS entries
-with the same slug. New notes were published October 19, 2026; the cloud article
-retains its original publication date and has an explicit modification date.
-CMS writing remains supported. Edit these source-controlled notes in this file;
-admin edits to the same slug do not override them.
+`lib/editorial.ts` supplies six source-maintained engineering articles. The original
+MCP and retrieval notes retain their October 19 publication dates; the API contracts,
+offline synchronization, and AI boundary articles were published October 20. The
+cloud article retains its original February publication date. Revisions have explicit
+modification dates. Repository articles take precedence over CMS entries with the
+same slug; admin edits to those slugs do not override the source-maintained text.
+CMS writing with other slugs remains supported.
 
 CMS social links, resume URL, education, certificates, and additional writing
 remain supported. The homepage toolkit is curated in source to avoid duplicating
@@ -171,3 +172,24 @@ Education is a concise ASTU degree/fifth-year note. Semester course lists, devic
 technology lists, and repeated project histories are omitted. The flagship case study
 retains the relevant Express/MongoDB to NestJS/Prisma/PostgreSQL architecture evolution.
 The CV follows the same scope and remains two pages.
+
+### Blog publishing and checks
+
+`lib/editorial.ts` publishes six repository-maintained engineering articles, including
+API contracts, offline synchronization, and reliable AI API boundaries. Articles have
+an excerpt, publication/modification dates, topics, and key takeaways. Keep the original
+publication date on revisions and update `updated_at` only when content changes.
+Related reading ranks shared topics before recency. CMS posts with other slugs remain
+available; unpublished CMS posts are excluded from listings, the feed, and details.
+
+`/blog/feed.xml` provides an RSS feed with canonical links and escaped summaries.
+The blog advertises it through a visible subscription link and alternate metadata.
+Mobile section navigation is collapsible; code and wide tables support keyboard scrolling.
+The new articles are general engineering explanations with illustrative examples and
+public references. They introduce no private source code, client data, outcome metrics,
+or claims of independent production validation.
+
+Run `pnpm run test:blog` for editorial/related-post boundaries. After the documented
+fixture build, run `PLAYWRIGHT_MODULE_ROOT=/workspace/ifaatech pnpm run test:blog:browser`
+for topic/search navigation, mobile anchors, code/tables, and both-theme accessibility.
+Run fixture browser/HTTP suites sequentially because they share ports 3018/3019.

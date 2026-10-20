@@ -10,7 +10,9 @@
     "test:seo": "node --test tests/seo.test.mjs",
     "test:seo:browser": "node --test tests/seo.browser.mjs",
     "start": "next start",
-    "test:contact": "node --test tests/contact-notification.test.mjs"
+    "test:contact": "node --test tests/contact-notification.test.mjs",
+    "test:blog": "node --test tests/blog.test.mjs",
+    "test:blog:browser": "node --test tests/blog.browser.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

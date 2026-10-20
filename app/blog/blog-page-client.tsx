@@ -10,16 +10,18 @@ import type { SocialLinks } from "@/lib/site-content";
 export function BlogPageClient({
   posts,
   initialTag,
+  topics = [],
   socialLinks,
 }: {
   posts: BlogPost[];
   initialTag?: string;
+  topics?: string[];
   socialLinks?: SocialLinks | null;
 }) {
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(9);
   const filtered = posts.filter((post) =>
-    `${post.title_en} ${post.excerpt_en || ""}`
+    `${post.title_en} ${post.excerpt_en || ""} ${(post.tags || []).join(" ")}`
       .toLowerCase()
       .includes(search.toLowerCase()),
   );
@@ -35,13 +37,16 @@ export function BlogPageClient({
           <div className="collection-intro">
             <p className="folio-label">ENGINEERING NOTES</p>
             <h1>
-              Learning through <span>building.</span>
+              Engineering <span>in practice.</span>
             </h1>
             <p>
-              Practical notes on agents, retrieval, backend systems, and
-              delivering software.
+              Articles on the decisions behind reliable software: API contracts,
+              backend architecture, applied AI, and delivery.
             </p>
           </div>
+          <a href="/blog/feed.xml" className="folio-text-link blog-rss">
+            Subscribe via RSS <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
           <div className="writing-controls">
             <label htmlFor="writing-search">Search engineering notes</label>
             <input
@@ -60,13 +65,34 @@ export function BlogPageClient({
               </Link>
             )}
           </div>
+          <nav className="blog-topic-nav" aria-label="Article topics">
+            <Link href="/blog" aria-current={!initialTag ? "page" : undefined}>
+              All articles
+            </Link>
+            {topics.map((topic) => (
+              <Link
+                key={topic}
+                href={`/blog?tag=${encodeURIComponent(topic)}`}
+                aria-current={initialTag === topic ? "page" : undefined}
+              >
+                {topic}
+              </Link>
+            ))}
+          </nav>
+          <p className="article-results" role="status" aria-live="polite">
+            {filtered.length} {filtered.length === 1 ? "article" : "articles"}
+            {search ? ` matching “${search}”` : ""}
+          </p>
           <div className="notes-grid writing-grid">
             {filtered.slice(0, limit).map((post) => (
               <article key={post.slug}>
                 <p className="folio-label">
                   {post.published_at
                     ? formatCredentialDate(post.published_at)
-                    : "ENGINEERING NOTE"}
+                    : "ENGINEERING ARTICLE"}
+                  {post.reading_minutes
+                    ? ` · ${post.reading_minutes} min read`
+                    : ""}
                 </p>
                 <h2>
                   <Link href={`/blog/${post.slug}`}>{post.title_en}</Link>
@@ -83,7 +109,7 @@ export function BlogPageClient({
                   ))}
                 </div>
                 <Link href={`/blog/${post.slug}`} className="folio-text-link">
-                  Read the note
+                  Read article
                   <ArrowUpRight size={16} aria-hidden="true" />
                 </Link>
               </article>
@@ -99,7 +125,7 @@ export function BlogPageClient({
               className="folio-button secondary"
               onClick={() => setLimit((n) => n + 9)}
             >
-              Load more notes
+              Load more articles
             </button>
           )}
           <div className="collection-cta">
